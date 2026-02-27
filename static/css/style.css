@@ -71,10 +71,30 @@ main {
 /* ── Crop selector ── */
 .crop-selector {
   display: flex;
-  flex-wrap: wrap;
-  gap: .6rem;
-  justify-content: center;
+  flex-direction: column;
+  gap: .9rem;
   margin-bottom: 1.25rem;
+  text-align: left;
+}
+
+.crop-category {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.crop-category-label {
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  color: var(--text-muted);
+}
+
+.crop-category-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
 }
 
 .crop-btn {

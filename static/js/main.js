@@ -9,13 +9,60 @@ let currentYieldPerAcre = null;
 let selectedCrop = "rice";
 
 const CROP_LABELS = {
-  rice:      "Rice",
-  wheat:     "Wheat",
-  maize:     "Maize",
-  sugarcane: "Sugarcane",
-  cotton:    "Cotton",
-  soybean:   "Soybean",
-  groundnut: "Groundnut",
+  // Food Grains
+  rice:          "Rice",
+  wheat:         "Wheat",
+  maize:         "Maize",
+  ragi:          "Ragi (Finger Millet)",
+  cumbu:         "Cumbu (Pearl Millet)",
+  thinai:        "Thinai (Foxtail Millet)",
+  kodo_millet:   "Kodo Millet",
+  little_millet: "Little Millet",
+  // Pulses
+  black_gram:    "Black Gram (Urad Dal)",
+  green_gram:    "Green Gram (Moong Dal)",
+  red_gram:      "Red Gram (Tur Dal)",
+  horse_gram:    "Horse Gram",
+  // Oilseeds
+  groundnut:     "Groundnut",
+  sesame:        "Sesame (Gingelly)",
+  coconut:       "Coconut",
+  castor:        "Castor",
+  sunflower:     "Sunflower",
+  soybean:       "Soybean",
+  // Commercial / Cash Crops
+  sugarcane:     "Sugarcane",
+  cotton:        "Cotton",
+  tobacco:       "Tobacco",
+  // Plantation Crops
+  coffee:        "Coffee",
+  tea:           "Tea",
+  rubber:        "Rubber",
+  // Spices
+  turmeric:      "Turmeric",
+  chilli:        "Chilli",
+  coriander:     "Coriander",
+  pepper:        "Pepper",
+  cardamom:      "Cardamom",
+  // Fruits
+  banana:        "Banana",
+  mango:         "Mango",
+  sapota:        "Sapota (Chikoo)",
+  guava:         "Guava",
+  papaya:        "Papaya",
+  jackfruit:     "Jackfruit",
+  // Vegetables
+  tomato:        "Tomato",
+  brinjal:       "Brinjal (Eggplant)",
+  onion:         "Onion",
+  drumstick:     "Drumstick (Moringa)",
+  bhindi:        "Bhindi (Okra)",
+  tapioca:       "Tapioca",
+  // Floriculture
+  jasmine:       "Jasmine",
+  rose:          "Rose",
+  marigold:      "Marigold",
+  tuberose:      "Tuberose",
 };
 
 // ── DOM helpers ────────────────────────────────────────────

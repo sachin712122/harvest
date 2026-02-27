@@ -31,13 +31,106 @@
 
     <!-- Crop selector -->
     <div class="crop-selector" id="crop-selector" role="group" aria-label="Select crop">
-      <button class="crop-btn active" data-crop="rice">🌾 Rice</button>
-      <button class="crop-btn" data-crop="wheat">🌿 Wheat</button>
-      <button class="crop-btn" data-crop="maize">🌽 Maize</button>
-      <button class="crop-btn" data-crop="sugarcane">🎋 Sugarcane</button>
-      <button class="crop-btn" data-crop="cotton">🪴 Cotton</button>
-      <button class="crop-btn" data-crop="soybean">🫘 Soybean</button>
-      <button class="crop-btn" data-crop="groundnut">🥜 Groundnut</button>
+
+      <div class="crop-category">
+        <span class="crop-category-label">🌾 Food Grains</span>
+        <div class="crop-category-btns">
+          <button class="crop-btn active" data-crop="rice">🌾 Rice</button>
+          <button class="crop-btn" data-crop="wheat">🌿 Wheat</button>
+          <button class="crop-btn" data-crop="maize">🌽 Maize</button>
+          <button class="crop-btn" data-crop="ragi">🌾 Ragi</button>
+          <button class="crop-btn" data-crop="cumbu">🌾 Cumbu</button>
+          <button class="crop-btn" data-crop="thinai">🌾 Thinai</button>
+          <button class="crop-btn" data-crop="kodo_millet">🌾 Kodo Millet</button>
+          <button class="crop-btn" data-crop="little_millet">🌾 Little Millet</button>
+        </div>
+      </div>
+
+      <div class="crop-category">
+        <span class="crop-category-label">🫘 Pulses</span>
+        <div class="crop-category-btns">
+          <button class="crop-btn" data-crop="black_gram">🫘 Black Gram</button>
+          <button class="crop-btn" data-crop="green_gram">🫘 Green Gram</button>
+          <button class="crop-btn" data-crop="red_gram">🫘 Red Gram</button>
+          <button class="crop-btn" data-crop="horse_gram">🫘 Horse Gram</button>
+        </div>
+      </div>
+
+      <div class="crop-category">
+        <span class="crop-category-label">🌻 Oilseeds</span>
+        <div class="crop-category-btns">
+          <button class="crop-btn" data-crop="groundnut">🥜 Groundnut</button>
+          <button class="crop-btn" data-crop="sesame">🌿 Sesame</button>
+          <button class="crop-btn" data-crop="coconut">🥥 Coconut</button>
+          <button class="crop-btn" data-crop="castor">🌿 Castor</button>
+          <button class="crop-btn" data-crop="sunflower">🌻 Sunflower</button>
+          <button class="crop-btn" data-crop="soybean">🫘 Soybean</button>
+        </div>
+      </div>
+
+      <div class="crop-category">
+        <span class="crop-category-label">🏭 Commercial Crops</span>
+        <div class="crop-category-btns">
+          <button class="crop-btn" data-crop="sugarcane">🎋 Sugarcane</button>
+          <button class="crop-btn" data-crop="cotton">🪴 Cotton</button>
+          <button class="crop-btn" data-crop="tobacco">🌿 Tobacco</button>
+        </div>
+      </div>
+
+      <div class="crop-category">
+        <span class="crop-category-label">☕ Plantation Crops</span>
+        <div class="crop-category-btns">
+          <button class="crop-btn" data-crop="coffee">☕ Coffee</button>
+          <button class="crop-btn" data-crop="tea">🍵 Tea</button>
+          <button class="crop-btn" data-crop="rubber">🌿 Rubber</button>
+        </div>
+      </div>
+
+      <div class="crop-category">
+        <span class="crop-category-label">🌶️ Spices</span>
+        <div class="crop-category-btns">
+          <button class="crop-btn" data-crop="turmeric">🟡 Turmeric</button>
+          <button class="crop-btn" data-crop="chilli">🌶️ Chilli</button>
+          <button class="crop-btn" data-crop="coriander">🌿 Coriander</button>
+          <button class="crop-btn" data-crop="pepper">⚫ Pepper</button>
+          <button class="crop-btn" data-crop="cardamom">🌿 Cardamom</button>
+        </div>
+      </div>
+
+      <div class="crop-category">
+        <span class="crop-category-label">🍌 Fruits</span>
+        <div class="crop-category-btns">
+          <button class="crop-btn" data-crop="banana">🍌 Banana</button>
+          <button class="crop-btn" data-crop="mango">🥭 Mango</button>
+          <button class="crop-btn" data-crop="sapota">🍑 Sapota</button>
+          <button class="crop-btn" data-crop="guava">🍈 Guava</button>
+          <button class="crop-btn" data-crop="papaya">🍈 Papaya</button>
+          <button class="crop-btn" data-crop="jackfruit">🍈 Jackfruit</button>
+        </div>
+      </div>
+
+      <div class="crop-category">
+        <span class="crop-category-label">🥕 Vegetables</span>
+        <div class="crop-category-btns">
+          <button class="crop-btn" data-crop="tomato">🍅 Tomato</button>
+          <button class="crop-btn" data-crop="brinjal">🍆 Brinjal</button>
+          <button class="crop-btn" data-crop="onion">🧅 Onion</button>
+          <button class="crop-btn" data-crop="drumstick">🌿 Drumstick</button>
+          <button class="crop-btn" data-crop="bhindi">🌿 Bhindi</button>
+          <button class="crop-btn" data-crop="tapioca">🌿 Tapioca</button>
+        </div>
+      </div>
+
+      <div class="crop-category">
+        <span class="crop-category-label">🌸 Floriculture</span>
+        <div class="crop-category-btns">
+          <button class="crop-btn" data-crop="jasmine">🌸 Jasmine</button>
+          <button class="crop-btn" data-crop="rose">🌹 Rose</button>
+          <button class="crop-btn" data-crop="marigold">🌼 Marigold</button>
+          <button class="crop-btn" data-crop="tuberose">🌷 Tuberose</button>
+        </div>
+      </div>
+
     </div>
 
     <button class="btn btn-primary" id="detect-btn">
