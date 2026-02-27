@@ -35,13 +35,69 @@ CROP_FACTORS = {
     # Yield multipliers relative to the base ML model (trained on rice data).
     # Factors are approximate ratios derived from typical Indian agricultural
     # yield statistics (ICAR / Ministry of Agriculture) scaled to kg/acre.
-    "rice":      1.00,
-    "wheat":     0.75,
-    "maize":     1.15,
-    "sugarcane": 12.0,
-    "cotton":    0.28,
-    "soybean":   0.55,
-    "groundnut": 0.60,
+
+    # ── Food Grains ──────────────────────────────────────────────────────────
+    "rice":          1.00,
+    "wheat":         0.75,
+    "maize":         1.15,
+    "ragi":          0.29,   # Finger millet
+    "cumbu":         0.32,   # Pearl millet
+    "thinai":        0.21,   # Foxtail millet
+    "kodo_millet":   0.18,
+    "little_millet": 0.18,
+
+    # ── Pulses ────────────────────────────────────────────────────────────────
+    "black_gram":    0.14,   # Urad dal
+    "green_gram":    0.13,   # Moong dal
+    "red_gram":      0.18,   # Tur dal
+    "horse_gram":    0.14,
+
+    # ── Oilseeds ──────────────────────────────────────────────────────────────
+    "groundnut":     0.60,
+    "sesame":        0.11,   # Gingelly
+    "coconut":       0.32,
+    "castor":        0.21,
+    "sunflower":     0.20,
+    "soybean":       0.55,
+
+    # ── Commercial / Cash Crops ───────────────────────────────────────────────
+    "sugarcane":     12.0,
+    "cotton":        0.28,
+    "tobacco":       0.20,
+
+    # ── Plantation Crops ──────────────────────────────────────────────────────
+    "coffee":        0.07,
+    "tea":           0.14,
+    "rubber":        0.20,
+
+    # ── Spices ────────────────────────────────────────────────────────────────
+    "turmeric":      0.40,
+    "chilli":        0.20,
+    "coriander":     0.14,
+    "pepper":        0.07,
+    "cardamom":      0.03,
+
+    # ── Fruits ────────────────────────────────────────────────────────────────
+    "banana":        6.29,
+    "mango":         1.61,
+    "sapota":        2.00,
+    "guava":         2.50,
+    "papaya":        5.71,
+    "jackfruit":     2.86,
+
+    # ── Vegetables ────────────────────────────────────────────────────────────
+    "tomato":        5.00,
+    "brinjal":       3.57,
+    "onion":         2.50,
+    "drumstick":     0.71,
+    "bhindi":        1.25,
+    "tapioca":       3.57,
+
+    # ── Floriculture ──────────────────────────────────────────────────────────
+    "jasmine":       0.36,
+    "rose":          0.43,
+    "marigold":      0.89,
+    "tuberose":      0.54,
 }
 
 SOIL_TYPES = {
