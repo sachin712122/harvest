@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Crop Yield Prediction System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+<!-- ── Header ─────────────────────────────────────────── -->
+<header>
+  <span class="logo">🌾</span>
+  <div>
+    <h1>Smart Crop Yield Prediction System</h1>
+    <p>Automatic location-based agricultural yield analysis</p>
+  </div>
+</header>
+
+<!-- ── Main ───────────────────────────────────────────── -->
+<main>
+
+  <!-- Hero / location trigger -->
+  <div class="hero-card">
+    <h2>📍 Detect Your Location &amp; Predict Crop Yield</h2>
+    <p>
+      Click the button below to allow the system to detect your current geographic
+      location. Real-time weather, soil data, and an ML-based yield model will
+      then estimate the expected rice yield for your area.
+    </p>
+    <button class="btn btn-primary" id="detect-btn">
+      <span>🌐</span> Detect My Location
+    </button>
+  </div>
+
+  <!-- Status banner -->
+  <div id="status-banner" role="status" aria-live="polite"></div>
+
+  <!-- ── Results ── (hidden until analysis completes) -->
+  <section id="results" aria-label="Analysis results">
+
+    <!-- Coordinates -->
+    <p class="section-title">📡 Captured Coordinates</p>
+    <div class="info-grid">
+      <div class="info-card location">
+        <span class="icon">🌐</span>
+        <div>
+          <div class="label">Latitude</div>
+          <div class="value" id="coord-lat">—</div>
+        </div>
+      </div>
+      <div class="info-card location">
+        <span class="icon">🧭</span>
+        <div>
+          <div class="label">Longitude</div>
+          <div class="value" id="coord-lon">—</div>
+        </div>
+      </div>
+      <div class="info-card location">
+        <span class="icon">🎯</span>
+        <div>
+          <div class="label">Accuracy</div>
+          <div class="value" id="coord-accuracy">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location details -->
+    <p class="section-title">🗺️ Location Details</p>
+    <div class="info-grid">
+      <div class="info-card location">
+        <span class="icon">🏘️</span>
+        <div>
+          <div class="label">District</div>
+          <div class="value" id="loc-district">—</div>
+        </div>
+      </div>
+      <div class="info-card location">
+        <span class="icon">🏛️</span>
+        <div>
+          <div class="label">State / Region</div>
+          <div class="value" id="loc-state">—</div>
+        </div>
+      </div>
+      <div class="info-card location">
+        <span class="icon">🌍</span>
+        <div>
+          <div class="label">Country</div>
+          <div class="value" id="loc-country">—</div>
+        </div>
+      </div>
+      <div class="info-card location">
+        <span class="icon">📌</span>
+        <div>
+          <div class="label">Full Address</div>
+          <div class="value" id="loc-display" style="font-size:.82rem;font-weight:400">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weather data -->
+    <p class="section-title">☁️ Real-Time Weather Data</p>
+    <div class="info-grid">
+      <div class="info-card weather">
+        <span class="icon">🌡️</span>
+        <div>
+          <div class="label">Temperature (now)</div>
+          <div class="value" id="w-temp">—</div>
+        </div>
+      </div>
+      <div class="info-card weather">
+        <span class="icon">💧</span>
+        <div>
+          <div class="label">Humidity</div>
+          <div class="value" id="w-humidity">—</div>
+        </div>
+      </div>
+      <div class="info-card weather">
+        <span class="icon">💨</span>
+        <div>
+          <div class="label">Wind Speed</div>
+          <div class="value" id="w-wind">—</div>
+        </div>
+      </div>
+      <div class="info-card weather">
+        <span class="icon">🌧️</span>
+        <div>
+          <div class="label">30-day Rainfall</div>
+          <div class="value" id="w-rainfall">—</div>
+        </div>
+      </div>
+      <div class="info-card weather">
+        <span class="icon">🌦️</span>
+        <div>
+          <div class="label">Current Precip.</div>
+          <div class="value" id="w-precip">—</div>
+        </div>
+      </div>
+      <div class="info-card weather">
+        <span class="icon">🔵</span>
+        <div>
+          <div class="label">Air Pressure</div>
+          <div class="value" id="w-pressure">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Soil & Season -->
+    <p class="section-title">🌱 Soil &amp; Season</p>
+    <div class="info-grid">
+      <div class="info-card soil">
+        <span class="icon">🪨</span>
+        <div>
+          <div class="label">Soil Type</div>
+          <div class="value" id="soil-type">—</div>
+        </div>
+      </div>
+      <div class="info-card soil">
+        <span class="icon">💦</span>
+        <div>
+          <div class="label">Soil Moisture</div>
+          <div class="value" id="soil-moisture">—</div>
+        </div>
+      </div>
+      <div class="info-card soil">
+        <span class="icon">📅</span>
+        <div>
+          <div class="label">Current Season</div>
+          <div class="value" id="season-name">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ML Prediction -->
+    <p class="section-title">🤖 ML Yield Prediction (Rice)</p>
+    <div class="prediction-box">
+      <div class="metric">
+        <div class="num" id="pred-per-acre">—</div>
+        <div class="unit">kg / acre</div>
+        <div class="lbl">Predicted yield per acre</div>
+      </div>
+      <div class="divider"></div>
+      <div class="metric">
+        <div class="num" id="pred-per-hectare">—</div>
+        <div class="unit">tons / hectare</div>
+        <div class="lbl">Converted yield per hectare</div>
+      </div>
+    </div>
+
+    <!-- Yield Calculator -->
+    <p class="section-title">🧮 Total Yield Calculator</p>
+    <div class="calculator-card">
+      <h3>🌾 Enter your farm size to calculate total yield</h3>
+      <div class="calc-form">
+        <div class="field">
+          <label for="calc-yield-readonly">Predicted Yield (kg/acre)</label>
+          <input id="calc-yield-readonly" type="number" readonly
+                 placeholder="Auto-filled after prediction" />
+        </div>
+        <div class="field">
+          <label for="area-acres">Your Farm Area (acres)</label>
+          <input id="area-acres" type="number" min="0.1" step="0.1"
+                 placeholder="e.g. 3.5" />
+        </div>
+        <button class="btn btn-secondary" id="calc-btn">
+          <span>📊</span> Calculate
+        </button>
+      </div>
+      <div id="calc-error" style="color:#c62828;font-size:.82rem;margin-top:.5rem"></div>
+      <div id="total-yield-result"></div>
+    </div>
+
+  </section><!-- /#results -->
+
+</main>
+
+<footer>
+  <p>Smart Crop Yield Prediction System &nbsp;|&nbsp;
+     Weather: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> &nbsp;|&nbsp;
+     Geocoding: <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noopener">Nominatim / OSM</a>
+  </p>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

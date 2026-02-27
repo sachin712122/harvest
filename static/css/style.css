@@ -1,0 +1,283 @@
+/* =========================================================
+   Smart Crop Yield Prediction System — Stylesheet
+   ========================================================= */
+
+:root {
+  --green-dark:  #1b5e20;
+  --green-mid:   #2e7d32;
+  --green-light: #4caf50;
+  --green-pale:  #e8f5e9;
+  --amber:       #ff8f00;
+  --amber-pale:  #fff8e1;
+  --sky:         #0288d1;
+  --sky-pale:    #e1f5fe;
+  --soil:        #795548;
+  --soil-pale:   #efebe9;
+  --white:       #ffffff;
+  --off-white:   #f9fbe7;
+  --text:        #212121;
+  --text-muted:  #546e7a;
+  --border:      #c8e6c9;
+  --shadow:      rgba(27, 94, 32, 0.15);
+  --radius:      12px;
+  --radius-sm:   8px;
+  --transition:  0.25s ease;
+}
+
+/* ── Reset & base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: linear-gradient(160deg, #e8f5e9 0%, #f1f8e9 50%, #fafafa 100%);
+  min-height: 100vh;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* ── Header ── */
+header {
+  background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 100%);
+  color: var(--white);
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 3px 12px rgba(0,0,0,.25);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+header .logo { font-size: 2rem; }
+header h1 { font-size: 1.45rem; font-weight: 700; letter-spacing: .3px; }
+header p { font-size: .82rem; opacity: .85; margin-top: .1rem; }
+
+/* ── Main layout ── */
+main {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1.25rem 3rem;
+}
+
+/* ── Hero card ── */
+.hero-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 20px var(--shadow);
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.hero-card h2 { color: var(--green-dark); font-size: 1.4rem; margin-bottom: .5rem; }
+.hero-card p  { color: var(--text-muted); font-size: .95rem; margin-bottom: 1.5rem; }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .75rem 1.75rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.btn:hover  { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--green-light), var(--green-mid));
+  color: var(--white);
+  box-shadow: 0 4px 14px rgba(76,175,80,.4);
+}
+.btn-primary:hover { box-shadow: 0 6px 20px rgba(76,175,80,.55); }
+
+.btn-secondary {
+  background: linear-gradient(135deg, var(--amber), #f57c00);
+  color: var(--white);
+  box-shadow: 0 4px 14px rgba(255,143,0,.4);
+}
+.btn-secondary:hover { box-shadow: 0 6px 20px rgba(255,143,0,.55); }
+
+.btn:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Status banner ── */
+#status-banner {
+  display: none;
+  align-items: center;
+  gap: .75rem;
+  padding: .85rem 1.25rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1.5rem;
+  font-size: .92rem;
+  font-weight: 500;
+}
+#status-banner.info    { background: var(--sky-pale);   color: var(--sky);       border: 1px solid #b3e5fc; }
+#status-banner.success { background: var(--green-pale); color: var(--green-dark);border: 1px solid var(--border); }
+#status-banner.error   { background: #ffebee;           color: #c62828;          border: 1px solid #ef9a9a; }
+#status-banner.visible { display: flex; }
+
+/* ── Spinner ── */
+.spinner {
+  width: 18px; height: 18px;
+  border: 3px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Results section ── */
+#results { display: none; }
+#results.visible { display: block; }
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--green-dark);
+  margin: 1.75rem 0 .75rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, var(--border), transparent);
+  margin-left: .5rem;
+}
+
+/* ── Info grid (location / weather / soil) ── */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: .5rem;
+}
+
+.info-card {
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2px 8px var(--shadow);
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  transition: box-shadow var(--transition);
+}
+.info-card:hover { box-shadow: 0 4px 16px var(--shadow); }
+
+.info-card .icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+  margin-top: .1rem;
+}
+.info-card .label { font-size: .75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; }
+.info-card .value { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+.info-card .sub   { font-size: .78rem; color: var(--text-muted); margin-top: .1rem; }
+
+/* Themed info-card backgrounds */
+.info-card.weather { border-top: 3px solid var(--sky); }
+.info-card.soil    { border-top: 3px solid var(--soil); }
+.info-card.location{ border-top: 3px solid var(--green-mid); }
+
+/* ── Prediction highlight box ── */
+.prediction-box {
+  background: linear-gradient(135deg, var(--green-mid), var(--green-dark));
+  color: var(--white);
+  border-radius: var(--radius);
+  padding: 1.75rem 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 6px 24px rgba(27,94,32,.35);
+  margin-bottom: .5rem;
+}
+.prediction-box .metric { text-align: center; }
+.prediction-box .metric .num { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; }
+.prediction-box .metric .unit{ font-size: .82rem; opacity: .85; text-transform: uppercase; letter-spacing: .5px; }
+.prediction-box .metric .lbl { font-size: .8rem; opacity: .75; margin-top: .15rem; }
+.prediction-box .divider {
+  width: 1px; height: 60px; background: rgba(255,255,255,.3);
+}
+
+/* ── Yield Calculator ── */
+.calculator-card {
+  background: var(--amber-pale);
+  border: 1px solid #ffe082;
+  border-radius: var(--radius);
+  padding: 1.5rem 2rem;
+  margin-top: .5rem;
+}
+.calculator-card h3 { color: var(--amber); font-size: 1rem; margin-bottom: 1rem; }
+
+.calc-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+.calc-form .field { display: flex; flex-direction: column; gap: .35rem; min-width: 180px; }
+.calc-form label  { font-size: .82rem; font-weight: 600; color: #6d4c41; }
+.calc-form input  {
+  padding: .6rem .9rem;
+  border: 1px solid #ffe082;
+  border-radius: var(--radius-sm);
+  font-size: .95rem;
+  background: var(--white);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.calc-form input:focus {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(255,143,0,.2);
+}
+
+/* ── Total yield result ── */
+#total-yield-result {
+  display: none;
+  margin-top: 1.25rem;
+}
+#total-yield-result.visible { display: block; }
+
+.total-yield-box {
+  background: linear-gradient(135deg, #f57f17, var(--amber));
+  color: var(--white);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem 1.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+.total-yield-box .big { font-size: 1.9rem; font-weight: 800; }
+.total-yield-box .small{ font-size: .85rem; opacity: .88; }
+.total-yield-box .also { font-size: .92rem; opacity: .88; }
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: .8rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  header h1 { font-size: 1.15rem; }
+  .hero-card { padding: 1.5rem 1rem; }
+  .prediction-box { flex-direction: column; align-items: flex-start; }
+  .prediction-box .divider { display: none; }
+  .calc-form { flex-direction: column; }
+  .calc-form .field { min-width: unset; width: 100%; }
+}
