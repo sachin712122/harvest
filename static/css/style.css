@@ -68,6 +68,38 @@ main {
 .hero-card h2 { color: var(--green-dark); font-size: 1.4rem; margin-bottom: .5rem; }
 .hero-card p  { color: var(--text-muted); font-size: .95rem; margin-bottom: 1.5rem; }
 
+/* ── Crop selector ── */
+.crop-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.crop-btn {
+  padding: .45rem 1rem;
+  border: 2px solid var(--border);
+  border-radius: 50px;
+  background: var(--white);
+  color: var(--green-dark);
+  font-size: .88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition),
+              color var(--transition), box-shadow var(--transition);
+}
+.crop-btn:hover {
+  border-color: var(--green-light);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+.crop-btn.active {
+  background: linear-gradient(135deg, var(--green-light), var(--green-mid));
+  border-color: var(--green-mid);
+  color: var(--white);
+  box-shadow: 0 3px 10px rgba(76,175,80,.4);
+}
+
 /* ── Buttons ── */
 .btn {
   display: inline-flex;
@@ -276,6 +308,7 @@ footer {
 @media (max-width: 600px) {
   header h1 { font-size: 1.15rem; }
   .hero-card { padding: 1.5rem 1rem; }
+  .crop-btn { font-size: .8rem; padding: .4rem .8rem; }
   .prediction-box { flex-direction: column; align-items: flex-start; }
   .prediction-box .divider { display: none; }
   .calc-form { flex-direction: column; }

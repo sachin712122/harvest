@@ -6,6 +6,17 @@
 
 // ── State ──────────────────────────────────────────────────
 let currentYieldPerAcre = null;
+let selectedCrop = "rice";
+
+const CROP_LABELS = {
+  rice:      "Rice",
+  wheat:     "Wheat",
+  maize:     "Maize",
+  sugarcane: "Sugarcane",
+  cotton:    "Cotton",
+  soybean:   "Soybean",
+  groundnut: "Groundnut",
+};
 
 // ── DOM helpers ────────────────────────────────────────────
 const $  = (id) => document.getElementById(id);
@@ -62,8 +73,10 @@ function renderSoil(soil, season) {
   $("season-name").textContent   = season || "—";
 }
 
-function renderPrediction(pred) {
+function renderPrediction(pred, crop) {
+  const label = CROP_LABELS[crop] || CROP_LABELS["rice"];
   currentYieldPerAcre = pred.yield_per_acre_kg;
+  $("pred-section-title").textContent = `🤖 ML Yield Prediction (${label})`;
   $("pred-per-acre").textContent    = pred.yield_per_acre_kg.toLocaleString();
   $("pred-per-hectare").textContent = pred.yield_per_hectare_tons.toLocaleString();
   $("calc-yield-readonly").value    = pred.yield_per_acre_kg;
@@ -111,7 +124,7 @@ async function detectLocation() {
         const resp = await fetch("/api/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ lat, lon }),
+          body: JSON.stringify({ lat, lon, crop: selectedCrop }),
         });
 
         if (!resp.ok) {
@@ -124,7 +137,7 @@ async function detectLocation() {
         renderLocation(data.location);
         renderWeather(data.weather);
         renderSoil(data.soil, data.season);
-        renderPrediction(data.prediction);
+        renderPrediction(data.prediction, data.crop || selectedCrop);
 
         showResults();
         setStatus(
@@ -197,5 +210,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("area-acres").addEventListener("keydown", (e) => {
     if (e.key === "Enter") calculateYield();
+  });
+
+  // Crop selector buttons
+  document.querySelectorAll(".crop-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".crop-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      selectedCrop = btn.dataset.crop;
+      // Reset results so the user re-detects with the new crop
+      hideResults();
+      hideStatus();
+    });
   });
 });

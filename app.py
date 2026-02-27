@@ -31,6 +31,19 @@ MODEL_PATH = os.path.join(os.path.dirname(__file__), "yield_model.pkl")
 _model = None
 _model_lock = threading.Lock()
 
+CROP_FACTORS = {
+    # Yield multipliers relative to the base ML model (trained on rice data).
+    # Factors are approximate ratios derived from typical Indian agricultural
+    # yield statistics (ICAR / Ministry of Agriculture) scaled to kg/acre.
+    "rice":      1.00,
+    "wheat":     0.75,
+    "maize":     1.15,
+    "sugarcane": 12.0,
+    "cotton":    0.28,
+    "soybean":   0.55,
+    "groundnut": 0.60,
+}
+
 SOIL_TYPES = {
     "alluvial": 0,
     "black": 1,
@@ -266,7 +279,7 @@ def index():
 @app.route("/api/analyze", methods=["POST"])
 def analyze():
     """
-    Accept {lat, lon, area_acres} and return full yield prediction.
+    Accept {lat, lon, area_acres, crop} and return full yield prediction.
     """
     body = request.get_json(force=True, silent=True) or {}
     try:
@@ -274,6 +287,12 @@ def analyze():
         lon = float(body["lon"])
     except (KeyError, ValueError, TypeError):
         return jsonify({"error": "lat and lon are required numeric fields"}), 400
+
+    crop = str(body.get("crop", "rice")).lower().strip()
+    if crop not in CROP_FACTORS:
+        logger.warning("Unknown crop '%s' requested; defaulting to rice.", crop)
+        crop = "rice"
+    crop_factor = CROP_FACTORS[crop]
 
     area_acres = None
     if "area_acres" in body:
@@ -308,8 +327,8 @@ def analyze():
     )
 
     model = get_model()
-    predicted_yield_per_acre = float(model.predict(features)[0])
-    predicted_yield_per_acre = round(predicted_yield_per_acre, 1)
+    base_yield = float(model.predict(features)[0])
+    predicted_yield_per_acre = round(base_yield * crop_factor, 1)
 
     # Convert to tons/hectare: 1 ton = 1000 kg, 1 hectare = 2.471 acres
     yield_per_hectare = round(predicted_yield_per_acre * 2.471 / 1000, 2)
@@ -322,6 +341,7 @@ def analyze():
             "moisture": soil_moisture,
         },
         "season": season_name,
+        "crop": crop,
         "prediction": {
             "yield_per_acre_kg": predicted_yield_per_acre,
             "yield_per_hectare_tons": yield_per_hectare,

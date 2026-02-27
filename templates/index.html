@@ -24,10 +24,22 @@
   <div class="hero-card">
     <h2>📍 Detect Your Location &amp; Predict Crop Yield</h2>
     <p>
-      Click the button below to allow the system to detect your current geographic
-      location. Real-time weather, soil data, and an ML-based yield model will
-      then estimate the expected rice yield for your area.
+      Select a crop, then click the button below to allow the system to detect
+      your current geographic location. Real-time weather, soil data, and an
+      ML-based yield model will estimate the expected yield for your area.
     </p>
+
+    <!-- Crop selector -->
+    <div class="crop-selector" id="crop-selector" role="group" aria-label="Select crop">
+      <button class="crop-btn active" data-crop="rice">🌾 Rice</button>
+      <button class="crop-btn" data-crop="wheat">🌿 Wheat</button>
+      <button class="crop-btn" data-crop="maize">🌽 Maize</button>
+      <button class="crop-btn" data-crop="sugarcane">🎋 Sugarcane</button>
+      <button class="crop-btn" data-crop="cotton">🪴 Cotton</button>
+      <button class="crop-btn" data-crop="soybean">🫘 Soybean</button>
+      <button class="crop-btn" data-crop="groundnut">🥜 Groundnut</button>
+    </div>
+
     <button class="btn btn-primary" id="detect-btn">
       <span>🌐</span> Detect My Location
     </button>
@@ -172,7 +184,7 @@
     </div>
 
     <!-- ML Prediction -->
-    <p class="section-title">🤖 ML Yield Prediction (Rice)</p>
+    <p class="section-title" id="pred-section-title">🤖 ML Yield Prediction (Rice)</p>
     <div class="prediction-box">
       <div class="metric">
         <div class="num" id="pred-per-acre">—</div>
