@@ -1,0 +1,309 @@
+[
+    {
+        "crop_name": "Rice (Paddy)",
+        "ideal_temp_min_c": 20,
+        "ideal_temp_max_c": 35,
+        "optimal_temp_c": 27,
+        "water_requirement_mm_per_season": 1200,
+        "crop_duration_days": 110,
+        "suitable_soil_types": [
+            "Alluvial",
+            "Clay",
+            "Loamy"
+        ],
+        "ideal_ph_min": 5.5,
+        "ideal_ph_max": 7.0,
+        "flood_tolerance": "High",
+        "drought_tolerance": "Low"
+    },
+    {
+        "crop_name": "Wheat",
+        "ideal_temp_min_c": 10,
+        "ideal_temp_max_c": 26,
+        "optimal_temp_c": 20,
+        "water_requirement_mm_per_season": 450,
+        "crop_duration_days": 120,
+        "suitable_soil_types": [
+            "Loamy",
+            "Alluvial"
+        ],
+        "ideal_ph_min": 6.0,
+        "ideal_ph_max": 7.5,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "Medium"
+    },
+    {
+        "crop_name": "Maize",
+        "ideal_temp_min_c": 18,
+        "ideal_temp_max_c": 27,
+        "optimal_temp_c": 24,
+        "water_requirement_mm_per_season": 500,
+        "crop_duration_days": 100,
+        "suitable_soil_types": [
+            "Loamy",
+            "Sandy",
+            "Alluvial"
+        ],
+        "ideal_ph_min": 5.5,
+        "ideal_ph_max": 7.5,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "Medium"
+    },
+    {
+        "crop_name": "Cotton",
+        "ideal_temp_min_c": 21,
+        "ideal_temp_max_c": 30,
+        "optimal_temp_c": 26,
+        "water_requirement_mm_per_season": 600,
+        "crop_duration_days": 165,
+        "suitable_soil_types": [
+            "Black",
+            "Loamy"
+        ],
+        "ideal_ph_min": 6.0,
+        "ideal_ph_max": 8.0,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "High"
+    },
+    {
+        "crop_name": "Soybean",
+        "ideal_temp_min_c": 20,
+        "ideal_temp_max_c": 30,
+        "optimal_temp_c": 25,
+        "water_requirement_mm_per_season": 350,
+        "crop_duration_days": 90,
+        "suitable_soil_types": [
+            "Loamy",
+            "Alluvial"
+        ],
+        "ideal_ph_min": 6.0,
+        "ideal_ph_max": 7.5,
+        "flood_tolerance": "Medium",
+        "drought_tolerance": "Medium"
+    },
+    {
+        "crop_name": "Barley",
+        "ideal_temp_min_c": 12,
+        "ideal_temp_max_c": 25,
+        "optimal_temp_c": 18,
+        "water_requirement_mm_per_season": 350,
+        "crop_duration_days": 110,
+        "suitable_soil_types": [
+            "Loamy",
+            "Sandy"
+        ],
+        "ideal_ph_min": 6.0,
+        "ideal_ph_max": 7.5,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "Medium"
+    },
+    {
+        "crop_name": "Groundnut (Peanut)",
+        "ideal_temp_min_c": 20,
+        "ideal_temp_max_c": 30,
+        "optimal_temp_c": 25,
+        "water_requirement_mm_per_season": 500,
+        "crop_duration_days": 120,
+        "suitable_soil_types": [
+            "Sandy",
+            "Loamy"
+        ],
+        "ideal_ph_min": 6.0,
+        "ideal_ph_max": 7.0,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "Medium"
+    },
+    {
+        "crop_name": "Sorghum (Jowar)",
+        "ideal_temp_min_c": 25,
+        "ideal_temp_max_c": 32,
+        "optimal_temp_c": 28,
+        "water_requirement_mm_per_season": 400,
+        "crop_duration_days": 110,
+        "suitable_soil_types": [
+            "Loamy",
+            "Clay"
+        ],
+        "ideal_ph_min": 5.5,
+        "ideal_ph_max": 8.0,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "High"
+    },
+    {
+        "crop_name": "Millet (Pearl Millet / Bajra)",
+        "ideal_temp_min_c": 25,
+        "ideal_temp_max_c": 35,
+        "optimal_temp_c": 30,
+        "water_requirement_mm_per_season": 300,
+        "crop_duration_days": 90,
+        "suitable_soil_types": [
+            "Sandy",
+            "Loamy"
+        ],
+        "ideal_ph_min": 5.0,
+        "ideal_ph_max": 7.5,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "High"
+    },
+    {
+        "crop_name": "Sugarcane",
+        "ideal_temp_min_c": 20,
+        "ideal_temp_max_c": 35,
+        "optimal_temp_c": 28,
+        "water_requirement_mm_per_season": 1500,
+        "crop_duration_days": 300,
+        "suitable_soil_types": [
+            "Loamy",
+            "Alluvial",
+            "Clay"
+        ],
+        "ideal_ph_min": 6.0,
+        "ideal_ph_max": 7.5,
+        "flood_tolerance": "Medium",
+        "drought_tolerance": "Low"
+    },
+    {
+        "crop_name": "Chickpea (Gram)",
+        "ideal_temp_min_c": 15,
+        "ideal_temp_max_c": 30,
+        "optimal_temp_c": 22,
+        "water_requirement_mm_per_season": 400,
+        "crop_duration_days": 110,
+        "suitable_soil_types": [
+            "Loamy",
+            "Clay"
+        ],
+        "ideal_ph_min": 6.0,
+        "ideal_ph_max": 8.0,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "High"
+    },
+    {
+        "crop_name": "Mustard",
+        "ideal_temp_min_c": 10,
+        "ideal_temp_max_c": 25,
+        "optimal_temp_c": 18,
+        "water_requirement_mm_per_season": 350,
+        "crop_duration_days": 110,
+        "suitable_soil_types": [
+            "Loamy",
+            "Alluvial"
+        ],
+        "ideal_ph_min": 6.0,
+        "ideal_ph_max": 7.5,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "Medium"
+    },
+    {
+        "crop_name": "Sunflower",
+        "ideal_temp_min_c": 18,
+        "ideal_temp_max_c": 30,
+        "optimal_temp_c": 24,
+        "water_requirement_mm_per_season": 450,
+        "crop_duration_days": 100,
+        "suitable_soil_types": [
+            "Loamy",
+            "Sandy"
+        ],
+        "ideal_ph_min": 6.0,
+        "ideal_ph_max": 7.5,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "Medium"
+    },
+    {
+        "crop_name": "Potato",
+        "ideal_temp_min_c": 15,
+        "ideal_temp_max_c": 25,
+        "optimal_temp_c": 20,
+        "water_requirement_mm_per_season": 500,
+        "crop_duration_days": 100,
+        "suitable_soil_types": [
+            "Loamy",
+            "Sandy"
+        ],
+        "ideal_ph_min": 5.0,
+        "ideal_ph_max": 6.5,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "Low"
+    },
+    {
+        "crop_name": "Tomato",
+        "ideal_temp_min_c": 18,
+        "ideal_temp_max_c": 30,
+        "optimal_temp_c": 24,
+        "water_requirement_mm_per_season": 600,
+        "crop_duration_days": 110,
+        "suitable_soil_types": [
+            "Loamy",
+            "Sandy Loam"
+        ],
+        "ideal_ph_min": 6.0,
+        "ideal_ph_max": 7.0,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "Low"
+    },
+    {
+        "crop_name": "Onion",
+        "ideal_temp_min_c": 13,
+        "ideal_temp_max_c": 24,
+        "optimal_temp_c": 20,
+        "water_requirement_mm_per_season": 500,
+        "crop_duration_days": 120,
+        "suitable_soil_types": [
+            "Loamy",
+            "Sandy Loam"
+        ],
+        "ideal_ph_min": 6.0,
+        "ideal_ph_max": 7.5,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "Medium"
+    },
+    {
+        "crop_name": "Brinjal (Eggplant)",
+        "ideal_temp_min_c": 20,
+        "ideal_temp_max_c": 30,
+        "optimal_temp_c": 25,
+        "water_requirement_mm_per_season": 600,
+        "crop_duration_days": 120,
+        "suitable_soil_types": [
+            "Loamy",
+            "Sandy Loam"
+        ],
+        "ideal_ph_min": 5.5,
+        "ideal_ph_max": 6.8,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "Low"
+    },
+    {
+        "crop_name": "Chili (Green/Red)",
+        "ideal_temp_min_c": 20,
+        "ideal_temp_max_c": 30,
+        "optimal_temp_c": 25,
+        "water_requirement_mm_per_season": 500,
+        "crop_duration_days": 150,
+        "suitable_soil_types": [
+            "Loamy",
+            "Sandy Loam"
+        ],
+        "ideal_ph_min": 6.0,
+        "ideal_ph_max": 7.0,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "Medium"
+    },
+    {
+        "crop_name": "Cabbage",
+        "ideal_temp_min_c": 15,
+        "ideal_temp_max_c": 25,
+        "optimal_temp_c": 20,
+        "water_requirement_mm_per_season": 400,
+        "crop_duration_days": 90,
+        "suitable_soil_types": [
+            "Loamy",
+            "Sandy Loam"
+        ],
+        "ideal_ph_min": 6.0,
+        "ideal_ph_max": 7.5,
+        "flood_tolerance": "Low",
+        "drought_tolerance": "Low"
+    }
+]

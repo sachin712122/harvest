@@ -38,6 +38,8 @@
           <button class="crop-btn active" data-crop="rice">🌾 Rice</button>
           <button class="crop-btn" data-crop="wheat">🌿 Wheat</button>
           <button class="crop-btn" data-crop="maize">🌽 Maize</button>
+          <button class="crop-btn" data-crop="barley">🌾 Barley</button>
+          <button class="crop-btn" data-crop="sorghum">🌾 Sorghum</button>
           <button class="crop-btn" data-crop="ragi">🌾 Ragi</button>
           <button class="crop-btn" data-crop="cumbu">🌾 Cumbu</button>
           <button class="crop-btn" data-crop="thinai">🌾 Thinai</button>
@@ -53,6 +55,7 @@
           <button class="crop-btn" data-crop="green_gram">🫘 Green Gram</button>
           <button class="crop-btn" data-crop="red_gram">🫘 Red Gram</button>
           <button class="crop-btn" data-crop="horse_gram">🫘 Horse Gram</button>
+          <button class="crop-btn" data-crop="chickpea">🫘 Chickpea</button>
         </div>
       </div>
 
@@ -65,6 +68,7 @@
           <button class="crop-btn" data-crop="castor">🌿 Castor</button>
           <button class="crop-btn" data-crop="sunflower">🌻 Sunflower</button>
           <button class="crop-btn" data-crop="soybean">🫘 Soybean</button>
+          <button class="crop-btn" data-crop="mustard">🌿 Mustard</button>
         </div>
       </div>
 
@@ -115,6 +119,8 @@
           <button class="crop-btn" data-crop="tomato">🍅 Tomato</button>
           <button class="crop-btn" data-crop="brinjal">🍆 Brinjal</button>
           <button class="crop-btn" data-crop="onion">🧅 Onion</button>
+          <button class="crop-btn" data-crop="potato">🥔 Potato</button>
+          <button class="crop-btn" data-crop="cabbage">🥬 Cabbage</button>
           <button class="crop-btn" data-crop="drumstick">🌿 Drumstick</button>
           <button class="crop-btn" data-crop="bhindi">🌿 Bhindi</button>
           <button class="crop-btn" data-crop="tapioca">🌿 Tapioca</button>
@@ -273,6 +279,41 @@
           <div class="label">Current Season</div>
           <div class="value" id="season-name">—</div>
         </div>
+      </div>
+    </div>
+
+    <!-- Crop Suitability (from AgriTech crops.json) -->
+    <div id="suitability-section" style="display:none">
+      <p class="section-title">🌿 Crop Suitability Analysis</p>
+      <div class="suitability-card">
+        <div class="suitability-header">
+          <span id="suit-crop-name"></span>
+          <span class="suit-badge" id="suit-badge"></span>
+        </div>
+        <div class="suitability-scores">
+          <div class="suit-score-item">
+            <div class="suit-score-label">🌡️ Temperature Score</div>
+            <div class="suit-score-bar-wrap">
+              <div class="suit-score-bar" id="suit-temp-bar"></div>
+            </div>
+            <div class="suit-score-val" id="suit-temp-val">—</div>
+          </div>
+          <div class="suit-score-item">
+            <div class="suit-score-label">🌧️ Rainfall Score</div>
+            <div class="suit-score-bar-wrap">
+              <div class="suit-score-bar" id="suit-rain-bar"></div>
+            </div>
+            <div class="suit-score-val" id="suit-rain-val">—</div>
+          </div>
+          <div class="suit-score-item suit-overall">
+            <div class="suit-score-label">⭐ Overall Suitability</div>
+            <div class="suit-score-bar-wrap">
+              <div class="suit-score-bar" id="suit-overall-bar"></div>
+            </div>
+            <div class="suit-score-val" id="suit-overall-val">—</div>
+          </div>
+        </div>
+        <div class="suitability-meta" id="suitability-meta"></div>
       </div>
     </div>
 

@@ -314,6 +314,90 @@ main {
 .total-yield-box .small{ font-size: .85rem; opacity: .88; }
 .total-yield-box .also { font-size: .92rem; opacity: .88; }
 
+/* ── Crop Suitability Panel ── */
+.suitability-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 20px var(--shadow);
+  padding: 1.5rem 2rem;
+  margin-bottom: .5rem;
+  border-top: 4px solid var(--green-light);
+}
+
+.suitability-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
+.suit-badge {
+  font-size: .82rem;
+  font-weight: 700;
+  padding: .3rem .75rem;
+  border-radius: 50px;
+}
+.suit-badge.excellent { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+.suit-badge.good      { background: #f1f8e9; color: #558b2f; border: 1px solid #c5e1a5; }
+.suit-badge.fair      { background: #fff8e1; color: #e65100; border: 1px solid #ffcc80; }
+.suit-badge.poor      { background: #ffebee; color: #c62828; border: 1px solid #ef9a9a; }
+
+.suitability-scores {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  margin-bottom: 1rem;
+}
+
+.suit-score-item {
+  display: grid;
+  grid-template-columns: 11rem 1fr 3rem;
+  align-items: center;
+  gap: .75rem;
+}
+
+.suit-score-label {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.suit-score-bar-wrap {
+  background: #e0e0e0;
+  border-radius: 50px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.suit-score-bar {
+  height: 100%;
+  border-radius: 50px;
+  transition: width .5s ease;
+}
+
+.suit-score-val {
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--text);
+  text-align: right;
+}
+
+.suit-overall .suit-score-bar-wrap { height: 14px; }
+
+.suitability-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.5rem;
+  font-size: .82rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: .75rem;
+  margin-top: .25rem;
+}
+
 /* ── Footer ── */
 footer {
   text-align: center;
