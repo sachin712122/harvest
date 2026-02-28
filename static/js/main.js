@@ -13,6 +13,8 @@ const CROP_LABELS = {
   rice:          "Rice",
   wheat:         "Wheat",
   maize:         "Maize",
+  barley:        "Barley",
+  sorghum:       "Sorghum (Jowar)",
   ragi:          "Ragi (Finger Millet)",
   cumbu:         "Cumbu (Pearl Millet)",
   thinai:        "Thinai (Foxtail Millet)",
@@ -23,6 +25,7 @@ const CROP_LABELS = {
   green_gram:    "Green Gram (Moong Dal)",
   red_gram:      "Red Gram (Tur Dal)",
   horse_gram:    "Horse Gram",
+  chickpea:      "Chickpea (Gram)",
   // Oilseeds
   groundnut:     "Groundnut",
   sesame:        "Sesame (Gingelly)",
@@ -30,6 +33,7 @@ const CROP_LABELS = {
   castor:        "Castor",
   sunflower:     "Sunflower",
   soybean:       "Soybean",
+  mustard:       "Mustard",
   // Commercial / Cash Crops
   sugarcane:     "Sugarcane",
   cotton:        "Cotton",
@@ -55,6 +59,8 @@ const CROP_LABELS = {
   tomato:        "Tomato",
   brinjal:       "Brinjal (Eggplant)",
   onion:         "Onion",
+  potato:        "Potato",
+  cabbage:       "Cabbage",
   drumstick:     "Drumstick (Moringa)",
   bhindi:        "Bhindi (Okra)",
   tapioca:       "Tapioca",
@@ -90,6 +96,7 @@ function hideResults() {
   $("results").classList.remove("visible");
   currentYieldPerAcre = null;
   hideTotalYield();
+  $("suitability-section").style.display = "none";
 }
 
 function hideTotalYield() {
@@ -143,6 +150,58 @@ function renderTotalYield(data) {
   box.classList.add("visible");
 }
 
+function renderCropSuitability(suit, crop) {
+  const section = $("suitability-section");
+  if (!suit) {
+    section.style.display = "none";
+    return;
+  }
+
+  const label = CROP_LABELS[crop] || crop;
+  $("suit-crop-name").textContent = label;
+
+  const pct = Math.round(suit.overall_suitability * 100);
+  const badge = $("suit-badge");
+  if (pct >= 85) {
+    badge.textContent = "✅ Excellent";
+    badge.className = "suit-badge excellent";
+  } else if (pct >= 70) {
+    badge.textContent = "👍 Good";
+    badge.className = "suit-badge good";
+  } else if (pct >= 55) {
+    badge.textContent = "⚠️ Fair";
+    badge.className = "suit-badge fair";
+  } else {
+    badge.textContent = "❌ Poor";
+    badge.className = "suit-badge poor";
+  }
+
+  function setBar(barId, valId, score) {
+    const pctVal = Math.round(score * 100);
+    const el = $(barId);
+    el.style.width = `${pctVal}%`;
+    el.style.background = pctVal >= 85 ? "#4caf50"
+                        : pctVal >= 70 ? "#8bc34a"
+                        : pctVal >= 55 ? "#ff9800"
+                        : "#f44336";
+    $(valId).textContent = `${pctVal}%`;
+  }
+
+  setBar("suit-temp-bar",     "suit-temp-val",    suit.temperature_score);
+  setBar("suit-rain-bar",     "suit-rain-val",     suit.rainfall_score);
+  setBar("suit-overall-bar",  "suit-overall-val",  suit.overall_suitability);
+
+  const soils = (suit.suitable_soils || []).join(", ") || "—";
+  $("suitability-meta").innerHTML = `
+    <span>🌡️ Optimal temp: <strong>${suit.optimal_temp_c} °C</strong> (range ${suit.temp_range})</span>
+    <span>💧 Water need: <strong>${suit.water_requirement_mm} mm/season</strong></span>
+    <span>🪨 Suited soils: <strong>${soils}</strong></span>
+    <span>🌊 Flood tolerance: <strong>${suit.flood_tolerance}</strong></span>
+    <span>☀️ Drought tolerance: <strong>${suit.drought_tolerance}</strong></span>`;
+
+  section.style.display = "block";
+}
+
 // ── Main: Detect Location ──────────────────────────────────
 async function detectLocation() {
   if (!navigator.geolocation) {
@@ -185,6 +244,7 @@ async function detectLocation() {
         renderWeather(data.weather);
         renderSoil(data.soil, data.season);
         renderPrediction(data.prediction, data.crop || selectedCrop);
+        renderCropSuitability(data.crop_suitability, data.crop || selectedCrop);
 
         showResults();
         setStatus(

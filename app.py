@@ -45,12 +45,15 @@ CROP_FACTORS = {
     "thinai":        0.21,   # Foxtail millet
     "kodo_millet":   0.18,
     "little_millet": 0.18,
+    "barley":        0.40,
+    "sorghum":       0.35,   # Jowar
 
     # ── Pulses ────────────────────────────────────────────────────────────────
     "black_gram":    0.14,   # Urad dal
     "green_gram":    0.13,   # Moong dal
     "red_gram":      0.18,   # Tur dal
     "horse_gram":    0.14,
+    "chickpea":      0.20,   # Gram
 
     # ── Oilseeds ──────────────────────────────────────────────────────────────
     "groundnut":     0.60,
@@ -59,6 +62,7 @@ CROP_FACTORS = {
     "castor":        0.21,
     "sunflower":     0.20,
     "soybean":       0.55,
+    "mustard":       0.30,
 
     # ── Commercial / Cash Crops ───────────────────────────────────────────────
     "sugarcane":     12.0,
@@ -92,6 +96,8 @@ CROP_FACTORS = {
     "drumstick":     0.71,
     "bhindi":        1.25,
     "tapioca":       3.57,
+    "potato":        2.50,
+    "cabbage":       3.00,
 
     # ── Floriculture ──────────────────────────────────────────────────────────
     "jasmine":       0.36,
@@ -99,6 +105,90 @@ CROP_FACTORS = {
     "marigold":      0.89,
     "tuberose":      0.54,
 }
+
+# Mapping from internal crop key → crop_name in crops.json
+CROP_DATA_MAP = {
+    "rice":      "Rice (Paddy)",
+    "wheat":     "Wheat",
+    "maize":     "Maize",
+    "cotton":    "Cotton",
+    "soybean":   "Soybean",
+    "barley":    "Barley",
+    "groundnut": "Groundnut (Peanut)",
+    "sorghum":   "Sorghum (Jowar)",
+    "cumbu":     "Millet (Pearl Millet / Bajra)",
+    "sugarcane": "Sugarcane",
+    "chickpea":  "Chickpea (Gram)",
+    "mustard":   "Mustard",
+    "sunflower": "Sunflower",
+    "potato":    "Potato",
+    "tomato":    "Tomato",
+    "onion":     "Onion",
+    "brinjal":   "Brinjal (Eggplant)",
+    "chilli":    "Chili (Green/Red)",
+    "cabbage":   "Cabbage",
+}
+
+_CROPS_DATA: dict | None = None
+_CROPS_DATA_FILE = os.path.join(os.path.dirname(__file__), "static", "data", "crops.json")
+
+
+def get_crops_data() -> dict:
+    """Load crops.json once and return a dict keyed by crop_name."""
+    global _CROPS_DATA
+    if _CROPS_DATA is None:
+        with open(_CROPS_DATA_FILE, encoding="utf-8") as fh:
+            _CROPS_DATA = {c["crop_name"]: c for c in json.load(fh)}
+    return _CROPS_DATA
+
+
+def compute_crop_suitability(crop_info: dict, temperature: float, seasonal_rainfall: float) -> dict:
+    """
+    Compute a suitability score (0.50–1.00) for given temperature and
+    30-day rainfall vs a crop's ideal conditions from crops.json.
+    Returns a dict with per-factor scores and overall suitability.
+    """
+    t_min = crop_info["ideal_temp_min_c"]
+    t_max = crop_info["ideal_temp_max_c"]
+    t_opt = crop_info["optimal_temp_c"]
+
+    if t_min <= temperature <= t_max:
+        # Normalise deviation against the half-range; fall back to 1.0 when
+        # the crop has no temperature spread (t_min == t_max), meaning any
+        # temperature within that exact point is already at the optimum.
+        half_range = (t_max - t_min) / 2.0 if (t_max - t_min) > 0 else 1.0
+        deviation = abs(temperature - t_opt) / half_range
+        temp_score = round(max(0.70, 1.0 - deviation * 0.30), 3)
+    else:
+        outside_by = min(abs(temperature - t_min), abs(temperature - t_max))
+        temp_score = round(max(0.50, 1.0 - outside_by * 0.04), 3)
+
+    crop_duration = crop_info["crop_duration_days"]
+    seasonal_req = crop_info["water_requirement_mm_per_season"]
+    # weather["seasonal_rainfall"] is a 30-day accumulated total; scale it
+    # to the crop's full growing season to compare with water_requirement.
+    estimated_seasonal = (seasonal_rainfall / 30.0) * crop_duration
+    if seasonal_req > 0:
+        ratio = estimated_seasonal / seasonal_req
+        if ratio >= 1.0:
+            rainfall_score = round(max(0.70, 1.0 - (ratio - 1.0) * 0.15), 3)
+        else:
+            rainfall_score = round(max(0.50, ratio), 3)
+    else:
+        rainfall_score = 1.0
+
+    overall = round((temp_score + rainfall_score) / 2.0, 3)
+    return {
+        "temperature_score": temp_score,
+        "rainfall_score": rainfall_score,
+        "overall_suitability": overall,
+        "optimal_temp_c": t_opt,
+        "temp_range": f"{t_min}–{t_max} °C",
+        "water_requirement_mm": seasonal_req,
+        "suitable_soils": crop_info.get("suitable_soil_types", []),
+        "flood_tolerance": crop_info.get("flood_tolerance", ""),
+        "drought_tolerance": crop_info.get("drought_tolerance", ""),
+    }
 
 SOIL_TYPES = {
     "alluvial": 0,
@@ -386,6 +476,23 @@ def analyze():
     base_yield = float(model.predict(features)[0])
     predicted_yield_per_acre = round(base_yield * crop_factor, 1)
 
+    # Apply crop suitability adjustment derived from crops.json
+    crop_suitability = None
+    crop_info_key = CROP_DATA_MAP.get(crop)
+    if crop_info_key:
+        crops_db = get_crops_data()
+        crop_record = crops_db.get(crop_info_key)
+        if crop_record:
+            suitability = compute_crop_suitability(
+                crop_record,
+                weather["temperature"],
+                weather["seasonal_rainfall"],
+            )
+            predicted_yield_per_acre = round(
+                predicted_yield_per_acre * suitability["overall_suitability"], 1
+            )
+            crop_suitability = suitability
+
     # Convert to tons/hectare: 1 ton = 1000 kg, 1 hectare = 2.471 acres
     yield_per_hectare = round(predicted_yield_per_acre * 2.471 / 1000, 2)
 
@@ -402,6 +509,7 @@ def analyze():
             "yield_per_acre_kg": predicted_yield_per_acre,
             "yield_per_hectare_tons": yield_per_hectare,
         },
+        "crop_suitability": crop_suitability,
     }
 
     if area_acres is not None:
@@ -442,6 +550,12 @@ def calculate():
         "total_kg": total_kg,
         "total_tons": total_tons,
     })
+
+
+@app.route("/api/crops", methods=["GET"])
+def list_crops():
+    """Return the full crops.json dataset for client-side use."""
+    return jsonify(list(get_crops_data().values()))
 
 
 if __name__ == "__main__":
