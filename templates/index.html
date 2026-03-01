@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AgriVision – AI-Powered Agricultural Intelligence</title>
+  <title data-i18n="pageTitle">AgriVision – AI-Powered Agricultural Intelligence</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
@@ -12,10 +12,10 @@
 <header>
   <span class="logo">🌱</span>
   <div>
-    <h1>AgriVision</h1>
-    <p>AI-Powered Agricultural Decision Support Platform</p>
+    <h1 data-i18n="appName">AgriVision</h1>
+    <p data-i18n="appSubtitle">AI-Powered Agricultural Decision Support Platform</p>
   </div>
-  <div class="header-badge">All-in-One Farm Intelligence</div>
+  <div class="header-badge" data-i18n="headerBadge">All-in-One Farm Intelligence</div>
   <button class="lang-toggle-btn" id="lang-toggle-btn" title="Switch Language / மொழி மாற்று">🌐 தமிழ்</button>
 </header>
 
@@ -162,26 +162,26 @@
 
   <!-- Optional Inputs -->
   <details class="advanced-inputs">
-    <summary>⚙️ Optional: Farm Area &amp; Soil Data (defaults used if blank)</summary>
+    <summary data-i18n="optionalInputsSummary">⚙️ Optional: Farm Area &amp; Soil Data (defaults used if blank)</summary>
     <div class="adv-inputs-grid">
       <div class="field">
-        <label for="unified-area">Farm Area (acres)</label>
+        <label for="unified-area" data-i18n="labelFarmArea">Farm Area (acres)</label>
         <input type="number" id="unified-area" min="0.1" step="0.1" placeholder="e.g. 3.5" />
       </div>
       <div class="field">
-        <label for="unified-n">Nitrogen – N (kg/ha)</label>
+        <label for="unified-n" data-i18n="labelNitrogen">Nitrogen – N (kg/ha)</label>
         <input type="number" id="unified-n" min="0" max="500" step="1" placeholder="Default: 80" value="80" />
       </div>
       <div class="field">
-        <label for="unified-p">Phosphorus – P (kg/ha)</label>
+        <label for="unified-p" data-i18n="labelPhosphorus">Phosphorus – P (kg/ha)</label>
         <input type="number" id="unified-p" min="0" max="500" step="1" placeholder="Default: 45" value="45" />
       </div>
       <div class="field">
-        <label for="unified-k">Potassium – K (kg/ha)</label>
+        <label for="unified-k" data-i18n="labelPotassium">Potassium – K (kg/ha)</label>
         <input type="number" id="unified-k" min="0" max="500" step="1" placeholder="Default: 50" value="50" />
       </div>
       <div class="field">
-        <label for="unified-ph">pH Value</label>
+        <label for="unified-ph" data-i18n="labelPH">pH Value</label>
         <input type="number" id="unified-ph" min="3" max="10" step="0.1" placeholder="Default: 6.5" value="6.5" />
       </div>
     </div>
@@ -212,90 +212,90 @@
   <!-- ── Panel 1: Location & Weather ── -->
   <section class="dash-panel" id="location-panel">
     <div class="panel-header">
-      <span>📍</span> Location &amp; Weather
+      <span>📍</span> <span data-i18n="panelLocation">Location &amp; Weather</span>
     </div>
     <div class="panel-body">
       <div id="results">
-        <p class="section-title">📡 Coordinates</p>
+        <p class="section-title" data-i18n="sectionCoords">📡 Coordinates</p>
         <div class="info-grid">
           <div class="info-card location">
             <span class="icon">🌐</span>
-            <div><div class="label">Latitude</div><div class="value" id="coord-lat">—</div></div>
+            <div><div class="label" data-i18n="labelLatitude">Latitude</div><div class="value" id="coord-lat">—</div></div>
           </div>
           <div class="info-card location">
             <span class="icon">🧭</span>
-            <div><div class="label">Longitude</div><div class="value" id="coord-lon">—</div></div>
+            <div><div class="label" data-i18n="labelLongitude">Longitude</div><div class="value" id="coord-lon">—</div></div>
           </div>
           <div class="info-card location">
             <span class="icon">🎯</span>
-            <div><div class="label">Accuracy</div><div class="value" id="coord-accuracy">—</div></div>
+            <div><div class="label" data-i18n="labelAccuracy">Accuracy</div><div class="value" id="coord-accuracy">—</div></div>
           </div>
         </div>
 
-        <p class="section-title">🗺️ Location Details</p>
+        <p class="section-title" data-i18n="sectionLocationDet">🗺️ Location Details</p>
         <div class="info-grid">
           <div class="info-card location">
             <span class="icon">🏘️</span>
-            <div><div class="label">District</div><div class="value" id="loc-district">—</div></div>
+            <div><div class="label" data-i18n="labelDistrict">District</div><div class="value" id="loc-district">—</div></div>
           </div>
           <div class="info-card location">
             <span class="icon">🏛️</span>
-            <div><div class="label">State / Region</div><div class="value" id="loc-state">—</div></div>
+            <div><div class="label" data-i18n="labelStateRegion">State / Region</div><div class="value" id="loc-state">—</div></div>
           </div>
           <div class="info-card location">
             <span class="icon">🌍</span>
-            <div><div class="label">Country</div><div class="value" id="loc-country">—</div></div>
+            <div><div class="label" data-i18n="labelCountry">Country</div><div class="value" id="loc-country">—</div></div>
           </div>
           <div class="info-card location">
             <span class="icon">📌</span>
             <div>
-              <div class="label">Full Address</div>
+              <div class="label" data-i18n="labelFullAddress">Full Address</div>
               <div class="value" id="loc-display" style="font-size:.82rem;font-weight:400">—</div>
             </div>
           </div>
         </div>
 
-        <p class="section-title">☁️ Real-Time Weather</p>
+        <p class="section-title" data-i18n="sectionWeather">☁️ Real-Time Weather</p>
         <div class="info-grid">
           <div class="info-card weather">
             <span class="icon">🌡️</span>
-            <div><div class="label">Temperature (now)</div><div class="value" id="w-temp">—</div></div>
+            <div><div class="label" data-i18n="labelTempNow">Temperature (now)</div><div class="value" id="w-temp">—</div></div>
           </div>
           <div class="info-card weather">
             <span class="icon">💧</span>
-            <div><div class="label">Humidity</div><div class="value" id="w-humidity">—</div></div>
+            <div><div class="label" data-i18n="labelHumidity">Humidity</div><div class="value" id="w-humidity">—</div></div>
           </div>
           <div class="info-card weather">
             <span class="icon">💨</span>
-            <div><div class="label">Wind Speed</div><div class="value" id="w-wind">—</div></div>
+            <div><div class="label" data-i18n="labelWindSpeed">Wind Speed</div><div class="value" id="w-wind">—</div></div>
           </div>
           <div class="info-card weather">
             <span class="icon">🌧️</span>
-            <div><div class="label">30-day Rainfall</div><div class="value" id="w-rainfall">—</div></div>
+            <div><div class="label" data-i18n="label30dRainfall">30-day Rainfall</div><div class="value" id="w-rainfall">—</div></div>
           </div>
           <div class="info-card weather">
             <span class="icon">🌦️</span>
-            <div><div class="label">Current Precip.</div><div class="value" id="w-precip">—</div></div>
+            <div><div class="label" data-i18n="labelCurrentPrecip">Current Precip.</div><div class="value" id="w-precip">—</div></div>
           </div>
           <div class="info-card weather">
             <span class="icon">🔵</span>
-            <div><div class="label">Air Pressure</div><div class="value" id="w-pressure">—</div></div>
+            <div><div class="label" data-i18n="labelAirPressure">Air Pressure</div><div class="value" id="w-pressure">—</div></div>
           </div>
         </div>
 
-        <p class="section-title">🌱 Soil &amp; Season</p>
+        <p class="section-title" data-i18n="sectionSoilSeason">🌱 Soil &amp; Season</p>
         <div class="info-grid">
           <div class="info-card soil">
             <span class="icon">🪨</span>
-            <div><div class="label">Soil Type</div><div class="value" id="soil-type">—</div></div>
+            <div><div class="label" data-i18n="labelSoilType">Soil Type</div><div class="value" id="soil-type">—</div></div>
           </div>
           <div class="info-card soil">
             <span class="icon">💦</span>
-            <div><div class="label">Soil Moisture</div><div class="value" id="soil-moisture">—</div></div>
+            <div><div class="label" data-i18n="labelSoilMoisture">Soil Moisture</div><div class="value" id="soil-moisture">—</div></div>
           </div>
           <div class="info-card soil">
             <span class="icon">📅</span>
-            <div><div class="label">Current Season</div><div class="value" id="season-name">—</div></div>
+            <div><div class="label" data-i18n="labelCurrentSeason">Current Season</div><div class="value" id="season-name">—</div></div>
           </div>
         </div>
       </div><!-- #results -->
@@ -305,7 +305,7 @@
   <!-- ── Panel 2: Yield Prediction ── -->
   <section class="dash-panel" id="yield-panel">
     <div class="panel-header">
-      <span>🌾</span> <span id="pred-section-title">Yield Prediction</span>
+      <span>🌾</span> <span id="pred-section-title" data-i18n="panelYield">Yield Prediction</span>
     </div>
     <div class="panel-body">
 
@@ -313,18 +313,18 @@
         <div class="metric">
           <div class="num" id="pred-per-acre">—</div>
           <div class="unit">kg / acre</div>
-          <div class="lbl">Predicted yield per acre</div>
+          <div class="lbl" data-i18n="lblPredYieldPerAcre">Predicted yield per acre</div>
         </div>
         <div class="divider"></div>
         <div class="metric">
           <div class="num" id="pred-per-hectare">—</div>
           <div class="unit">tons / hectare</div>
-          <div class="lbl">Converted yield per hectare</div>
+          <div class="lbl" data-i18n="lblConvertedYield">Converted yield per hectare</div>
         </div>
       </div>
 
       <div id="suitability-section" style="display:none">
-        <p class="section-title">🌿 Crop Suitability Analysis</p>
+        <p class="section-title" data-i18n="sectionSuitability">🌿 Crop Suitability Analysis</p>
         <div class="suitability-card">
           <div class="suitability-header">
             <span id="suit-crop-name"></span>
@@ -332,17 +332,17 @@
           </div>
           <div class="suitability-scores">
             <div class="suit-score-item">
-              <div class="suit-score-label">🌡️ Temperature Score</div>
+              <div class="suit-score-label" data-i18n="labelTempScore">🌡️ Temperature Score</div>
               <div class="suit-score-bar-wrap"><div class="suit-score-bar" id="suit-temp-bar"></div></div>
               <div class="suit-score-val" id="suit-temp-val">—</div>
             </div>
             <div class="suit-score-item">
-              <div class="suit-score-label">🌧️ Rainfall Score</div>
+              <div class="suit-score-label" data-i18n="labelRainfallScore">🌧️ Rainfall Score</div>
               <div class="suit-score-bar-wrap"><div class="suit-score-bar" id="suit-rain-bar"></div></div>
               <div class="suit-score-val" id="suit-rain-val">—</div>
             </div>
             <div class="suit-score-item suit-overall">
-              <div class="suit-score-label">⭐ Overall Suitability</div>
+              <div class="suit-score-label" data-i18n="labelOverallSuit">⭐ Overall Suitability</div>
               <div class="suit-score-bar-wrap"><div class="suit-score-bar" id="suit-overall-bar"></div></div>
               <div class="suit-score-val" id="suit-overall-val">—</div>
             </div>
@@ -351,19 +351,19 @@
         </div>
       </div>
 
-      <p class="section-title">🧮 Total Yield Calculator</p>
+      <p class="section-title" data-i18n="sectionYieldCalc">🧮 Total Yield Calculator</p>
       <div class="calculator-card">
-        <h3>🌾 Enter your farm size to calculate total yield</h3>
+        <h3 data-i18n="calcHeading">🌾 Enter your farm size to calculate total yield</h3>
         <div class="calc-form">
           <div class="field">
-            <label for="calc-yield-readonly">Predicted Yield (kg/acre)</label>
+            <label for="calc-yield-readonly" data-i18n="labelPredYield">Predicted Yield (kg/acre)</label>
             <input id="calc-yield-readonly" type="number" readonly placeholder="Auto-filled after prediction" />
           </div>
           <div class="field">
-            <label for="area-acres">Your Farm Area (acres)</label>
+            <label for="area-acres" data-i18n="labelFarmAreaAcres">Your Farm Area (acres)</label>
             <input id="area-acres" type="number" min="0.1" step="0.1" placeholder="e.g. 3.5" />
           </div>
-          <button class="btn btn-secondary" id="calc-btn"><span>📊</span> Calculate</button>
+          <button class="btn btn-secondary" id="calc-btn"><span>📊</span> <span data-i18n="btnCalculate">Calculate</span></button>
         </div>
         <div id="calc-error" style="color:#c62828;font-size:.82rem;margin-top:.5rem"></div>
         <div id="total-yield-result"></div>
@@ -375,48 +375,48 @@
   <!-- ── Panel 3: Climate Intelligence (full width) ── -->
   <section class="dash-panel dash-full" id="climate-panel">
     <div class="panel-header">
-      <span>🌤️</span> Climate Intelligence
+      <span>🌤️</span> <span data-i18n="panelClimate">Climate Intelligence</span>
     </div>
     <div class="panel-body">
       <div id="climate-status" class="module-status" role="status"></div>
       <div id="climate-results">
-        <p class="section-title">📊 Climate Indices</p>
+        <p class="section-title" data-i18n="sectionClimateIdx">📊 Climate Indices</p>
         <div class="info-grid">
           <div class="info-card weather">
             <span class="icon">🌡️</span>
-            <div><div class="label">Avg Temperature</div><div class="value" id="cli-avg-temp">—</div></div>
+            <div><div class="label" data-i18n="labelAvgTemp">Avg Temperature</div><div class="value" id="cli-avg-temp">—</div></div>
           </div>
           <div class="info-card weather">
             <span class="icon">🌧️</span>
-            <div><div class="label">Total Rainfall (14d)</div><div class="value" id="cli-rain">—</div></div>
+            <div><div class="label" data-i18n="labelTotalRainfall14d">Total Rainfall (14d)</div><div class="value" id="cli-rain">—</div></div>
           </div>
           <div class="info-card weather">
             <span class="icon">🔥</span>
-            <div><div class="label">Heat Stress Index</div><div class="value" id="cli-heat">—</div></div>
+            <div><div class="label" data-i18n="labelHeatStress">Heat Stress Index</div><div class="value" id="cli-heat">—</div></div>
           </div>
           <div class="info-card weather">
             <span class="icon">💧</span>
-            <div><div class="label">Rainfall Adequacy</div><div class="value" id="cli-rain-score">—</div></div>
+            <div><div class="label" data-i18n="labelRainfallAdequacy">Rainfall Adequacy</div><div class="value" id="cli-rain-score">—</div></div>
           </div>
           <div class="info-card weather">
             <span class="icon">☀️</span>
-            <div><div class="label">Drought Probability</div><div class="value" id="cli-drought">—</div></div>
+            <div><div class="label" data-i18n="labelDroughtProb">Drought Probability</div><div class="value" id="cli-drought">—</div></div>
           </div>
           <div class="info-card weather">
             <span class="icon">💧</span>
-            <div><div class="label">Water Deficit</div><div class="value" id="cli-deficit">—</div></div>
+            <div><div class="label" data-i18n="labelWaterDeficit">Water Deficit</div><div class="value" id="cli-deficit">—</div></div>
           </div>
         </div>
 
-        <p class="section-title">📋 Recommendations</p>
+        <p class="section-title" data-i18n="sectionRecommendations">📋 Recommendations</p>
         <div class="advisory-cards" id="climate-advisory"></div>
 
-        <p class="section-title">📅 14-Day Forecast</p>
+        <p class="section-title" data-i18n="sectionForecast14d">📅 14-Day Forecast</p>
         <div class="forecast-table-wrap">
           <table class="forecast-table" id="forecast-table">
             <thead>
               <tr>
-                <th>Date</th><th>Max °C</th><th>Min °C</th><th>Rain mm</th><th>ET₀ mm</th>
+                <th data-i18n="thDate">Date</th><th data-i18n="thMaxC">Max °C</th><th data-i18n="thMinC">Min °C</th><th data-i18n="thRainMm">Rain mm</th><th data-i18n="thET0">ET₀ mm</th>
               </tr>
             </thead>
             <tbody id="forecast-tbody"></tbody>
@@ -429,68 +429,68 @@
   <!-- ── Panel 4: Soil Analysis ── -->
   <section class="dash-panel" id="soil-panel">
     <div class="panel-header">
-      <span>🪨</span> Soil Analysis
+      <span>🪨</span> <span data-i18n="panelSoil">Soil Analysis</span>
     </div>
     <div class="panel-body">
       <div class="form-card panel-form">
-        <h3>🧪 Soil Test Inputs</h3>
+        <h3 data-i18n="soilInputHeading">🧪 Soil Test Inputs</h3>
         <div class="soil-form">
           <div class="field">
-            <label for="soil-n">N (kg/ha)</label>
+            <label for="soil-n" data-i18n="labelSoilN">N (kg/ha)</label>
             <input type="number" id="soil-n" min="0" max="500" step="1" placeholder="e.g. 80" />
           </div>
           <div class="field">
-            <label for="soil-p">P (kg/ha)</label>
+            <label for="soil-p" data-i18n="labelSoilP">P (kg/ha)</label>
             <input type="number" id="soil-p" min="0" max="500" step="1" placeholder="e.g. 45" />
           </div>
           <div class="field">
-            <label for="soil-k">K (kg/ha)</label>
+            <label for="soil-k" data-i18n="labelSoilK">K (kg/ha)</label>
             <input type="number" id="soil-k" min="0" max="500" step="1" placeholder="e.g. 50" />
           </div>
           <div class="field">
-            <label for="soil-ph">pH</label>
+            <label for="soil-ph" data-i18n="labelSoilPH">pH</label>
             <input type="number" id="soil-ph" min="3" max="10" step="0.1" placeholder="e.g. 6.5" />
           </div>
           <div class="field">
-            <label for="soil-moisture-input">Moisture % (opt.)</label>
+            <label for="soil-moisture-input" data-i18n="labelSoilMoistureOpt">Moisture % (opt.)</label>
             <input type="number" id="soil-moisture-input" min="0" max="100" step="1" placeholder="e.g. 45" />
           </div>
           <div class="field">
-            <label for="soil-crop-sel">Target Crop</label>
+            <label for="soil-crop-sel" data-i18n="labelTargetCrop">Target Crop</label>
             <select id="soil-crop-sel">
-              <option value="default">General / Unknown</option>
-              <option value="rice">Rice</option>
-              <option value="wheat">Wheat</option>
-              <option value="maize">Maize</option>
-              <option value="tomato">Tomato</option>
-              <option value="potato">Potato</option>
-              <option value="cotton">Cotton</option>
-              <option value="sugarcane">Sugarcane</option>
-              <option value="soybean">Soybean</option>
-              <option value="groundnut">Groundnut</option>
+              <option value="default" data-i18n="soilCropDefault">General / Unknown</option>
+              <option value="rice" data-i18n-crop="rice">Rice</option>
+              <option value="wheat" data-i18n-crop="wheat">Wheat</option>
+              <option value="maize" data-i18n-crop="maize">Maize</option>
+              <option value="tomato" data-i18n-crop="tomato">Tomato</option>
+              <option value="potato" data-i18n-crop="potato">Potato</option>
+              <option value="cotton" data-i18n-crop="cotton">Cotton</option>
+              <option value="sugarcane" data-i18n-crop="sugarcane">Sugarcane</option>
+              <option value="soybean" data-i18n-crop="soybean">Soybean</option>
+              <option value="groundnut" data-i18n-crop="groundnut">Groundnut</option>
             </select>
           </div>
         </div>
-        <button class="btn btn-primary" id="soil-btn"><span>🔬</span> Analyse Soil</button>
+        <button class="btn btn-primary" id="soil-btn"><span>🔬</span> <span data-i18n="btnAnalyseSoil">Analyse Soil</span></button>
         <div id="soil-error" class="error-msg"></div>
       </div>
 
       <div id="soil-status" class="module-status" role="status"></div>
 
       <div id="soil-results" style="display:none">
-        <p class="section-title">🧪 Nutrient Status</p>
+        <p class="section-title" data-i18n="sectionNutrientStatus">🧪 Nutrient Status</p>
         <div class="info-grid" id="soil-nutrient-grid"></div>
 
-        <p class="section-title">📊 Nutrient Scores</p>
+        <p class="section-title" data-i18n="sectionNutrientScores">📊 Nutrient Scores</p>
         <div class="suitability-card" id="soil-scores-card"></div>
 
-        <p class="section-title">🌱 Suitable Crops</p>
+        <p class="section-title" data-i18n="sectionSuitableCrops">🌱 Suitable Crops</p>
         <div class="tag-list" id="soil-suitable-crops"></div>
 
-        <p class="section-title">🧴 Fertilizer Plan</p>
+        <p class="section-title" data-i18n="sectionFertilizerPlan">🧴 Fertilizer Plan</p>
         <ul class="advice-list" id="soil-fertilizer-plan"></ul>
 
-        <p class="section-title">🌾 Soil Improvement Actions</p>
+        <p class="section-title" data-i18n="sectionSoilActions">🌾 Soil Improvement Actions</p>
         <ul class="advice-list" id="soil-actions"></ul>
 
         <div id="soil-moisture-advice" class="advisory-callout" style="display:none"></div>
@@ -501,53 +501,53 @@
   <!-- ── Panel 5: Market Forecast ── -->
   <section class="dash-panel" id="market-panel">
     <div class="panel-header">
-      <span>📈</span> Market Price Forecast
+      <span>📈</span> <span data-i18n="panelMarket">Market Price Forecast</span>
     </div>
     <div class="panel-body">
       <div class="form-card panel-form">
-        <h3>📦 Forecast Parameters</h3>
+        <h3 data-i18n="marketParamsHeading">📦 Forecast Parameters</h3>
         <div class="market-form">
           <div class="field">
-            <label for="market-crop-sel">Crop</label>
+            <label for="market-crop-sel" data-i18n="labelCrop">Crop</label>
             <select id="market-crop-sel">
-              <option value="rice">Rice</option>
-              <option value="wheat">Wheat</option>
-              <option value="maize">Maize</option>
-              <option value="soybean">Soybean</option>
-              <option value="cotton">Cotton</option>
-              <option value="sugarcane">Sugarcane</option>
-              <option value="groundnut">Groundnut</option>
-              <option value="mustard">Mustard</option>
-              <option value="onion">Onion</option>
-              <option value="tomato">Tomato</option>
-              <option value="potato">Potato</option>
-              <option value="chickpea">Chickpea</option>
+              <option value="rice" data-i18n-crop="rice">Rice</option>
+              <option value="wheat" data-i18n-crop="wheat">Wheat</option>
+              <option value="maize" data-i18n-crop="maize">Maize</option>
+              <option value="soybean" data-i18n-crop="soybean">Soybean</option>
+              <option value="cotton" data-i18n-crop="cotton">Cotton</option>
+              <option value="sugarcane" data-i18n-crop="sugarcane">Sugarcane</option>
+              <option value="groundnut" data-i18n-crop="groundnut">Groundnut</option>
+              <option value="mustard" data-i18n-crop="mustard">Mustard</option>
+              <option value="onion" data-i18n-crop="onion">Onion</option>
+              <option value="tomato" data-i18n-crop="tomato">Tomato</option>
+              <option value="potato" data-i18n-crop="potato">Potato</option>
+              <option value="chickpea" data-i18n-crop="chickpea">Chickpea</option>
             </select>
           </div>
           <div class="field">
-            <label for="market-days">Forecast Period</label>
+            <label for="market-days" data-i18n="labelForecastPeriod">Forecast Period</label>
             <input type="range" id="market-days" min="7" max="30" value="14" />
             <span id="market-days-val">14 days</span>
           </div>
         </div>
-        <button class="btn btn-primary" id="market-btn"><span>📊</span> Forecast Prices</button>
+        <button class="btn btn-primary" id="market-btn"><span>📊</span> <span data-i18n="btnForecastPrices">Forecast Prices</span></button>
       </div>
 
       <div id="market-status" class="module-status" role="status"></div>
 
       <div id="market-results" style="display:none">
-        <p class="section-title">💰 Price Summary</p>
+        <p class="section-title" data-i18n="sectionPriceSummary">💰 Price Summary</p>
         <div class="info-grid" id="market-summary-grid"></div>
 
         <div id="market-recommendation-box" class="market-rec-box"></div>
 
-        <p class="section-title">📅 Price Series</p>
+        <p class="section-title" data-i18n="sectionPriceSeries">📅 Price Series</p>
         <div class="market-chart-wrap">
           <canvas id="market-chart" height="280"></canvas>
         </div>
         <div class="forecast-table-wrap">
           <table class="forecast-table" id="market-table">
-            <thead><tr><th>Date</th><th>Price (₹/quintal)</th></tr></thead>
+            <thead><tr><th data-i18n="thDate">Date</th><th data-i18n="thPrice">Price (₹/quintal)</th></tr></thead>
             <tbody id="market-tbody"></tbody>
           </table>
         </div>
@@ -558,81 +558,81 @@
   <!-- ── Panel 6: Advisory Report (full width) ── -->
   <section class="dash-panel dash-full" id="advisory-panel">
     <div class="panel-header">
-      <span>🤖</span> AI Advisory Report
+      <span>🤖</span> <span data-i18n="panelAdvisory">AI Advisory Report</span>
     </div>
     <div class="panel-body">
       <div id="advisory-status" class="module-status" role="status"></div>
 
       <div id="advisory-results" style="display:none">
-        <p class="section-title">⚠️ Risk Assessment</p>
+        <p class="section-title" data-i18n="sectionRiskAssessment">⚠️ Risk Assessment</p>
         <div id="advisory-risk-box" class="risk-box"></div>
 
-        <p class="section-title">📋 Full Advisory Report</p>
+        <p class="section-title" data-i18n="sectionFullAdvisory">📋 Full Advisory Report</p>
         <div class="advisory-report" id="advisory-report"></div>
 
-        <p class="section-title">📊 Supporting Data</p>
+        <p class="section-title" data-i18n="sectionSupportingData">📊 Supporting Data</p>
         <div class="info-grid" id="advisory-data-grid"></div>
       </div>
 
       <!-- Re-run with custom inputs -->
       <details class="advanced-inputs" style="margin-top:1.5rem">
-        <summary>🔄 Customise &amp; Re-run Advisory</summary>
+        <summary data-i18n="customiseAdvisory">🔄 Customise &amp; Re-run Advisory</summary>
         <div class="form-card panel-form" style="margin-top:1rem">
-          <h3>📋 Advisory Inputs</h3>
+          <h3 data-i18n="advisoryInputsHeading">📋 Advisory Inputs</h3>
           <div class="advisory-form">
             <button class="btn btn-secondary" id="adv-loc-btn" style="margin-bottom:1rem">
-              <span>🌐</span> Use My Location
+              <span>🌐</span> <span data-i18n="btnUseLocation">Use My Location</span>
             </button>
             <div class="form-row">
               <div class="field">
-                <label for="adv-lat">Latitude</label>
+                <label for="adv-lat" data-i18n="labelLatitude">Latitude</label>
                 <input type="number" id="adv-lat" step="0.0001" placeholder="e.g. 13.0827" />
               </div>
               <div class="field">
-                <label for="adv-lon">Longitude</label>
+                <label for="adv-lon" data-i18n="labelLongitude">Longitude</label>
                 <input type="number" id="adv-lon" step="0.0001" placeholder="e.g. 80.2707" />
               </div>
             </div>
             <div class="form-row">
               <div class="field">
-                <label for="adv-crop">Crop</label>
+                <label for="adv-crop" data-i18n="labelCrop">Crop</label>
                 <select id="adv-crop">
-                  <option value="rice">Rice</option>
-                  <option value="wheat">Wheat</option>
-                  <option value="maize">Maize</option>
-                  <option value="tomato">Tomato</option>
-                  <option value="potato">Potato</option>
-                  <option value="cotton">Cotton</option>
-                  <option value="sugarcane">Sugarcane</option>
-                  <option value="soybean">Soybean</option>
-                  <option value="groundnut">Groundnut</option>
+                  <option value="rice" data-i18n-crop="rice">Rice</option>
+                  <option value="wheat" data-i18n-crop="wheat">Wheat</option>
+                  <option value="maize" data-i18n-crop="maize">Maize</option>
+                  <option value="tomato" data-i18n-crop="tomato">Tomato</option>
+                  <option value="potato" data-i18n-crop="potato">Potato</option>
+                  <option value="cotton" data-i18n-crop="cotton">Cotton</option>
+                  <option value="sugarcane" data-i18n-crop="sugarcane">Sugarcane</option>
+                  <option value="soybean" data-i18n-crop="soybean">Soybean</option>
+                  <option value="groundnut" data-i18n-crop="groundnut">Groundnut</option>
                 </select>
               </div>
               <div class="field">
-                <label for="adv-area">Farm Area (acres, optional)</label>
+                <label for="adv-area" data-i18n="labelFarmAreaOpt">Farm Area (acres, optional)</label>
                 <input type="number" id="adv-area" min="0.1" step="0.1" placeholder="e.g. 5" />
               </div>
             </div>
             <div class="form-row">
               <div class="field">
-                <label for="adv-n">N (kg/ha)</label>
+                <label for="adv-n" data-i18n="labelSoilN">N (kg/ha)</label>
                 <input type="number" id="adv-n" min="0" max="500" placeholder="e.g. 80" />
               </div>
               <div class="field">
-                <label for="adv-p">P (kg/ha)</label>
+                <label for="adv-p" data-i18n="labelSoilP">P (kg/ha)</label>
                 <input type="number" id="adv-p" min="0" max="500" placeholder="e.g. 45" />
               </div>
               <div class="field">
-                <label for="adv-k">K (kg/ha)</label>
+                <label for="adv-k" data-i18n="labelSoilK">K (kg/ha)</label>
                 <input type="number" id="adv-k" min="0" max="500" placeholder="e.g. 50" />
               </div>
               <div class="field">
-                <label for="adv-ph">pH</label>
+                <label for="adv-ph" data-i18n="labelSoilPH">pH</label>
                 <input type="number" id="adv-ph" min="3" max="10" step="0.1" placeholder="e.g. 6.5" />
               </div>
             </div>
           </div>
-          <button class="btn btn-primary" id="advisory-btn"><span>🤖</span> Generate Advisory Report</button>
+          <button class="btn btn-primary" id="advisory-btn"><span>🤖</span> <span data-i18n="btnGenerateAdvisory">Generate Advisory Report</span></button>
           <div id="advisory-error" class="error-msg"></div>
         </div>
       </details>
@@ -642,47 +642,47 @@
   <!-- ── Panel 7: Disease Detection (full width) ── -->
   <section class="dash-panel dash-full" id="disease-panel">
     <div class="panel-header">
-      <span>🔬</span> Crop Disease Detection
+      <span>🔬</span> <span data-i18n="panelDisease">Crop Disease Detection</span>
     </div>
     <div class="panel-body">
-      <p class="panel-desc">Upload a leaf image to detect crop diseases using image analysis. Receive disease
+      <p class="panel-desc" data-i18n="diseasePanelDesc">Upload a leaf image to detect crop diseases using image analysis. Receive disease
          classification, confidence score, treatment guide and pesticide recommendations.</p>
 
       <div class="form-card panel-form">
-        <h3>📷 Upload Leaf Image</h3>
+        <h3 data-i18n="diseaseUploadHeading">📷 Upload Leaf Image</h3>
         <div class="upload-form">
           <div class="field">
-            <label for="disease-crop-sel">Crop Type</label>
+            <label for="disease-crop-sel" data-i18n="labelCropType">Crop Type</label>
             <select id="disease-crop-sel">
-              <option value="default">Unknown / Other</option>
-              <option value="rice">Rice</option>
-              <option value="wheat">Wheat</option>
-              <option value="maize">Maize</option>
-              <option value="tomato">Tomato</option>
-              <option value="potato">Potato</option>
+              <option value="default" data-i18n="diseaseCropDefault">Unknown / Other</option>
+              <option value="rice" data-i18n-crop="rice">Rice</option>
+              <option value="wheat" data-i18n-crop="wheat">Wheat</option>
+              <option value="maize" data-i18n-crop="maize">Maize</option>
+              <option value="tomato" data-i18n-crop="tomato">Tomato</option>
+              <option value="potato" data-i18n-crop="potato">Potato</option>
             </select>
           </div>
           <div class="field">
-            <label>Leaf Image (JPG / PNG)</label>
+            <label data-i18n="labelLeafImage">Leaf Image (JPG / PNG)</label>
             <div class="upload-area" id="upload-area">
               <span class="upload-icon">📸</span>
-              <span>Drag &amp; drop or click to select a leaf image</span>
+              <span data-i18n="uploadAreaText">Drag &amp; drop or click to select a leaf image</span>
               <input type="file" id="disease-image" accept="image/jpeg,image/png,image/webp,image/bmp" />
             </div>
             <div id="upload-preview"></div>
           </div>
         </div>
-        <button class="btn btn-primary" id="disease-btn"><span>🔍</span> Detect Disease</button>
+        <button class="btn btn-primary" id="disease-btn"><span>🔍</span> <span data-i18n="btnDetectDisease">Detect Disease</span></button>
         <div id="disease-error" class="error-msg"></div>
       </div>
 
       <div id="disease-status" class="module-status" role="status"></div>
 
       <div id="disease-results" style="display:none">
-        <p class="section-title">🦠 Detection Result</p>
+        <p class="section-title" data-i18n="sectionDetectionResult">🦠 Detection Result</p>
         <div class="disease-card" id="disease-result-card"></div>
 
-        <p class="section-title">💊 Treatment Guide</p>
+        <p class="section-title" data-i18n="sectionTreatmentGuide">💊 Treatment Guide</p>
         <div class="treatment-card" id="treatment-card"></div>
       </div>
     </div>
@@ -693,7 +693,7 @@
 </main>
 
 <footer>
-  <p>AgriVision &nbsp;|&nbsp; AI-Powered Agricultural Decision Support &nbsp;|&nbsp;
+  <p id="footer-text">AgriVision &nbsp;|&nbsp; AI-Powered Agricultural Decision Support &nbsp;|&nbsp;
      Weather: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> &nbsp;|&nbsp;
      Geocoding: <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noopener">Nominatim / OSM</a>
   </p>
