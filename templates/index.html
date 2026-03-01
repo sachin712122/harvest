@@ -645,11 +645,11 @@
       <span>🔬</span> <span data-i18n="panelDisease">Crop Disease Detection</span>
     </div>
     <div class="panel-body">
-      <p class="panel-desc" data-i18n="diseasePanelDesc">Upload a leaf image to detect crop diseases using image analysis. Receive disease
+      <p class="panel-desc" data-i18n="diseasePanelDesc">Upload leaf images to detect crop diseases using image analysis. Receive disease
          classification, confidence score, treatment guide and pesticide recommendations.</p>
 
       <div class="form-card panel-form">
-        <h3 data-i18n="diseaseUploadHeading">📷 Upload Leaf Image</h3>
+        <h3 data-i18n="diseaseUploadHeading">📷 Upload Leaf Images</h3>
         <div class="upload-form">
           <div class="field">
             <label for="disease-crop-sel" data-i18n="labelCropType">Crop Type</label>
@@ -663,11 +663,11 @@
             </select>
           </div>
           <div class="field">
-            <label data-i18n="labelLeafImage">Leaf Image (JPG / PNG)</label>
+            <label data-i18n="labelLeafImage">Leaf Images (JPG / PNG)</label>
             <div class="upload-area" id="upload-area">
               <span class="upload-icon">📸</span>
-              <span data-i18n="uploadAreaText">Drag &amp; drop or click to select a leaf image</span>
-              <input type="file" id="disease-image" accept="image/jpeg,image/png,image/webp,image/bmp" />
+              <span data-i18n="uploadAreaText">Drag &amp; drop or click to select leaf images</span>
+              <input type="file" id="disease-image" accept="image/jpeg,image/png,image/webp,image/bmp" multiple />
             </div>
             <div id="upload-preview"></div>
           </div>
@@ -679,11 +679,7 @@
       <div id="disease-status" class="module-status" role="status"></div>
 
       <div id="disease-results" style="display:none">
-        <p class="section-title" data-i18n="sectionDetectionResult">🦠 Detection Result</p>
-        <div class="disease-card" id="disease-result-card"></div>
-
-        <p class="section-title" data-i18n="sectionTreatmentGuide">💊 Treatment Guide</p>
-        <div class="treatment-card" id="treatment-card"></div>
+        <div id="disease-results-list"></div>
       </div>
     </div>
   </section>
