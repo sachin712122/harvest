@@ -116,12 +116,64 @@ main {
 .hero-card p  { color: var(--text-muted); font-size: .95rem; margin-bottom: 1.5rem; }
 
 /* ── Crop selector ── */
-.crop-selector {
-  display: flex;
-  flex-direction: column;
-  gap: 1.1rem;
+.crop-selector-wrap {
   margin-bottom: 1.25rem;
   text-align: left;
+}
+
+.crop-select-label {
+  display: block;
+  font-size: .88rem;
+  font-weight: 700;
+  color: var(--green-dark);
+  margin-bottom: .35rem;
+  letter-spacing: .3px;
+}
+
+.crop-dropdown-wrap {
+  position: relative;
+}
+
+.crop-dropdown {
+  width: 100%;
+  padding: .7rem 2.5rem .7rem 1rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232e7d32' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .85rem center;
+  background-size: 1.1rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  box-shadow: 0 1px 4px var(--shadow);
+}
+
+.crop-dropdown:focus {
+  outline: none;
+  border-color: var(--green-light);
+  box-shadow: 0 0 0 3px rgba(76,175,80,.2);
+}
+
+.crop-dropdown:hover {
+  border-color: var(--green-light);
+}
+
+.crop-dropdown optgroup {
+  font-weight: 700;
+  color: var(--text-muted);
+  font-size: .88rem;
+}
+
+.crop-dropdown option {
+  font-weight: 600;
+  color: var(--text);
+  padding: .3rem .5rem;
 }
 
 .crop-category {

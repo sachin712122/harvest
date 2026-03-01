@@ -156,6 +156,7 @@ const I18N = {
     catVegetables:      "🥕 Vegetables",
     catFloriculture:    "🌸 Floriculture",
     catOther:           "✏️ Other",
+    cropSelectLabel:    "🌾 Select Your Crop",
     otherCropBtn:       "Other Crop",
     otherCropLabel:     "Enter crop name:",
     otherCropPlaceholder: "e.g. Lemon, Turmeric…",
@@ -352,6 +353,7 @@ const I18N = {
     catVegetables:      "🥕 காய்கறிகள்",
     catFloriculture:    "🌸 மலர்ச்சாகுபடி",
     catOther:           "✏️ பிற",
+    cropSelectLabel:    "🌾 உங்கள் பயிரைத் தேர்ந்தெடுக்கவும்",
     otherCropBtn:       "பிற பயிர்",
     otherCropLabel:     "பயிர் பெயரை உள்ளிடுக:",
     otherCropPlaceholder: "எ.கா. எலுமிச்சை, மஞ்சள்…",
@@ -561,14 +563,16 @@ function applyLang(lang) {
     const cropKey = el.dataset.i18nCrop;
     const label = cropLabels[cropKey];
     if (label) {
-      if (el.tagName === "OPTION") {
-        el.textContent = label;
-      } else {
-        // Preserve the leading emoji if present (for crop buttons)
-        const emojiMatch = el.textContent.match(/^(\S+\s)/);
-        el.textContent = emojiMatch ? emojiMatch[1] + label : label;
-      }
+      // Preserve the leading emoji if present
+      const emojiMatch = el.textContent.match(/^(\S+\s)/);
+      el.textContent = emojiMatch ? emojiMatch[1] + label : label;
     }
+  });
+
+  // Optgroup labels (use data-i18n-optgroup attribute)
+  document.querySelectorAll("[data-i18n-optgroup]").forEach((el) => {
+    const key = el.dataset.i18nOptgroup;
+    if (tr[key] !== undefined) el.label = tr[key];
   });
 
   // Update footer with translated text (preserve links)
@@ -1396,23 +1400,17 @@ async function runUnifiedAnalysis(lat, lon, accuracy) {
 // ── Event listeners ────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
 
-  // Crop selection
-  document.querySelectorAll(".crop-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      if (btn.id === "other-crop-btn") {
-        // Show the "Other" input row
-        document.querySelectorAll(".crop-btn").forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        $("other-crop-row").style.display = "flex";
-        $("other-crop-input").focus();
-        return;
-      }
-      document.querySelectorAll(".crop-btn").forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      selectedCrop = btn.dataset.crop;
-      // Hide other-crop row when a normal crop is selected
+  // Crop selection via dropdown
+  $("crop-dropdown").addEventListener("change", () => {
+    const val = $("crop-dropdown").value;
+    if (val === "other") {
+      $("other-crop-row").style.display = "flex";
+      $("other-crop-input").focus();
+      selectedCrop = "other";
+    } else {
       $("other-crop-row").style.display = "none";
-    });
+      selectedCrop = val;
+    }
   });
 
   // "Other" crop input — update selectedCrop as user types
@@ -1428,10 +1426,8 @@ document.addEventListener("DOMContentLoaded", () => {
   $("other-crop-close").addEventListener("click", () => {
     $("other-crop-row").style.display = "none";
     $("other-crop-input").value = "";
-    // Reactivate "rice" as default
-    document.querySelectorAll(".crop-btn").forEach((b) => b.classList.remove("active"));
-    const riceBtn = document.querySelector(".crop-btn[data-crop='rice']");
-    if (riceBtn) riceBtn.classList.add("active");
+    // Revert dropdown to "rice"
+    $("crop-dropdown").value = "rice";
     selectedCrop = "rice";
   });
 
