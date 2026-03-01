@@ -15,6 +15,13 @@
   <link rel="apple-touch-icon" href="/static/icons/icon-192.png" />
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      corePlugins: { preflight: false },
+      prefix: 'tw-'
+    }
+  </script>
 </head>
 <body>
 
@@ -42,118 +49,118 @@
      on this single page.</p>
 
   <!-- Crop Selector -->
-  <div class="crop-selector" id="crop-selector" role="group" aria-label="Select crop">
+  <div class="crop-selector tw-flex tw-flex-col tw-gap-4 tw-text-left" id="crop-selector" role="group" aria-label="Select crop">
 
-    <div class="crop-category">
+    <div class="crop-category tw-flex tw-flex-col tw-gap-2">
       <span class="crop-category-label" data-i18n="catFoodGrains">🌾 Food Grains</span>
-      <div class="crop-category-btns">
-        <button class="crop-btn" data-crop="barley" data-i18n-crop="barley">🌾 Barley</button>
-        <button class="crop-btn" data-crop="cumbu" data-i18n-crop="cumbu">🌾 Cumbu</button>
-        <button class="crop-btn" data-crop="kodo_millet" data-i18n-crop="kodo_millet">🌾 Kodo Millet</button>
-        <button class="crop-btn" data-crop="little_millet" data-i18n-crop="little_millet">🌾 Little Millet</button>
-        <button class="crop-btn" data-crop="maize" data-i18n-crop="maize">🌽 Maize</button>
-        <button class="crop-btn" data-crop="ragi" data-i18n-crop="ragi">🌾 Ragi</button>
-        <button class="crop-btn active" data-crop="rice" data-i18n-crop="rice">🌾 Rice</button>
-        <button class="crop-btn" data-crop="sorghum" data-i18n-crop="sorghum">🌾 Sorghum</button>
-        <button class="crop-btn" data-crop="thinai" data-i18n-crop="thinai">🌾 Thinai</button>
-        <button class="crop-btn" data-crop="wheat" data-i18n-crop="wheat">🌿 Wheat</button>
+      <div class="crop-category-btns tw-grid tw-gap-2">
+        <button class="crop-btn" data-crop="barley"><span class="crop-icon">🌾</span><span class="crop-name" data-i18n-crop="barley">Barley</span></button>
+        <button class="crop-btn" data-crop="cumbu"><span class="crop-icon">🌾</span><span class="crop-name" data-i18n-crop="cumbu">Cumbu</span></button>
+        <button class="crop-btn" data-crop="kodo_millet"><span class="crop-icon">🌾</span><span class="crop-name" data-i18n-crop="kodo_millet">Kodo Millet</span></button>
+        <button class="crop-btn" data-crop="little_millet"><span class="crop-icon">🌾</span><span class="crop-name" data-i18n-crop="little_millet">Little Millet</span></button>
+        <button class="crop-btn" data-crop="maize"><span class="crop-icon">🌽</span><span class="crop-name" data-i18n-crop="maize">Maize</span></button>
+        <button class="crop-btn" data-crop="ragi"><span class="crop-icon">🌾</span><span class="crop-name" data-i18n-crop="ragi">Ragi</span></button>
+        <button class="crop-btn active" data-crop="rice"><span class="crop-icon">🌾</span><span class="crop-name" data-i18n-crop="rice">Rice</span></button>
+        <button class="crop-btn" data-crop="sorghum"><span class="crop-icon">🌾</span><span class="crop-name" data-i18n-crop="sorghum">Sorghum</span></button>
+        <button class="crop-btn" data-crop="thinai"><span class="crop-icon">🌾</span><span class="crop-name" data-i18n-crop="thinai">Thinai</span></button>
+        <button class="crop-btn" data-crop="wheat"><span class="crop-icon">🌿</span><span class="crop-name" data-i18n-crop="wheat">Wheat</span></button>
       </div>
     </div>
 
-    <div class="crop-category">
+    <div class="crop-category tw-flex tw-flex-col tw-gap-2">
       <span class="crop-category-label" data-i18n="catPulses">🫘 Pulses</span>
-      <div class="crop-category-btns">
-        <button class="crop-btn" data-crop="black_gram" data-i18n-crop="black_gram">🫘 Black Gram</button>
-        <button class="crop-btn" data-crop="chickpea" data-i18n-crop="chickpea">🫘 Chickpea</button>
-        <button class="crop-btn" data-crop="green_gram" data-i18n-crop="green_gram">🫘 Green Gram</button>
-        <button class="crop-btn" data-crop="horse_gram" data-i18n-crop="horse_gram">🫘 Horse Gram</button>
-        <button class="crop-btn" data-crop="red_gram" data-i18n-crop="red_gram">🫘 Red Gram</button>
+      <div class="crop-category-btns tw-grid tw-gap-2">
+        <button class="crop-btn" data-crop="black_gram"><span class="crop-icon">🫘</span><span class="crop-name" data-i18n-crop="black_gram">Black Gram</span></button>
+        <button class="crop-btn" data-crop="chickpea"><span class="crop-icon">🫘</span><span class="crop-name" data-i18n-crop="chickpea">Chickpea</span></button>
+        <button class="crop-btn" data-crop="green_gram"><span class="crop-icon">🫘</span><span class="crop-name" data-i18n-crop="green_gram">Green Gram</span></button>
+        <button class="crop-btn" data-crop="horse_gram"><span class="crop-icon">🫘</span><span class="crop-name" data-i18n-crop="horse_gram">Horse Gram</span></button>
+        <button class="crop-btn" data-crop="red_gram"><span class="crop-icon">🫘</span><span class="crop-name" data-i18n-crop="red_gram">Red Gram</span></button>
       </div>
     </div>
 
-    <div class="crop-category">
+    <div class="crop-category tw-flex tw-flex-col tw-gap-2">
       <span class="crop-category-label" data-i18n="catOilseeds">🌻 Oilseeds</span>
-      <div class="crop-category-btns">
-        <button class="crop-btn" data-crop="castor" data-i18n-crop="castor">🌿 Castor</button>
-        <button class="crop-btn" data-crop="coconut" data-i18n-crop="coconut">🥥 Coconut</button>
-        <button class="crop-btn" data-crop="groundnut" data-i18n-crop="groundnut">🥜 Groundnut</button>
-        <button class="crop-btn" data-crop="mustard" data-i18n-crop="mustard">🌿 Mustard</button>
-        <button class="crop-btn" data-crop="sesame" data-i18n-crop="sesame">🌿 Sesame</button>
-        <button class="crop-btn" data-crop="soybean" data-i18n-crop="soybean">🫘 Soybean</button>
-        <button class="crop-btn" data-crop="sunflower" data-i18n-crop="sunflower">🌻 Sunflower</button>
+      <div class="crop-category-btns tw-grid tw-gap-2">
+        <button class="crop-btn" data-crop="castor"><span class="crop-icon">🌿</span><span class="crop-name" data-i18n-crop="castor">Castor</span></button>
+        <button class="crop-btn" data-crop="coconut"><span class="crop-icon">🥥</span><span class="crop-name" data-i18n-crop="coconut">Coconut</span></button>
+        <button class="crop-btn" data-crop="groundnut"><span class="crop-icon">🥜</span><span class="crop-name" data-i18n-crop="groundnut">Groundnut</span></button>
+        <button class="crop-btn" data-crop="mustard"><span class="crop-icon">🌿</span><span class="crop-name" data-i18n-crop="mustard">Mustard</span></button>
+        <button class="crop-btn" data-crop="sesame"><span class="crop-icon">🌿</span><span class="crop-name" data-i18n-crop="sesame">Sesame</span></button>
+        <button class="crop-btn" data-crop="soybean"><span class="crop-icon">🫘</span><span class="crop-name" data-i18n-crop="soybean">Soybean</span></button>
+        <button class="crop-btn" data-crop="sunflower"><span class="crop-icon">🌻</span><span class="crop-name" data-i18n-crop="sunflower">Sunflower</span></button>
       </div>
     </div>
 
-    <div class="crop-category">
+    <div class="crop-category tw-flex tw-flex-col tw-gap-2">
       <span class="crop-category-label" data-i18n="catCommercial">🏭 Commercial Crops</span>
-      <div class="crop-category-btns">
-        <button class="crop-btn" data-crop="cotton" data-i18n-crop="cotton">🪴 Cotton</button>
-        <button class="crop-btn" data-crop="sugarcane" data-i18n-crop="sugarcane">🎋 Sugarcane</button>
-        <button class="crop-btn" data-crop="tobacco" data-i18n-crop="tobacco">🌿 Tobacco</button>
+      <div class="crop-category-btns tw-grid tw-gap-2">
+        <button class="crop-btn" data-crop="cotton"><span class="crop-icon">🪴</span><span class="crop-name" data-i18n-crop="cotton">Cotton</span></button>
+        <button class="crop-btn" data-crop="sugarcane"><span class="crop-icon">🎋</span><span class="crop-name" data-i18n-crop="sugarcane">Sugarcane</span></button>
+        <button class="crop-btn" data-crop="tobacco"><span class="crop-icon">🌿</span><span class="crop-name" data-i18n-crop="tobacco">Tobacco</span></button>
       </div>
     </div>
 
-    <div class="crop-category">
+    <div class="crop-category tw-flex tw-flex-col tw-gap-2">
       <span class="crop-category-label" data-i18n="catPlantation">☕ Plantation Crops</span>
-      <div class="crop-category-btns">
-        <button class="crop-btn" data-crop="coffee" data-i18n-crop="coffee">☕ Coffee</button>
-        <button class="crop-btn" data-crop="rubber" data-i18n-crop="rubber">🌿 Rubber</button>
-        <button class="crop-btn" data-crop="tea" data-i18n-crop="tea">🍵 Tea</button>
+      <div class="crop-category-btns tw-grid tw-gap-2">
+        <button class="crop-btn" data-crop="coffee"><span class="crop-icon">☕</span><span class="crop-name" data-i18n-crop="coffee">Coffee</span></button>
+        <button class="crop-btn" data-crop="rubber"><span class="crop-icon">🌿</span><span class="crop-name" data-i18n-crop="rubber">Rubber</span></button>
+        <button class="crop-btn" data-crop="tea"><span class="crop-icon">🍵</span><span class="crop-name" data-i18n-crop="tea">Tea</span></button>
       </div>
     </div>
 
-    <div class="crop-category">
+    <div class="crop-category tw-flex tw-flex-col tw-gap-2">
       <span class="crop-category-label" data-i18n="catSpices">🌶️ Spices</span>
-      <div class="crop-category-btns">
-        <button class="crop-btn" data-crop="cardamom" data-i18n-crop="cardamom">🌿 Cardamom</button>
-        <button class="crop-btn" data-crop="chilli" data-i18n-crop="chilli">🌶️ Chilli</button>
-        <button class="crop-btn" data-crop="coriander" data-i18n-crop="coriander">🌿 Coriander</button>
-        <button class="crop-btn" data-crop="pepper" data-i18n-crop="pepper">⚫ Pepper</button>
-        <button class="crop-btn" data-crop="turmeric" data-i18n-crop="turmeric">🟡 Turmeric</button>
+      <div class="crop-category-btns tw-grid tw-gap-2">
+        <button class="crop-btn" data-crop="cardamom"><span class="crop-icon">🌿</span><span class="crop-name" data-i18n-crop="cardamom">Cardamom</span></button>
+        <button class="crop-btn" data-crop="chilli"><span class="crop-icon">🌶️</span><span class="crop-name" data-i18n-crop="chilli">Chilli</span></button>
+        <button class="crop-btn" data-crop="coriander"><span class="crop-icon">🌿</span><span class="crop-name" data-i18n-crop="coriander">Coriander</span></button>
+        <button class="crop-btn" data-crop="pepper"><span class="crop-icon">⚫</span><span class="crop-name" data-i18n-crop="pepper">Pepper</span></button>
+        <button class="crop-btn" data-crop="turmeric"><span class="crop-icon">🟡</span><span class="crop-name" data-i18n-crop="turmeric">Turmeric</span></button>
       </div>
     </div>
 
-    <div class="crop-category">
+    <div class="crop-category tw-flex tw-flex-col tw-gap-2">
       <span class="crop-category-label" data-i18n="catFruits">🍌 Fruits</span>
-      <div class="crop-category-btns">
-        <button class="crop-btn" data-crop="banana" data-i18n-crop="banana">🍌 Banana</button>
-        <button class="crop-btn" data-crop="guava" data-i18n-crop="guava">🍈 Guava</button>
-        <button class="crop-btn" data-crop="jackfruit" data-i18n-crop="jackfruit">🍈 Jackfruit</button>
-        <button class="crop-btn" data-crop="mango" data-i18n-crop="mango">🥭 Mango</button>
-        <button class="crop-btn" data-crop="papaya" data-i18n-crop="papaya">🍈 Papaya</button>
-        <button class="crop-btn" data-crop="sapota" data-i18n-crop="sapota">🍑 Sapota</button>
+      <div class="crop-category-btns tw-grid tw-gap-2">
+        <button class="crop-btn" data-crop="banana"><span class="crop-icon">🍌</span><span class="crop-name" data-i18n-crop="banana">Banana</span></button>
+        <button class="crop-btn" data-crop="guava"><span class="crop-icon">🍈</span><span class="crop-name" data-i18n-crop="guava">Guava</span></button>
+        <button class="crop-btn" data-crop="jackfruit"><span class="crop-icon">🍈</span><span class="crop-name" data-i18n-crop="jackfruit">Jackfruit</span></button>
+        <button class="crop-btn" data-crop="mango"><span class="crop-icon">🥭</span><span class="crop-name" data-i18n-crop="mango">Mango</span></button>
+        <button class="crop-btn" data-crop="papaya"><span class="crop-icon">🍈</span><span class="crop-name" data-i18n-crop="papaya">Papaya</span></button>
+        <button class="crop-btn" data-crop="sapota"><span class="crop-icon">🍑</span><span class="crop-name" data-i18n-crop="sapota">Sapota</span></button>
       </div>
     </div>
 
-    <div class="crop-category">
+    <div class="crop-category tw-flex tw-flex-col tw-gap-2">
       <span class="crop-category-label" data-i18n="catVegetables">🥕 Vegetables</span>
-      <div class="crop-category-btns">
-        <button class="crop-btn" data-crop="bhindi" data-i18n-crop="bhindi">🌿 Bhindi</button>
-        <button class="crop-btn" data-crop="brinjal" data-i18n-crop="brinjal">🍆 Brinjal</button>
-        <button class="crop-btn" data-crop="cabbage" data-i18n-crop="cabbage">🥬 Cabbage</button>
-        <button class="crop-btn" data-crop="drumstick" data-i18n-crop="drumstick">🌿 Drumstick</button>
-        <button class="crop-btn" data-crop="onion" data-i18n-crop="onion">🧅 Onion</button>
-        <button class="crop-btn" data-crop="potato" data-i18n-crop="potato">🥔 Potato</button>
-        <button class="crop-btn" data-crop="tapioca" data-i18n-crop="tapioca">🌿 Tapioca</button>
-        <button class="crop-btn" data-crop="tomato" data-i18n-crop="tomato">🍅 Tomato</button>
+      <div class="crop-category-btns tw-grid tw-gap-2">
+        <button class="crop-btn" data-crop="bhindi"><span class="crop-icon">🌿</span><span class="crop-name" data-i18n-crop="bhindi">Bhindi</span></button>
+        <button class="crop-btn" data-crop="brinjal"><span class="crop-icon">🍆</span><span class="crop-name" data-i18n-crop="brinjal">Brinjal</span></button>
+        <button class="crop-btn" data-crop="cabbage"><span class="crop-icon">🥬</span><span class="crop-name" data-i18n-crop="cabbage">Cabbage</span></button>
+        <button class="crop-btn" data-crop="drumstick"><span class="crop-icon">🌿</span><span class="crop-name" data-i18n-crop="drumstick">Drumstick</span></button>
+        <button class="crop-btn" data-crop="onion"><span class="crop-icon">🧅</span><span class="crop-name" data-i18n-crop="onion">Onion</span></button>
+        <button class="crop-btn" data-crop="potato"><span class="crop-icon">🥔</span><span class="crop-name" data-i18n-crop="potato">Potato</span></button>
+        <button class="crop-btn" data-crop="tapioca"><span class="crop-icon">🌿</span><span class="crop-name" data-i18n-crop="tapioca">Tapioca</span></button>
+        <button class="crop-btn" data-crop="tomato"><span class="crop-icon">🍅</span><span class="crop-name" data-i18n-crop="tomato">Tomato</span></button>
       </div>
     </div>
 
-    <div class="crop-category">
+    <div class="crop-category tw-flex tw-flex-col tw-gap-2">
       <span class="crop-category-label" data-i18n="catFloriculture">🌸 Floriculture</span>
-      <div class="crop-category-btns">
-        <button class="crop-btn" data-crop="jasmine" data-i18n-crop="jasmine">🌸 Jasmine</button>
-        <button class="crop-btn" data-crop="marigold" data-i18n-crop="marigold">🌼 Marigold</button>
-        <button class="crop-btn" data-crop="rose" data-i18n-crop="rose">🌹 Rose</button>
-        <button class="crop-btn" data-crop="tuberose" data-i18n-crop="tuberose">🌷 Tuberose</button>
+      <div class="crop-category-btns tw-grid tw-gap-2">
+        <button class="crop-btn" data-crop="jasmine"><span class="crop-icon">🌸</span><span class="crop-name" data-i18n-crop="jasmine">Jasmine</span></button>
+        <button class="crop-btn" data-crop="marigold"><span class="crop-icon">🌼</span><span class="crop-name" data-i18n-crop="marigold">Marigold</span></button>
+        <button class="crop-btn" data-crop="rose"><span class="crop-icon">🌹</span><span class="crop-name" data-i18n-crop="rose">Rose</span></button>
+        <button class="crop-btn" data-crop="tuberose"><span class="crop-icon">🌷</span><span class="crop-name" data-i18n-crop="tuberose">Tuberose</span></button>
       </div>
     </div>
 
     <!-- Other crop option -->
-    <div class="crop-category">
+    <div class="crop-category tw-flex tw-flex-col tw-gap-2">
       <span class="crop-category-label" data-i18n="catOther">✏️ Other</span>
-      <div class="crop-category-btns">
-        <button class="crop-btn crop-btn-other" id="other-crop-btn" data-crop="other" data-i18n="otherCropBtn">✏️ Other Crop</button>
+      <div class="crop-category-btns tw-grid tw-gap-2">
+        <button class="crop-btn crop-btn-other" id="other-crop-btn" data-crop="other"><span class="crop-icon">✏️</span><span class="crop-name" data-i18n="otherCropBtn">Other Crop</span></button>
       </div>
     </div>
 
