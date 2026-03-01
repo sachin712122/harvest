@@ -3,33 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Smart Crop Yield Prediction System</title>
+  <title>AgriVision – AI-Powered Agricultural Intelligence</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
 
-<!-- ── Header ─────────────────────────────────────────── -->
+<!-- ── Header ──────────────────────────────────────────────── -->
 <header>
-  <span class="logo">🌾</span>
+  <span class="logo">🌱</span>
   <div>
-    <h1>Smart Crop Yield Prediction System</h1>
-    <p>Automatic location-based agricultural yield analysis</p>
+    <h1>AgriVision</h1>
+    <p>AI-Powered Agricultural Decision Support Platform</p>
   </div>
+  <nav class="header-nav">
+    <a href="#" class="nav-link active" data-tab="yield">🌾 Yield</a>
+    <a href="#" class="nav-link" data-tab="climate">🌤️ Climate</a>
+    <a href="#" class="nav-link" data-tab="soil">🪨 Soil</a>
+    <a href="#" class="nav-link" data-tab="disease">🔬 Disease</a>
+    <a href="#" class="nav-link" data-tab="market">📈 Market</a>
+    <a href="#" class="nav-link" data-tab="advisory">🤖 Advisory</a>
+  </nav>
 </header>
 
-<!-- ── Main ───────────────────────────────────────────── -->
+<!-- ── Main ─────────────────────────────────────────────────── -->
 <main>
 
-  <!-- Hero / location trigger -->
+<!-- ══════════════════════════════════════════════════════════
+     TAB: Yield Prediction
+     ══════════════════════════════════════════════════════════ -->
+<section class="tab-panel active" id="yield-tab">
+
   <div class="hero-card">
     <h2>📍 Detect Your Location &amp; Predict Crop Yield</h2>
-    <p>
-      Select a crop, then click the button below to allow the system to detect
-      your current geographic location. Real-time weather, soil data, and an
-      ML-based yield model will estimate the expected yield for your area.
-    </p>
+    <p>Select a crop, then click the button to detect your location. Real-time weather, soil
+       data, and an ML-based yield model will estimate your expected yield.</p>
 
-    <!-- Crop selector -->
     <div class="crop-selector" id="crop-selector" role="group" aria-label="Select crop">
 
       <div class="crop-category">
@@ -144,61 +152,39 @@
     </button>
   </div>
 
-  <!-- Status banner -->
   <div id="status-banner" role="status" aria-live="polite"></div>
 
-  <!-- ── Results ── (hidden until analysis completes) -->
   <section id="results" aria-label="Analysis results">
 
-    <!-- Coordinates -->
     <p class="section-title">📡 Captured Coordinates</p>
     <div class="info-grid">
       <div class="info-card location">
         <span class="icon">🌐</span>
-        <div>
-          <div class="label">Latitude</div>
-          <div class="value" id="coord-lat">—</div>
-        </div>
+        <div><div class="label">Latitude</div><div class="value" id="coord-lat">—</div></div>
       </div>
       <div class="info-card location">
         <span class="icon">🧭</span>
-        <div>
-          <div class="label">Longitude</div>
-          <div class="value" id="coord-lon">—</div>
-        </div>
+        <div><div class="label">Longitude</div><div class="value" id="coord-lon">—</div></div>
       </div>
       <div class="info-card location">
         <span class="icon">🎯</span>
-        <div>
-          <div class="label">Accuracy</div>
-          <div class="value" id="coord-accuracy">—</div>
-        </div>
+        <div><div class="label">Accuracy</div><div class="value" id="coord-accuracy">—</div></div>
       </div>
     </div>
 
-    <!-- Location details -->
     <p class="section-title">🗺️ Location Details</p>
     <div class="info-grid">
       <div class="info-card location">
         <span class="icon">🏘️</span>
-        <div>
-          <div class="label">District</div>
-          <div class="value" id="loc-district">—</div>
-        </div>
+        <div><div class="label">District</div><div class="value" id="loc-district">—</div></div>
       </div>
       <div class="info-card location">
         <span class="icon">🏛️</span>
-        <div>
-          <div class="label">State / Region</div>
-          <div class="value" id="loc-state">—</div>
-        </div>
+        <div><div class="label">State / Region</div><div class="value" id="loc-state">—</div></div>
       </div>
       <div class="info-card location">
         <span class="icon">🌍</span>
-        <div>
-          <div class="label">Country</div>
-          <div class="value" id="loc-country">—</div>
-        </div>
+        <div><div class="label">Country</div><div class="value" id="loc-country">—</div></div>
       </div>
       <div class="info-card location">
         <span class="icon">📌</span>
@@ -209,80 +195,50 @@
       </div>
     </div>
 
-    <!-- Weather data -->
     <p class="section-title">☁️ Real-Time Weather Data</p>
     <div class="info-grid">
       <div class="info-card weather">
         <span class="icon">🌡️</span>
-        <div>
-          <div class="label">Temperature (now)</div>
-          <div class="value" id="w-temp">—</div>
-        </div>
+        <div><div class="label">Temperature (now)</div><div class="value" id="w-temp">—</div></div>
       </div>
       <div class="info-card weather">
         <span class="icon">💧</span>
-        <div>
-          <div class="label">Humidity</div>
-          <div class="value" id="w-humidity">—</div>
-        </div>
+        <div><div class="label">Humidity</div><div class="value" id="w-humidity">—</div></div>
       </div>
       <div class="info-card weather">
         <span class="icon">💨</span>
-        <div>
-          <div class="label">Wind Speed</div>
-          <div class="value" id="w-wind">—</div>
-        </div>
+        <div><div class="label">Wind Speed</div><div class="value" id="w-wind">—</div></div>
       </div>
       <div class="info-card weather">
         <span class="icon">🌧️</span>
-        <div>
-          <div class="label">30-day Rainfall</div>
-          <div class="value" id="w-rainfall">—</div>
-        </div>
+        <div><div class="label">30-day Rainfall</div><div class="value" id="w-rainfall">—</div></div>
       </div>
       <div class="info-card weather">
         <span class="icon">🌦️</span>
-        <div>
-          <div class="label">Current Precip.</div>
-          <div class="value" id="w-precip">—</div>
-        </div>
+        <div><div class="label">Current Precip.</div><div class="value" id="w-precip">—</div></div>
       </div>
       <div class="info-card weather">
         <span class="icon">🔵</span>
-        <div>
-          <div class="label">Air Pressure</div>
-          <div class="value" id="w-pressure">—</div>
-        </div>
+        <div><div class="label">Air Pressure</div><div class="value" id="w-pressure">—</div></div>
       </div>
     </div>
 
-    <!-- Soil & Season -->
     <p class="section-title">🌱 Soil &amp; Season</p>
     <div class="info-grid">
       <div class="info-card soil">
         <span class="icon">🪨</span>
-        <div>
-          <div class="label">Soil Type</div>
-          <div class="value" id="soil-type">—</div>
-        </div>
+        <div><div class="label">Soil Type</div><div class="value" id="soil-type">—</div></div>
       </div>
       <div class="info-card soil">
         <span class="icon">💦</span>
-        <div>
-          <div class="label">Soil Moisture</div>
-          <div class="value" id="soil-moisture">—</div>
-        </div>
+        <div><div class="label">Soil Moisture</div><div class="value" id="soil-moisture">—</div></div>
       </div>
       <div class="info-card soil">
         <span class="icon">📅</span>
-        <div>
-          <div class="label">Current Season</div>
-          <div class="value" id="season-name">—</div>
-        </div>
+        <div><div class="label">Current Season</div><div class="value" id="season-name">—</div></div>
       </div>
     </div>
 
-    <!-- Crop Suitability (from AgriTech crops.json) -->
     <div id="suitability-section" style="display:none">
       <p class="section-title">🌿 Crop Suitability Analysis</p>
       <div class="suitability-card">
@@ -293,23 +249,17 @@
         <div class="suitability-scores">
           <div class="suit-score-item">
             <div class="suit-score-label">🌡️ Temperature Score</div>
-            <div class="suit-score-bar-wrap">
-              <div class="suit-score-bar" id="suit-temp-bar"></div>
-            </div>
+            <div class="suit-score-bar-wrap"><div class="suit-score-bar" id="suit-temp-bar"></div></div>
             <div class="suit-score-val" id="suit-temp-val">—</div>
           </div>
           <div class="suit-score-item">
             <div class="suit-score-label">🌧️ Rainfall Score</div>
-            <div class="suit-score-bar-wrap">
-              <div class="suit-score-bar" id="suit-rain-bar"></div>
-            </div>
+            <div class="suit-score-bar-wrap"><div class="suit-score-bar" id="suit-rain-bar"></div></div>
             <div class="suit-score-val" id="suit-rain-val">—</div>
           </div>
           <div class="suit-score-item suit-overall">
             <div class="suit-score-label">⭐ Overall Suitability</div>
-            <div class="suit-score-bar-wrap">
-              <div class="suit-score-bar" id="suit-overall-bar"></div>
-            </div>
+            <div class="suit-score-bar-wrap"><div class="suit-score-bar" id="suit-overall-bar"></div></div>
             <div class="suit-score-val" id="suit-overall-val">—</div>
           </div>
         </div>
@@ -317,7 +267,6 @@
       </div>
     </div>
 
-    <!-- ML Prediction -->
     <p class="section-title" id="pred-section-title">🤖 ML Yield Prediction (Rice)</p>
     <div class="prediction-box">
       <div class="metric">
@@ -333,35 +282,370 @@
       </div>
     </div>
 
-    <!-- Yield Calculator -->
     <p class="section-title">🧮 Total Yield Calculator</p>
     <div class="calculator-card">
       <h3>🌾 Enter your farm size to calculate total yield</h3>
       <div class="calc-form">
         <div class="field">
           <label for="calc-yield-readonly">Predicted Yield (kg/acre)</label>
-          <input id="calc-yield-readonly" type="number" readonly
-                 placeholder="Auto-filled after prediction" />
+          <input id="calc-yield-readonly" type="number" readonly placeholder="Auto-filled after prediction" />
         </div>
         <div class="field">
           <label for="area-acres">Your Farm Area (acres)</label>
-          <input id="area-acres" type="number" min="0.1" step="0.1"
-                 placeholder="e.g. 3.5" />
+          <input id="area-acres" type="number" min="0.1" step="0.1" placeholder="e.g. 3.5" />
         </div>
-        <button class="btn btn-secondary" id="calc-btn">
-          <span>📊</span> Calculate
-        </button>
+        <button class="btn btn-secondary" id="calc-btn"><span>📊</span> Calculate</button>
       </div>
       <div id="calc-error" style="color:#c62828;font-size:.82rem;margin-top:.5rem"></div>
       <div id="total-yield-result"></div>
     </div>
 
-  </section><!-- /#results -->
+  </section>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: Climate Intelligence
+     ══════════════════════════════════════════════════════════ -->
+<section class="tab-panel" id="climate-tab">
+  <div class="hero-card">
+    <h2>🌤️ Climate Intelligence Module</h2>
+    <p>Fetch a 14-day weather forecast and receive actionable sowing, irrigation,
+       and harvest risk recommendations powered by climate indices.</p>
+    <button class="btn btn-primary" id="climate-detect-btn">
+      <span>🌐</span> Use My Location
+    </button>
+    <div class="coord-manual">
+      <span>or enter coordinates:</span>
+      <input type="number" id="climate-lat" placeholder="Latitude" step="0.0001" />
+      <input type="number" id="climate-lon" placeholder="Longitude" step="0.0001" />
+      <button class="btn btn-secondary" id="climate-manual-btn">Analyse</button>
+    </div>
+  </div>
+
+  <div id="climate-status" class="module-status" role="status"></div>
+
+  <div id="climate-results" style="display:none">
+    <p class="section-title">📊 Climate Indices</p>
+    <div class="info-grid">
+      <div class="info-card weather">
+        <span class="icon">🌡️</span>
+        <div><div class="label">Avg Temperature</div><div class="value" id="cli-avg-temp">—</div></div>
+      </div>
+      <div class="info-card weather">
+        <span class="icon">🌧️</span>
+        <div><div class="label">Total Rainfall (14d)</div><div class="value" id="cli-rain">—</div></div>
+      </div>
+      <div class="info-card weather">
+        <span class="icon">🔥</span>
+        <div><div class="label">Heat Stress Index</div><div class="value" id="cli-heat">—</div></div>
+      </div>
+      <div class="info-card weather">
+        <span class="icon">💧</span>
+        <div><div class="label">Rainfall Adequacy</div><div class="value" id="cli-rain-score">—</div></div>
+      </div>
+      <div class="info-card weather">
+        <span class="icon">☀️</span>
+        <div><div class="label">Drought Probability</div><div class="value" id="cli-drought">—</div></div>
+      </div>
+      <div class="info-card weather">
+        <span class="icon">💧</span>
+        <div><div class="label">Water Deficit</div><div class="value" id="cli-deficit">—</div></div>
+      </div>
+    </div>
+
+    <p class="section-title">📋 Recommendations</p>
+    <div class="advisory-cards" id="climate-advisory"></div>
+
+    <p class="section-title">📅 14-Day Forecast</p>
+    <div class="forecast-table-wrap">
+      <table class="forecast-table" id="forecast-table">
+        <thead>
+          <tr>
+            <th>Date</th><th>Max °C</th><th>Min °C</th><th>Rain mm</th><th>ET₀ mm</th>
+          </tr>
+        </thead>
+        <tbody id="forecast-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: Soil Intelligence
+     ══════════════════════════════════════════════════════════ -->
+<section class="tab-panel" id="soil-tab">
+  <div class="hero-card">
+    <h2>🪨 Soil Intelligence Module</h2>
+    <p>Enter your soil test results to get nutrient deficiency analysis, crop suitability
+       scores, and a targeted fertilizer plan.</p>
+  </div>
+
+  <div class="form-card">
+    <h3>🧪 Soil Test Inputs</h3>
+    <div class="soil-form">
+      <div class="field">
+        <label for="soil-n">Nitrogen – N (kg/ha)</label>
+        <input type="number" id="soil-n" min="0" max="500" step="1" placeholder="e.g. 80" />
+      </div>
+      <div class="field">
+        <label for="soil-p">Phosphorus – P (kg/ha)</label>
+        <input type="number" id="soil-p" min="0" max="500" step="1" placeholder="e.g. 45" />
+      </div>
+      <div class="field">
+        <label for="soil-k">Potassium – K (kg/ha)</label>
+        <input type="number" id="soil-k" min="0" max="500" step="1" placeholder="e.g. 50" />
+      </div>
+      <div class="field">
+        <label for="soil-ph">pH Value</label>
+        <input type="number" id="soil-ph" min="3" max="10" step="0.1" placeholder="e.g. 6.5" />
+      </div>
+      <div class="field">
+        <label for="soil-moisture-input">Soil Moisture % (optional)</label>
+        <input type="number" id="soil-moisture-input" min="0" max="100" step="1" placeholder="e.g. 45" />
+      </div>
+      <div class="field">
+        <label for="soil-crop-sel">Target Crop</label>
+        <select id="soil-crop-sel">
+          <option value="default">General / Unknown</option>
+          <option value="rice">Rice</option>
+          <option value="wheat">Wheat</option>
+          <option value="maize">Maize</option>
+          <option value="tomato">Tomato</option>
+          <option value="potato">Potato</option>
+          <option value="cotton">Cotton</option>
+          <option value="sugarcane">Sugarcane</option>
+          <option value="soybean">Soybean</option>
+          <option value="groundnut">Groundnut</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="soil-btn"><span>🔬</span> Analyse Soil</button>
+    <div id="soil-error" class="error-msg"></div>
+  </div>
+
+  <div id="soil-status" class="module-status" role="status"></div>
+
+  <div id="soil-results" style="display:none">
+    <p class="section-title">🧪 Nutrient Status</p>
+    <div class="info-grid" id="soil-nutrient-grid"></div>
+
+    <p class="section-title">📊 Nutrient Scores</p>
+    <div class="suitability-card" id="soil-scores-card"></div>
+
+    <p class="section-title">🌱 Suitable Crops</p>
+    <div class="tag-list" id="soil-suitable-crops"></div>
+
+    <p class="section-title">🧴 Fertilizer Plan</p>
+    <ul class="advice-list" id="soil-fertilizer-plan"></ul>
+
+    <p class="section-title">🌾 Soil Improvement Actions</p>
+    <ul class="advice-list" id="soil-actions"></ul>
+
+    <div id="soil-moisture-advice" class="advisory-callout" style="display:none"></div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: Crop Disease Detection
+     ══════════════════════════════════════════════════════════ -->
+<section class="tab-panel" id="disease-tab">
+  <div class="hero-card">
+    <h2>🔬 Crop Disease Detection</h2>
+    <p>Upload a leaf image to detect crop diseases using image analysis. Receive disease
+       classification, confidence score, treatment guide and pesticide recommendations.</p>
+  </div>
+
+  <div class="form-card">
+    <h3>📷 Upload Leaf Image</h3>
+    <div class="upload-form">
+      <div class="field">
+        <label for="disease-crop-sel">Crop Type</label>
+        <select id="disease-crop-sel">
+          <option value="default">Unknown / Other</option>
+          <option value="rice">Rice</option>
+          <option value="wheat">Wheat</option>
+          <option value="maize">Maize</option>
+          <option value="tomato">Tomato</option>
+          <option value="potato">Potato</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Leaf Image (JPG / PNG)</label>
+        <div class="upload-area" id="upload-area">
+          <span class="upload-icon">📸</span>
+          <span>Drag &amp; drop or click to select a leaf image</span>
+          <input type="file" id="disease-image" accept="image/jpeg,image/png,image/webp,image/bmp" />
+        </div>
+        <div id="upload-preview"></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="disease-btn"><span>🔍</span> Detect Disease</button>
+    <div id="disease-error" class="error-msg"></div>
+  </div>
+
+  <div id="disease-status" class="module-status" role="status"></div>
+
+  <div id="disease-results" style="display:none">
+    <p class="section-title">🦠 Detection Result</p>
+    <div class="disease-card" id="disease-result-card"></div>
+
+    <p class="section-title">💊 Treatment Guide</p>
+    <div class="treatment-card" id="treatment-card"></div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: Market Price Forecast
+     ══════════════════════════════════════════════════════════ -->
+<section class="tab-panel" id="market-tab">
+  <div class="hero-card">
+    <h2>📈 Market Price Forecasting</h2>
+    <p>Get a 7–30 day price trend forecast for your crop with actionable sell / hold / store
+       recommendations based on expected mandi price movements.</p>
+  </div>
+
+  <div class="form-card">
+    <h3>📦 Forecast Parameters</h3>
+    <div class="market-form">
+      <div class="field">
+        <label for="market-crop-sel">Crop</label>
+        <select id="market-crop-sel">
+          <option value="rice">Rice</option>
+          <option value="wheat">Wheat</option>
+          <option value="maize">Maize</option>
+          <option value="soybean">Soybean</option>
+          <option value="cotton">Cotton</option>
+          <option value="sugarcane">Sugarcane</option>
+          <option value="groundnut">Groundnut</option>
+          <option value="mustard">Mustard</option>
+          <option value="onion">Onion</option>
+          <option value="tomato">Tomato</option>
+          <option value="potato">Potato</option>
+          <option value="chickpea">Chickpea</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="market-days">Forecast Period (days)</label>
+        <input type="range" id="market-days" min="7" max="30" value="14" />
+        <span id="market-days-val">14 days</span>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="market-btn"><span>📊</span> Forecast Prices</button>
+  </div>
+
+  <div id="market-status" class="module-status" role="status"></div>
+
+  <div id="market-results" style="display:none">
+    <p class="section-title">💰 Price Summary</p>
+    <div class="info-grid" id="market-summary-grid"></div>
+
+    <div id="market-recommendation-box" class="market-rec-box"></div>
+
+    <p class="section-title">📅 Price Series</p>
+    <div class="market-chart-wrap">
+      <canvas id="market-chart" height="280"></canvas>
+    </div>
+    <div class="forecast-table-wrap">
+      <table class="forecast-table" id="market-table">
+        <thead><tr><th>Date</th><th>Price (₹/quintal)</th></tr></thead>
+        <tbody id="market-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: Unified AI Advisory
+     ══════════════════════════════════════════════════════════ -->
+<section class="tab-panel" id="advisory-tab">
+  <div class="hero-card">
+    <h2>🤖 Unified AI Advisory Engine</h2>
+    <p>Provide your location, soil data, and target crop for a complete AI-generated farm
+       advisory report integrating climate, soil, and market intelligence.</p>
+  </div>
+
+  <div class="form-card">
+    <h3>📋 Advisory Inputs</h3>
+    <div class="advisory-form">
+      <button class="btn btn-secondary" id="adv-loc-btn" style="margin-bottom:1rem">
+        <span>🌐</span> Use My Location
+      </button>
+      <div class="form-row">
+        <div class="field">
+          <label for="adv-lat">Latitude</label>
+          <input type="number" id="adv-lat" step="0.0001" placeholder="e.g. 13.0827" />
+        </div>
+        <div class="field">
+          <label for="adv-lon">Longitude</label>
+          <input type="number" id="adv-lon" step="0.0001" placeholder="e.g. 80.2707" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="adv-crop">Crop</label>
+          <select id="adv-crop">
+            <option value="rice">Rice</option>
+            <option value="wheat">Wheat</option>
+            <option value="maize">Maize</option>
+            <option value="tomato">Tomato</option>
+            <option value="potato">Potato</option>
+            <option value="cotton">Cotton</option>
+            <option value="sugarcane">Sugarcane</option>
+            <option value="soybean">Soybean</option>
+            <option value="groundnut">Groundnut</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="adv-area">Farm Area (acres, optional)</label>
+          <input type="number" id="adv-area" min="0.1" step="0.1" placeholder="e.g. 5" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="adv-n">N (kg/ha)</label>
+          <input type="number" id="adv-n" min="0" max="500" placeholder="e.g. 80" />
+        </div>
+        <div class="field">
+          <label for="adv-p">P (kg/ha)</label>
+          <input type="number" id="adv-p" min="0" max="500" placeholder="e.g. 45" />
+        </div>
+        <div class="field">
+          <label for="adv-k">K (kg/ha)</label>
+          <input type="number" id="adv-k" min="0" max="500" placeholder="e.g. 50" />
+        </div>
+        <div class="field">
+          <label for="adv-ph">pH</label>
+          <input type="number" id="adv-ph" min="3" max="10" step="0.1" placeholder="e.g. 6.5" />
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="advisory-btn"><span>🤖</span> Generate Advisory Report</button>
+    <div id="advisory-error" class="error-msg"></div>
+  </div>
+
+  <div id="advisory-status" class="module-status" role="status"></div>
+
+  <div id="advisory-results" style="display:none">
+    <p class="section-title">⚠️ Risk Assessment</p>
+    <div id="advisory-risk-box" class="risk-box"></div>
+
+    <p class="section-title">📋 Full Advisory Report</p>
+    <div class="advisory-report" id="advisory-report"></div>
+
+    <p class="section-title">📊 Supporting Data</p>
+    <div class="info-grid" id="advisory-data-grid"></div>
+  </div>
+</section>
 
 </main>
 
 <footer>
-  <p>Smart Crop Yield Prediction System &nbsp;|&nbsp;
+  <p>AgriVision &nbsp;|&nbsp; AI-Powered Agricultural Decision Support &nbsp;|&nbsp;
      Weather: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> &nbsp;|&nbsp;
      Geocoding: <a href="https://nominatim.openstreetmap.org/" target="_blank" rel="noopener">Nominatim / OSM</a>
   </p>
