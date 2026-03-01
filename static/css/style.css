@@ -751,12 +751,32 @@ footer {
 }
 .upload-icon { font-size: 2rem; }
 .leaf-preview {
-  max-width: 260px;
-  max-height: 200px;
-  margin-top: .75rem;
+  max-width: 180px;
+  max-height: 160px;
   border-radius: var(--radius-sm);
   box-shadow: 0 2px 8px var(--shadow);
   object-fit: cover;
+}
+
+#upload-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .75rem;
+  justify-content: center;
+}
+
+/* ── Disease result section (multi-image) ── */
+.result-file-label {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: .5rem;
+}
+.result-divider {
+  border: none;
+  border-top: 2px dashed var(--border);
+  margin: 1.5rem 0;
 }
 
 /* ── Disease result card ── */

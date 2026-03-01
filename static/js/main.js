@@ -287,12 +287,12 @@ const I18N = {
     lblSoilScoreAdv:    "Soil Overall Score",
     lblMarketTrend:     "Market Trend",
     panelDisease:       "Crop Disease Detection",
-    diseasePanelDesc:   "Upload a leaf image to detect crop diseases using image analysis. Receive disease classification, confidence score, treatment guide and pesticide recommendations.",
-    diseaseUploadHeading: "📷 Upload Leaf Image",
+    diseasePanelDesc:   "Upload leaf images to detect crop diseases using image analysis. Receive disease classification, confidence score, treatment guide and pesticide recommendations.",
+    diseaseUploadHeading: "📷 Upload Leaf Images",
     labelCropType:      "Crop Type",
     diseaseCropDefault: "Unknown / Other",
-    labelLeafImage:     "Leaf Image (JPG / PNG)",
-    uploadAreaText:     "Drag & drop or click to select a leaf image",
+    labelLeafImage:     "Leaf Images (JPG / PNG)",
+    uploadAreaText:     "Drag & drop or click to select leaf images",
     btnDetectDisease:   "Detect Disease",
     sectionDetectionResult: "🦠 Detection Result",
     sectionTreatmentGuide: "💊 Treatment Guide",
@@ -310,7 +310,7 @@ const I18N = {
     statusAnalyseSoil:    "Analysing soil data…",
     statusGenMarket:      "Generating price forecast…",
     statusGenAdvisory:    "Generating comprehensive advisory report…",
-    statusAnalyseImage:   "Analysing image…",
+    statusAnalyseImage:   "Analysing images…",
     statusAnalyseAll:     "Analysing your farm across all modules…",
     statusReqLocation:    "Requesting location permission…",
     statusGenAdvisoryShort: "Generating advisory report…",
@@ -319,7 +319,8 @@ const I18N = {
     errSoilRequired:      "N, P, K and pH are required.",
     errCoords:            "Please provide valid coordinates.",
     errSoilNPKPH:         "N, P, K and pH are required.",
-    errSelectImage:       "Please select a leaf image to upload.",
+    errSelectImage:       "Please select at least one leaf image to upload.",
+    errTooManyImages:     "Please select up to 5 images at a time.",
     errValidLatLon:       "Please enter valid latitude and longitude.",
     days:                 "days",
   },
@@ -482,12 +483,12 @@ const I18N = {
     lblSoilScoreAdv:    "மண் மதிப்பெண்",
     lblMarketTrend:     "சந்தை போக்கு",
     panelDisease:       "பயிர் நோய் கண்டறிதல்",
-    diseasePanelDesc:   "பயிர் நோய்களை படம் பகுப்பாய்வு மூலம் கண்டறிய ஒரு இலை படத்தை பதிவேற்றவும். நோய் வகைப்பாடு, நம்பகத்தன்மை மதிப்பு, சிகிச்சை வழிகாட்டி மற்றும் பூச்சிக்கொல்லி பரிந்துரைகளைப் பெறுங்கள்.",
-    diseaseUploadHeading: "📷 இலை படத்தை பதிவேற்றவும்",
+    diseasePanelDesc:   "பயிர் நோய்களை படம் பகுப்பாய்வு மூலம் கண்டறிய இலை படங்களை பதிவேற்றவும். நோய் வகைப்பாடு, நம்பகத்தன்மை மதிப்பு, சிகிச்சை வழிகாட்டி மற்றும் பூச்சிக்கொல்லி பரிந்துரைகளைப் பெறுங்கள்.",
+    diseaseUploadHeading: "📷 இலை படங்களை பதிவேற்றவும்",
     labelCropType:      "பயிர் வகை",
     diseaseCropDefault: "தெரியாத / பிற",
-    labelLeafImage:     "இலை படம் (JPG / PNG)",
-    uploadAreaText:     "இழுத்து விடவும் அல்லது இலை படத்தை தேர்வு செய்ய கிளிக் செய்யவும்",
+    labelLeafImage:     "இலை படங்கள் (JPG / PNG)",
+    uploadAreaText:     "இழுத்து விடவும் அல்லது இலை படங்களை தேர்வு செய்ய கிளிக் செய்யவும்",
     btnDetectDisease:   "நோயை கண்டறி",
     sectionDetectionResult: "🦠 கண்டறிதல் முடிவு",
     sectionTreatmentGuide: "💊 சிகிச்சை வழிகாட்டி",
@@ -505,7 +506,7 @@ const I18N = {
     statusAnalyseSoil:    "மண் தரவை பகுப்பாய்கிறது…",
     statusGenMarket:      "விலை கணிப்பு உருவாக்குகிறது…",
     statusGenAdvisory:    "விரிவான ஆலோசனை அறிக்கை உருவாக்குகிறது…",
-    statusAnalyseImage:   "படத்தை பகுப்பாய்கிறது…",
+    statusAnalyseImage:   "படங்களை பகுப்பாய்கிறது…",
     statusAnalyseAll:     "அனைத்து தொகுதிகளிலும் உங்கள் பண்ணையை பகுப்பாய்கிறது…",
     statusReqLocation:    "இட அனுமதி கோருகிறது…",
     statusGenAdvisoryShort: "ஆலோசனை அறிக்கை உருவாக்குகிறது…",
@@ -514,7 +515,8 @@ const I18N = {
     errSoilRequired:      "N, P, K மற்றும் pH தேவை.",
     errCoords:            "சரியான கோர்டினேட்களை உள்ளிடவும்.",
     errSoilNPKPH:         "N, P, K மற்றும் pH தேவை.",
-    errSelectImage:       "பதிவேற்ற ஒரு இலை படத்தை தேர்வு செய்யவும்.",
+    errSelectImage:       "பதிவேற்ற குறைந்தது ஒரு இலை படத்தை தேர்வு செய்யவும்.",
+    errTooManyImages:     "ஒரு முறை அதிகபட்சம் 5 படங்களை தேர்வு செய்யவும்.",
     errValidLatLon:       "சரியான அட்சரேகை மற்றும் தீர்க்கரேகையை உள்ளிடவும்.",
     days:                 "நாட்கள்",
   },
@@ -948,54 +950,92 @@ async function runDiseaseDetection() {
   if (!fileInput.files || fileInput.files.length === 0) {
     $("disease-error").textContent = t("errSelectImage"); return;
   }
+  if (fileInput.files.length > 5) {
+    $("disease-error").textContent = t("errTooManyImages"); return;
+  }
   $("disease-error").textContent = "";
   $("disease-results").style.display = "none";
   setModuleStatus("disease-status", t("statusAnalyseImage"), "info", true);
 
-  const formData = new FormData();
-  formData.append("image", fileInput.files[0]);
-  formData.append("crop", cropSel);
-
+  const files = Array.from(fileInput.files);
   try {
-    const resp = await fetch("/api/disease-detect", { method: "POST", body: formData });
-    if (!resp.ok) { const e = await resp.json().catch(() => ({})); throw new Error(e.error || `Server error ${resp.status}`); }
-    const data = await resp.json();
-    renderDiseaseResults(data);
-    clearModuleStatus("disease-status");
+    const settled = await Promise.allSettled(files.map(async (file) => {
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("crop", cropSel);
+      const resp = await fetch("/api/disease-detect", { method: "POST", body: formData });
+      if (!resp.ok) { const e = await resp.json().catch(() => ({})); throw new Error(e.error || `Server error ${resp.status}`); }
+      return { data: await resp.json(), fileName: file.name };
+    }));
+    const results = settled.filter(r => r.status === "fulfilled").map(r => r.value);
+    const failures = settled.filter(r => r.status === "rejected");
+    if (failures.length) {
+      const msg = failures.map((r, i) => `${files[settled.indexOf(r)]?.name || `Image ${i+1}`}: ${r.reason?.message}`).join("; ");
+      $("disease-error").textContent = `Some images failed: ${msg}`;
+    }
+    if (results.length) {
+      renderDiseaseResults(results);
+      clearModuleStatus("disease-status");
+    } else {
+      setModuleStatus("disease-status", "All image analyses failed.", "error");
+    }
   } catch (err) {
     setModuleStatus("disease-status", `Error: ${err.message}`, "error");
   }
 }
 
-function renderDiseaseResults(data) {
-  const conf = data.disease.confidence_percent;
-  const confColor = conf >= 85 ? "#c62828" : conf >= 70 ? "#e65100" : "#f9a825";
+function renderDiseaseResults(results) {
+  const list = $("disease-results-list");
+  list.innerHTML = "";
 
-  $("disease-result-card").innerHTML = `
-    <div class="disease-header">
-      <div class="disease-name">🦠 ${data.disease.name}</div>
-      <div class="confidence-badge" style="background:${confColor}">
-        ${conf}% ${t("lblConfidence")}
+  results.forEach(({ data, fileName }, idx) => {
+    const conf = data.disease.confidence_percent;
+    const confColor = conf >= 85 ? "#c62828" : conf >= 70 ? "#e65100" : "#f9a825";
+    const tg = data.treatment_guide;
+
+    const section = document.createElement("div");
+    section.className = "disease-result-section";
+
+    const fileLabel = results.length > 1
+      ? `<div class="result-file-label">📁 ${fileName}</div>` : "";
+
+    section.innerHTML = `
+      ${fileLabel}
+      <p class="section-title">${t("sectionDetectionResult")}</p>
+      <div class="disease-card">
+        <div class="disease-header">
+          <div class="disease-name">🦠 ${data.disease.name}</div>
+          <div class="confidence-badge" style="background:${confColor}">
+            ${conf}% ${t("lblConfidence")}
+          </div>
+        </div>
+        <div class="disease-meta">
+          <span><strong>${t("lblCropLabel")}:</strong> ${data.crop}</span>
+          <span><strong>${t("lblPathogen")}:</strong> ${data.disease.pathogen}</span>
+          ${data.image_size !== "0×0" ? `<span><strong>${t("lblImageSize")}:</strong> ${data.image_size}</span>` : ""}
+        </div>
+        <div class="disease-symptoms"><strong>${t("lblSymptoms")}:</strong> ${data.symptoms}</div>
       </div>
-    </div>
-    <div class="disease-meta">
-      <span><strong>${t("lblCropLabel")}:</strong> ${data.crop}</span>
-      <span><strong>${t("lblPathogen")}:</strong> ${data.disease.pathogen}</span>
-      ${data.image_size !== "0×0" ? `<span><strong>${t("lblImageSize")}:</strong> ${data.image_size}</span>` : ""}
-    </div>
-    <div class="disease-symptoms"><strong>${t("lblSymptoms")}:</strong> ${data.symptoms}</div>`;
+      <p class="section-title">${t("sectionTreatmentGuide")}</p>
+      <div class="treatment-card">
+        <div class="treatment-item"><span class="treat-icon">💊</span>
+          <div><strong>${t("lblTreatment")}</strong><p>${tg.treatment}</p></div>
+        </div>
+        <div class="treatment-item"><span class="treat-icon">🧪</span>
+          <div><strong>${t("lblPesticide")}</strong><p>${tg.pesticide_recommendation}</p></div>
+        </div>
+        <div class="treatment-item"><span class="treat-icon">🛡️</span>
+          <div><strong>${t("lblPrevention")}</strong><p>${tg.prevention_advice}</p></div>
+        </div>
+      </div>`;
 
-  const tg = data.treatment_guide;
-  $("treatment-card").innerHTML = `
-    <div class="treatment-item"><span class="treat-icon">💊</span>
-      <div><strong>${t("lblTreatment")}</strong><p>${tg.treatment}</p></div>
-    </div>
-    <div class="treatment-item"><span class="treat-icon">🧪</span>
-      <div><strong>${t("lblPesticide")}</strong><p>${tg.pesticide_recommendation}</p></div>
-    </div>
-    <div class="treatment-item"><span class="treat-icon">🛡️</span>
-      <div><strong>${t("lblPrevention")}</strong><p>${tg.prevention_advice}</p></div>
-    </div>`;
+    if (idx > 0) {
+      const divider = document.createElement("hr");
+      divider.className = "result-divider";
+      list.appendChild(divider);
+    }
+    list.appendChild(section);
+  });
 
   $("disease-results").style.display = "block";
 }
@@ -1445,19 +1485,26 @@ document.addEventListener("DOMContentLoaded", () => {
     uploadArea.classList.remove("drag-over");
     if (e.dataTransfer.files.length) {
       fileInput.files = e.dataTransfer.files;
-      showImagePreview(e.dataTransfer.files[0]);
+      showImagePreviews(e.dataTransfer.files);
     }
   });
   fileInput.addEventListener("change", () => {
-    if (fileInput.files.length) showImagePreview(fileInput.files[0]);
+    if (fileInput.files.length) showImagePreviews(fileInput.files);
   });
 
-  function showImagePreview(file) {
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      $("upload-preview").innerHTML = `<img src="${ev.target.result}" alt="Leaf preview" class="leaf-preview" />`;
-    };
-    reader.readAsDataURL(file);
+  function showImagePreviews(files) {
+    $("upload-preview").innerHTML = "";
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = document.createElement("img");
+        img.src = ev.target.result;
+        img.alt = "Leaf preview";
+        img.className = "leaf-preview";
+        $("upload-preview").appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
   }
 
   // Market panel
