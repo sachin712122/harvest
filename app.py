@@ -1095,6 +1095,28 @@ DISEASE_DB = {
 }
 
 
+def _organic_result(crop: str, img_size: tuple, model: str, confidence_percent: float) -> dict:
+    """Return a result indicating the crop is organic (confidence below threshold)."""
+    return {
+        "crop": crop,
+        "image_size": f"{img_size[0]}×{img_size[1]}",
+        "model": model,
+        "is_organic": True,
+        "message": "The crop is organic. No disease detected with sufficient confidence.",
+        "disease": {
+            "name": "None",
+            "pathogen": "None",
+            "confidence_percent": confidence_percent,
+        },
+        "symptoms": "No disease symptoms detected.",
+        "treatment_guide": {
+            "treatment": "No treatment required.",
+            "pesticide_recommendation": "No pesticide required.",
+            "prevention_advice": "Continue good agricultural practices.",
+        },
+    }
+
+
 def detect_disease(crop: str, image_bytes: bytes) -> dict:
     """
     Disease detection using EfficientNet-B0 trained on the PlantVillage dataset
@@ -1128,6 +1150,13 @@ def detect_disease(crop: str, image_bytes: bytes) -> dict:
             pred_class = PLANT_VILLAGE_CLASSES[pred_idx.item()]
             confidence_val = round(float(confidence.item()) * 100, 1)
             is_healthy = "healthy" in pred_class.lower()
+
+            if confidence_val < 80:
+                return _organic_result(
+                    crop, img_size,
+                    "EfficientNet-B0 (PlantVillage, 38-class)",
+                    confidence_val,
+                )
 
             info = PLANT_VILLAGE_DISEASE_INFO.get(
                 pred_class,
@@ -1184,6 +1213,13 @@ def detect_disease(crop: str, image_bytes: bytes) -> dict:
 
     confidence = round(base_confidence + rng.uniform(-0.05, 0.05), 2)
     confidence = min(0.97, max(0.55, confidence))
+
+    if round(confidence * 100, 1) < 80:
+        return _organic_result(
+            crop, img_size,
+            "heuristic (EfficientNet-B0 weights not loaded)",
+            round(confidence * 100, 1),
+        )
 
     return {
         "crop": crop,
