@@ -8,6 +8,7 @@
 // ── State ──────────────────────────────────────────────────
 let currentYieldPerAcre = null;
 let selectedCrop = "rice";
+let currentLang = "en";
 
 // Default soil values — must match the HTML `value` attributes in #unified-n/p/k/ph.
 // Used as fallbacks when the user clears the optional input fields.
@@ -69,6 +70,152 @@ const CROP_LABELS = {
   marigold:      "Marigold",
   tuberose:      "Tuberose",
 };
+
+// Tamil crop names
+const CROP_LABELS_TA = {
+  rice:          "அரிசி",
+  wheat:         "கோதுமை",
+  maize:         "சோளம்",
+  barley:        "வாற்கோதுமை",
+  sorghum:       "ஜோவர்",
+  ragi:          "கேழ்வரகு",
+  cumbu:         "கம்பு",
+  thinai:        "தினை",
+  kodo_millet:   "வரகு",
+  little_millet: "சாமை",
+  black_gram:    "உளுந்து",
+  green_gram:    "பாசிப்பருப்பு",
+  red_gram:      "துவரம்பருப்பு",
+  horse_gram:    "கொள்ளு",
+  chickpea:      "கடலை",
+  groundnut:     "நிலக்கடலை",
+  sesame:        "எள்ளு",
+  coconut:       "தேங்காய்",
+  castor:        "ஆமணக்கு",
+  sunflower:     "சூரியகாந்தி",
+  soybean:       "சோயாபீன்",
+  mustard:       "கடுகு",
+  sugarcane:     "கரும்பு",
+  cotton:        "பருத்தி",
+  tobacco:       "புகையிலை",
+  coffee:        "காபி",
+  tea:           "தேயிலை",
+  rubber:        "ரப்பர்",
+  turmeric:      "மஞ்சள்",
+  chilli:        "மிளகாய்",
+  coriander:     "கொத்தமல்லி",
+  pepper:        "மிளகு",
+  cardamom:      "ஏலம்",
+  banana:        "வாழை",
+  mango:         "மாம்பழம்",
+  sapota:        "சப்போட்டா",
+  guava:         "கொய்யா",
+  papaya:        "பப்பாளி",
+  jackfruit:     "பலாப்பழம்",
+  tomato:        "தக்காளி",
+  brinjal:       "கத்தரிக்காய்",
+  onion:         "வெங்காயம்",
+  potato:        "உருளைக்கிழங்கு",
+  cabbage:       "முட்டைக்கோஸ்",
+  drumstick:     "முருங்கை",
+  bhindi:        "வெண்டை",
+  tapioca:       "மரவள்ளி",
+  jasmine:       "மல்லிகை",
+  rose:          "ரோஜா",
+  marigold:      "சாமந்தி",
+  tuberose:      "ஜாதிமல்லி",
+};
+
+// ── i18n translations ──────────────────────────────────────
+const I18N = {
+  en: {
+    heroTitle:          "🌾 Complete Farm Intelligence — All at Once",
+    heroDesc:           "Select your crop and detect your location. Yield prediction, climate forecast, soil analysis, market prices, and personalised advisory will all be calculated together on this single page.",
+    analyseBtn:         "Detect My Location & Analyse Everything",
+    manualCoords:       "or enter coordinates manually:",
+    analyseManual:      "Analyse",
+    latPlaceholder:     "Latitude",
+    lonPlaceholder:     "Longitude",
+    catFoodGrains:      "🌾 Food Grains",
+    catPulses:          "🫘 Pulses",
+    catOilseeds:        "🌻 Oilseeds",
+    catCommercial:      "🏭 Commercial Crops",
+    catPlantation:      "☕ Plantation Crops",
+    catSpices:          "🌶️ Spices",
+    catFruits:          "🍌 Fruits",
+    catVegetables:      "🥕 Vegetables",
+    catFloriculture:    "🌸 Floriculture",
+    catOther:           "✏️ Other",
+    otherCropBtn:       "✏️ Other Crop",
+    otherCropLabel:     "Enter crop name:",
+    otherCropPlaceholder: "e.g. Lemon, Turmeric…",
+    close:              "Close",
+    langToggle:         "🌐 தமிழ்",
+  },
+  ta: {
+    heroTitle:          "🌾 முழுமையான வேளாண் நுண்ணறிவு — ஒரே நேரத்தில்",
+    heroDesc:           "உங்கள் பயிரைத் தேர்ந்தெடுத்து இடத்தைக் கண்டறியுங்கள். விளைச்சல் கணிப்பு, காலநிலை முன்னறிவிப்பு, மண் பகுப்பாய்வு, சந்தை விலைகள் மற்றும் தனிப்பயனாக்கப்பட்ட ஆலோசனை அனைத்தும் இந்த ஒரே பக்கத்தில் கணக்கிடப்படும்.",
+    analyseBtn:         "என் இடத்தைக் கண்டறிந்து அனைத்தையும் பகுப்பாய்க",
+    manualCoords:       "அல்லது கோர்டினேட்களை கைமுறையாக உள்ளிடுக:",
+    analyseManual:      "பகுப்பாய்",
+    latPlaceholder:     "அட்சரேகை",
+    lonPlaceholder:     "தீர்க்கரேகை",
+    catFoodGrains:      "🌾 உணவு தானியங்கள்",
+    catPulses:          "🫘 பருப்பு வகைகள்",
+    catOilseeds:        "🌻 எண்ணெய் வித்துக்கள்",
+    catCommercial:      "🏭 வணிக பயிர்கள்",
+    catPlantation:      "☕ தோட்டப் பயிர்கள்",
+    catSpices:          "🌶️ மசாலாப் பொருட்கள்",
+    catFruits:          "🍌 பழங்கள்",
+    catVegetables:      "🥕 காய்கறிகள்",
+    catFloriculture:    "🌸 மலர்ச்சாகுபடி",
+    catOther:           "✏️ பிற",
+    otherCropBtn:       "✏️ பிற பயிர்",
+    otherCropLabel:     "பயிர் பெயரை உள்ளிடுக:",
+    otherCropPlaceholder: "எ.கா. எலுமிச்சை, மஞ்சள்…",
+    close:              "மூடு",
+    langToggle:         "🌐 English",
+  },
+};
+
+// Apply i18n to the page
+function applyLang(lang) {
+  const t = I18N[lang];
+  const cropLabels = lang === "ta" ? CROP_LABELS_TA : CROP_LABELS;
+
+  // Text nodes
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.dataset.i18n;
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+
+  // Placeholder attributes
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const key = el.dataset.i18nPlaceholder;
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
+
+  // Title attributes
+  document.querySelectorAll("[data-i18n-title]").forEach((el) => {
+    const key = el.dataset.i18nTitle;
+    if (t[key] !== undefined) el.title = t[key];
+  });
+
+  // Crop button labels (use data-i18n-crop attribute)
+  document.querySelectorAll("[data-i18n-crop]").forEach((el) => {
+    const cropKey = el.dataset.i18nCrop;
+    const label = cropLabels[cropKey];
+    if (label) {
+      // Preserve the leading emoji if present
+      const emojiMatch = el.textContent.match(/^(\S+\s)/);
+      el.textContent = emojiMatch ? emojiMatch[1] + label : label;
+    }
+  });
+
+  // Language toggle button label
+  const langBtn = $("lang-toggle-btn");
+  if (langBtn && t.langToggle) langBtn.textContent = t.langToggle;
+}
 
 // Crops available in the market forecast dropdown
 const MARKET_CROPS = new Set([
@@ -804,8 +951,11 @@ async function runUnifiedAnalysis(lat, lon, accuracy) {
     }
 
     const loc = yieldData.location;
+    const cropLabelMap = currentLang === "ta" ? CROP_LABELS_TA : CROP_LABELS;
+    const rawLabel = cropLabelMap[selectedCrop] || CROP_LABELS[selectedCrop]
+      || selectedCrop.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
     setStatus(
-      `✅ Complete analysis for ${loc.district}, ${loc.state} · ${CROP_LABELS[selectedCrop] || selectedCrop}`,
+      `✅ Complete analysis for ${loc.district}, ${loc.state} · ${rawLabel}`,
       "success"
     );
 
@@ -826,10 +976,46 @@ document.addEventListener("DOMContentLoaded", () => {
   // Crop selection
   document.querySelectorAll(".crop-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
+      if (btn.id === "other-crop-btn") {
+        // Show the "Other" input row
+        document.querySelectorAll(".crop-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        $("other-crop-row").style.display = "flex";
+        $("other-crop-input").focus();
+        return;
+      }
       document.querySelectorAll(".crop-btn").forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
       selectedCrop = btn.dataset.crop;
+      // Hide other-crop row when a normal crop is selected
+      $("other-crop-row").style.display = "none";
     });
+  });
+
+  // "Other" crop input — update selectedCrop as user types
+  $("other-crop-input").addEventListener("input", () => {
+    const val = $("other-crop-input").value.trim();
+    selectedCrop = val.toLowerCase().replace(/\s+/g, "_") || "other";
+  });
+  $("other-crop-input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") $("other-crop-input").blur();
+  });
+
+  // Close "Other" input row
+  $("other-crop-close").addEventListener("click", () => {
+    $("other-crop-row").style.display = "none";
+    $("other-crop-input").value = "";
+    // Reactivate "rice" as default
+    document.querySelectorAll(".crop-btn").forEach((b) => b.classList.remove("active"));
+    const riceBtn = document.querySelector(".crop-btn[data-crop='rice']");
+    if (riceBtn) riceBtn.classList.add("active");
+    selectedCrop = "rice";
+  });
+
+  // Language toggle
+  $("lang-toggle-btn").addEventListener("click", () => {
+    currentLang = currentLang === "en" ? "ta" : "en";
+    applyLang(currentLang);
   });
 
   // Unified "Detect & Analyse" button
