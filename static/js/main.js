@@ -8,6 +8,7 @@
 // ── State ──────────────────────────────────────────────────
 let currentYieldPerAcre = null;
 let selectedCrop = "rice";
+let marketChart = null;
 
 const CROP_LABELS = {
   rice:          "Rice",
@@ -63,6 +64,18 @@ const CROP_LABELS = {
   tuberose:      "Tuberose",
 };
 
+// Crops available in the market forecast dropdown
+const MARKET_CROPS = new Set([
+  "rice","wheat","maize","soybean","cotton","sugarcane",
+  "groundnut","mustard","onion","tomato","potato","chickpea"
+]);
+
+// Crops available in the soil / advisory dropdowns
+const SOIL_ADV_CROPS = new Set([
+  "rice","wheat","maize","tomato","potato","cotton",
+  "sugarcane","soybean","groundnut"
+]);
+
 // ── DOM helpers ────────────────────────────────────────────
 const $  = (id) => document.getElementById(id);
 const qs = (sel) => document.querySelector(sel);
@@ -105,16 +118,6 @@ function hideResults() {
 }
 function hideTotalYield() { $("total-yield-result").classList.remove("visible"); }
 
-// ── Tab Navigation ─────────────────────────────────────────
-function switchTab(tabId) {
-  document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
-  document.querySelectorAll(".nav-link").forEach((l) => l.classList.remove("active"));
-  const panel = $(`${tabId}-tab`);
-  if (panel) panel.classList.add("active");
-  const link = document.querySelector(`.nav-link[data-tab="${tabId}"]`);
-  if (link) link.classList.add("active");
-}
-
 // ── Geolocation helper ─────────────────────────────────────
 function getLocation() {
   return new Promise((resolve, reject) => {
@@ -137,7 +140,7 @@ function getLocation() {
   });
 }
 
-// ── Render helpers (existing yield tab) ───────────────────
+// ── Render helpers ─────────────────────────────────────────
 function renderLocation(loc) {
   $("loc-district").textContent = loc.district    || "—";
   $("loc-state").textContent    = loc.state       || "—";
@@ -218,42 +221,6 @@ function renderCropSuitability(suit, crop) {
   section.style.display = "block";
 }
 
-// ── Yield Tab: Detect Location ─────────────────────────────
-async function detectLocation() {
-  hideResults();
-  $("detect-btn").disabled = true;
-  setStatus("Requesting location permission…", "info", true);
-
-  try {
-    const { lat, lon, accuracy } = await getLocation();
-    setStatus(`Location captured (±${Math.round(accuracy)} m). Fetching data…`, "info", true);
-
-    $("coord-lat").textContent      = lat.toFixed(5);
-    $("coord-lon").textContent      = lon.toFixed(5);
-    $("coord-accuracy").textContent = `±${Math.round(accuracy)} m`;
-
-    const resp = await fetch("/api/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ lat, lon, crop: selectedCrop }),
-    });
-    if (!resp.ok) { const e = await resp.json().catch(() => ({})); throw new Error(e.error || `Server error ${resp.status}`); }
-
-    const data = await resp.json();
-    renderLocation(data.location);
-    renderWeather(data.weather);
-    renderSoil(data.soil, data.season);
-    renderPrediction(data.prediction, data.crop || selectedCrop);
-    renderCropSuitability(data.crop_suitability, data.crop || selectedCrop);
-    showResults();
-    setStatus(`Analysis complete for ${data.location.district}, ${data.location.state}.`, "success");
-  } catch (err) {
-    setStatus(`Error: ${err.message}`, "error");
-  } finally {
-    $("detect-btn").disabled = false;
-  }
-}
-
 // ── Yield Calculator ───────────────────────────────────────
 async function calculateYield() {
   const areaInput = $("area-acres").value.trim();
@@ -285,7 +252,6 @@ async function calculateYield() {
 // ══════════════════════════════════════════════════════════
 async function runClimateAnalysis(lat, lon) {
   setModuleStatus("climate-status", "Fetching 14-day forecast…", "info", true);
-  $("climate-results").style.display = "none";
 
   try {
     const resp = await fetch("/api/climate-analyze", {
@@ -340,8 +306,6 @@ function renderClimateResults(data) {
        <td>${d.et0_mm}</td>
      </tr>`
   ).join("");
-
-  $("climate-results").style.display = "block";
 }
 
 // ══════════════════════════════════════════════════════════
@@ -718,59 +682,183 @@ function renderAdvisoryResults(data) {
   $("advisory-results").style.display = "block";
 }
 
+// ══════════════════════════════════════════════════════════
+// Unified Analysis — runs ALL modules simultaneously
+// ══════════════════════════════════════════════════════════
+async function runUnifiedAnalysis(lat, lon, accuracy) {
+  const btn    = $("unified-analyse-btn");
+  const manBtn = $("unified-manual-btn");
+  btn.disabled = true;
+  if (manBtn) manBtn.disabled = true;
+
+  setStatus("Analysing your farm across all modules…", "info", true);
+
+  // Show dashboard early so loading states are visible
+  $("unified-dashboard").style.display = "grid";
+
+  // Fill coordinate display
+  $("coord-lat").textContent      = lat.toFixed(5);
+  $("coord-lon").textContent      = lon.toFixed(5);
+  $("coord-accuracy").textContent = accuracy ? `±${Math.round(accuracy)} m` : "—";
+
+  // Read optional unified form inputs (with sensible defaults)
+  const n    = parseFloat($("unified-n").value)    || 80;
+  const p    = parseFloat($("unified-p").value)    || 45;
+  const k    = parseFloat($("unified-k").value)    || 50;
+  const ph   = parseFloat($("unified-ph").value)   || 6.5;
+  const area = parseFloat($("unified-area").value) || null;
+
+  // Pre-fill soil form with the values being used
+  $("soil-n").value  = n;
+  $("soil-p").value  = p;
+  $("soil-k").value  = k;
+  $("soil-ph").value = ph;
+  const soilCropVal = SOIL_ADV_CROPS.has(selectedCrop) ? selectedCrop : "default";
+  $("soil-crop-sel").value = soilCropVal;
+
+  // Pre-fill advisory custom form
+  $("adv-lat").value  = lat.toFixed(5);
+  $("adv-lon").value  = lon.toFixed(5);
+  $("adv-n").value    = n;
+  $("adv-p").value    = p;
+  $("adv-k").value    = k;
+  $("adv-ph").value   = ph;
+  const advCropVal = SOIL_ADV_CROPS.has(selectedCrop) ? selectedCrop : "rice";
+  $("adv-crop").value = advCropVal;
+  if (area) $("adv-area").value = area;
+
+  // Sync market crop selector
+  const mktCropVal = MARKET_CROPS.has(selectedCrop) ? selectedCrop : "rice";
+  $("market-crop-sel").value = mktCropVal;
+
+  try {
+    // Show loading states in all panels
+    setModuleStatus("climate-status",  "Fetching 14-day forecast…", "info", true);
+    setModuleStatus("market-status",   "Generating price forecast…", "info", true);
+    setModuleStatus("soil-status",     "Analysing soil data…", "info", true);
+    setModuleStatus("advisory-status", "Generating advisory report…", "info", true);
+
+    // Run yield + climate + market in parallel
+    const [yieldData, climateData, marketData] = await Promise.all([
+      fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lat, lon, crop: selectedCrop, area_acres: area }),
+      }).then((r) => r.json()),
+
+      fetch("/api/climate-analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lat, lon }),
+      }).then((r) => r.json()),
+
+      fetch("/api/market-forecast", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ crop: mktCropVal, days: 14 }),
+      }).then((r) => r.json()),
+    ]);
+
+    // Render yield / location / weather / soil
+    if (yieldData.error) throw new Error(yieldData.error);
+    renderLocation(yieldData.location);
+    renderWeather(yieldData.weather);
+    renderSoil(yieldData.soil, yieldData.season);
+    renderPrediction(yieldData.prediction, yieldData.crop || selectedCrop);
+    renderCropSuitability(yieldData.crop_suitability, yieldData.crop || selectedCrop);
+    showResults();
+    if (area && $("area-acres")) $("area-acres").value = area;
+
+    // Render climate
+    if (climateData.error) throw new Error(climateData.error);
+    renderClimateResults(climateData);
+    clearModuleStatus("climate-status");
+
+    // Render market
+    if (marketData.error) throw new Error(marketData.error);
+    renderMarketResults(marketData);
+    clearModuleStatus("market-status");
+
+    // Now run soil + advisory in parallel
+    const advBody = { lat, lon, N: n, P: p, K: k, pH: ph, crop: advCropVal };
+    if (area) advBody.area_acres = area;
+
+    const [, advisoryData] = await Promise.all([
+      runSoilAnalysis(),
+      fetch("/api/full-analysis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(advBody),
+      }).then((r) => r.json()),
+    ]);
+
+    if (advisoryData && !advisoryData.error) {
+      renderAdvisoryResults(advisoryData);
+      clearModuleStatus("advisory-status");
+    } else if (advisoryData && advisoryData.error) {
+      setModuleStatus("advisory-status", `Advisory error: ${advisoryData.error}`, "error");
+    }
+
+    const loc = yieldData.location;
+    setStatus(
+      `✅ Complete analysis for ${loc.district}, ${loc.state} · ${CROP_LABELS[selectedCrop] || selectedCrop}`,
+      "success"
+    );
+
+    // Smooth scroll to dashboard
+    $("unified-dashboard").scrollIntoView({ behavior: "smooth", block: "start" });
+
+  } catch (err) {
+    setStatus(`Error: ${err.message}`, "error");
+  } finally {
+    btn.disabled = false;
+    if (manBtn) manBtn.disabled = false;
+  }
+}
+
 // ── Event listeners ────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
 
-  // Yield tab
-  $("detect-btn").addEventListener("click", detectLocation);
-  $("calc-btn").addEventListener("click", calculateYield);
-  $("area-acres").addEventListener("keydown", (e) => { if (e.key === "Enter") calculateYield(); });
+  // Crop selection
   document.querySelectorAll(".crop-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".crop-btn").forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
       selectedCrop = btn.dataset.crop;
-      hideResults();
-      hideStatus();
     });
   });
 
-  // Tab navigation
-  document.querySelectorAll(".nav-link").forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      switchTab(link.dataset.tab);
-    });
-  });
-
-  // Climate tab
-  $("climate-detect-btn").addEventListener("click", async () => {
+  // Unified "Detect & Analyse" button
+  $("unified-analyse-btn").addEventListener("click", async () => {
     try {
-      $("climate-detect-btn").disabled = true;
-      const { lat, lon } = await getLocation();
-      $("climate-lat").value = lat.toFixed(5);
-      $("climate-lon").value = lon.toFixed(5);
-      await runClimateAnalysis(lat, lon);
+      $("unified-analyse-btn").disabled = true;
+      setStatus("Requesting location permission…", "info", true);
+      const { lat, lon, accuracy } = await getLocation();
+      await runUnifiedAnalysis(lat, lon, accuracy);
     } catch (err) {
-      setModuleStatus("climate-status", `Error: ${err.message}`, "error");
-    } finally {
-      $("climate-detect-btn").disabled = false;
+      setStatus(`Error: ${err.message}`, "error");
+      $("unified-analyse-btn").disabled = false;
     }
   });
 
-  $("climate-manual-btn").addEventListener("click", async () => {
-    const lat = parseFloat($("climate-lat").value);
-    const lon = parseFloat($("climate-lon").value);
+  // Manual coordinate entry button
+  $("unified-manual-btn").addEventListener("click", async () => {
+    const lat = parseFloat($("unified-lat").value);
+    const lon = parseFloat($("unified-lon").value);
     if (isNaN(lat) || isNaN(lon)) {
-      setModuleStatus("climate-status", "Please enter valid latitude and longitude.", "error"); return;
+      setStatus("Please enter valid latitude and longitude.", "error"); return;
     }
-    await runClimateAnalysis(lat, lon);
+    await runUnifiedAnalysis(lat, lon, null);
   });
 
-  // Soil tab
+  // Yield calculator
+  $("calc-btn").addEventListener("click", calculateYield);
+  $("area-acres").addEventListener("keydown", (e) => { if (e.key === "Enter") calculateYield(); });
+
+  // Soil panel
   $("soil-btn").addEventListener("click", runSoilAnalysis);
 
-  // Disease tab
+  // Disease panel
   $("disease-btn").addEventListener("click", runDiseaseDetection);
 
   // Upload area click
@@ -799,13 +887,13 @@ document.addEventListener("DOMContentLoaded", () => {
     reader.readAsDataURL(file);
   }
 
-  // Market tab
+  // Market panel
   $("market-btn").addEventListener("click", runMarketForecast);
   $("market-days").addEventListener("input", () => {
     $("market-days-val").textContent = `${$("market-days").value} days`;
   });
 
-  // Advisory tab
+  // Advisory re-run form
   $("advisory-btn").addEventListener("click", runAdvisory);
   $("adv-loc-btn").addEventListener("click", async () => {
     try {
