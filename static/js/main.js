@@ -9,6 +9,7 @@
 let currentYieldPerAcre = null;
 let selectedCrop = "rice";
 let currentLang = "en";
+let _lastMarketData = null;  // cache for chart redraw on resize
 
 // Default soil values — must match the HTML `value` attributes in #unified-n/p/k/ph.
 // Used as fallbacks when the user clears the optional input fields.
@@ -1070,6 +1071,7 @@ async function runMarketForecast() {
 }
 
 function renderMarketResults(data) {
+  _lastMarketData = data;  // cache for resize redraws
   const an = data.analysis;
 
   // Summary cards
@@ -1121,11 +1123,14 @@ function drawLineChart(ctx, canvas, labels, values, yLabel) {
 
   ctx.clearRect(0, 0, W, H);
 
+  if (!values || values.length === 0) return;
+
   const minV = Math.min(...values) * 0.98;
   const maxV = Math.max(...values) * 1.02;
   const rangeV = maxV - minV || 1;
+  const xDenom = values.length > 1 ? values.length - 1 : 1;
 
-  const xScale = (i) => padL + (i / (values.length - 1)) * chartW;
+  const xScale = (i) => padL + (i / xDenom) * chartW;
   const yScale = (v) => padT + chartH - ((v - minV) / rangeV) * chartH;
 
   // Grid lines
@@ -1522,6 +1527,23 @@ document.addEventListener("DOMContentLoaded", () => {
     } finally {
       $("adv-loc-btn").disabled = false;
     }
+  });
+
+  // Redraw market chart on window resize to maintain responsiveness
+  let _resizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(_resizeTimer);
+    _resizeTimer = setTimeout(() => {
+      if (_lastMarketData) {
+        const canvas = $("market-chart");
+        if (canvas && canvas.closest("#market-results") &&
+            canvas.closest("#market-results").style.display !== "none") {
+          const labels = _lastMarketData.price_series.map((d) => d.date.slice(5));
+          const prices = _lastMarketData.price_series.map((d) => d.price_per_quintal);
+          drawLineChart(canvas.getContext("2d"), canvas, labels, prices, "₹/quintal");
+        }
+      }
+    }, 150);
   });
 
 });
