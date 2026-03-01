@@ -8,7 +8,13 @@
 // ── State ──────────────────────────────────────────────────
 let currentYieldPerAcre = null;
 let selectedCrop = "rice";
-let marketChart = null;
+
+// Default soil values — must match the HTML `value` attributes in #unified-n/p/k/ph.
+// Used as fallbacks when the user clears the optional input fields.
+const DEFAULT_N  = 80;
+const DEFAULT_P  = 45;
+const DEFAULT_K  = 50;
+const DEFAULT_PH = 6.5;
 
 const CROP_LABELS = {
   rice:          "Rice",
@@ -522,9 +528,7 @@ function renderMarketResults(data) {
 
   const canvas = $("market-chart");
   const ctx = canvas.getContext("2d");
-  if (marketChart) marketChart.destroy();
-
-  // Simple line chart (no external library)
+  // Simple line chart (no external library — no destroy needed)
   drawLineChart(ctx, canvas, labels, prices, "₹/quintal");
 
   // Table
@@ -702,10 +706,10 @@ async function runUnifiedAnalysis(lat, lon, accuracy) {
   $("coord-accuracy").textContent = accuracy ? `±${Math.round(accuracy)} m` : "—";
 
   // Read optional unified form inputs (with sensible defaults)
-  const n    = parseFloat($("unified-n").value)    || 80;
-  const p    = parseFloat($("unified-p").value)    || 45;
-  const k    = parseFloat($("unified-k").value)    || 50;
-  const ph   = parseFloat($("unified-ph").value)   || 6.5;
+  const n    = parseFloat($("unified-n").value)    || DEFAULT_N;
+  const p    = parseFloat($("unified-p").value)    || DEFAULT_P;
+  const k    = parseFloat($("unified-k").value)    || DEFAULT_K;
+  const ph   = parseFloat($("unified-ph").value)   || DEFAULT_PH;
   const area = parseFloat($("unified-area").value) || null;
 
   // Pre-fill soil form with the values being used
@@ -744,19 +748,19 @@ async function runUnifiedAnalysis(lat, lon, accuracy) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ lat, lon, crop: selectedCrop, area_acres: area }),
-      }).then((r) => r.json()),
+      }).then((r) => { if (!r.ok) throw new Error(`Yield API error ${r.status}`); return r.json(); }),
 
       fetch("/api/climate-analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ lat, lon }),
-      }).then((r) => r.json()),
+      }).then((r) => { if (!r.ok) throw new Error(`Climate API error ${r.status}`); return r.json(); }),
 
       fetch("/api/market-forecast", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ crop: mktCropVal, days: 14 }),
-      }).then((r) => r.json()),
+      }).then((r) => { if (!r.ok) throw new Error(`Market API error ${r.status}`); return r.json(); }),
     ]);
 
     // Render yield / location / weather / soil
@@ -789,7 +793,7 @@ async function runUnifiedAnalysis(lat, lon, accuracy) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(advBody),
-      }).then((r) => r.json()),
+      }).then((r) => { if (!r.ok) throw new Error(`Advisory API error ${r.status}`); return r.json(); }),
     ]);
 
     if (advisoryData && !advisoryData.error) {
