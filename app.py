@@ -559,8 +559,428 @@ def _compute_sowing_window(forecast_days: list) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Disease Detection Module
+# Disease Detection Module — EfficientNet-B0 (PlantVillage)
 # ---------------------------------------------------------------------------
+
+# Optional PyTorch imports – fall back gracefully if not installed
+try:
+    import torch
+    import torch.nn as nn
+    from torchvision import models as tv_models, transforms as tv_transforms
+    _TORCH_AVAILABLE = True
+except ImportError:  # pragma: no cover
+    _TORCH_AVAILABLE = False
+
+# 38-class PlantVillage label list (must match training order used by the
+# abdallahwagih/plant-village-disease-classification-acc-99-6 Kaggle kernel)
+PLANT_VILLAGE_CLASSES = [
+    "Apple___Apple_scab",
+    "Apple___Black_rot",
+    "Apple___Cedar_apple_rust",
+    "Apple___healthy",
+    "Blueberry___healthy",
+    "Cherry_(including_sour)___Powdery_mildew",
+    "Cherry_(including_sour)___healthy",
+    "Corn_(maize)___Cercospora_leaf_spot_Gray_leaf_spot",
+    "Corn_(maize)___Common_rust_",
+    "Corn_(maize)___Northern_Leaf_Blight",
+    "Corn_(maize)___healthy",
+    "Grape___Black_rot",
+    "Grape___Esca_(Black_Measles)",
+    "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)",
+    "Grape___healthy",
+    "Orange___Haunglongbing_(Citrus_greening)",
+    "Peach___Bacterial_spot",
+    "Peach___healthy",
+    "Pepper,_bell___Bacterial_spot",
+    "Pepper,_bell___healthy",
+    "Potato___Early_blight",
+    "Potato___Late_blight",
+    "Potato___healthy",
+    "Raspberry___healthy",
+    "Soybean___healthy",
+    "Squash___Powdery_mildew",
+    "Strawberry___Leaf_scorch",
+    "Strawberry___healthy",
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___Septoria_leaf_spot",
+    "Tomato___Spider_mites_Two-spotted_spider_mite",
+    "Tomato___Target_Spot",
+    "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+    "Tomato___Tomato_mosaic_virus",
+    "Tomato___healthy",
+]
+
+# Disease metadata keyed by PlantVillage class label
+PLANT_VILLAGE_DISEASE_INFO: dict = {
+    "Apple___Apple_scab": {
+        "name": "Apple Scab",
+        "pathogen": "Venturia inaequalis (fungal)",
+        "symptoms": "Olive-green to brown velvety lesions on leaves and fruit surface.",
+        "treatment": "Apply myclobutanil or captan fungicide at green tip stage.",
+        "pesticide": "Myclobutanil 20 WP @ 0.5 g/L water",
+        "prevention": "Remove fallen leaves; prune for air circulation; use resistant varieties.",
+    },
+    "Apple___Black_rot": {
+        "name": "Apple Black Rot",
+        "pathogen": "Botryosphaeria obtusa (fungal)",
+        "symptoms": "Brown, rotting lesions on fruit; leaf spots with purple margins.",
+        "treatment": "Apply captan or thiophanate-methyl fungicide.",
+        "pesticide": "Captan 50 WP @ 2 g/L water",
+        "prevention": "Remove mummified fruit; prune dead wood; improve drainage.",
+    },
+    "Apple___Cedar_apple_rust": {
+        "name": "Cedar Apple Rust",
+        "pathogen": "Gymnosporangium juniperi-virginianae (fungal)",
+        "symptoms": "Bright orange-yellow spots on upper leaf surface with tube-like structures beneath.",
+        "treatment": "Apply myclobutanil or propiconazole at pink-bud stage.",
+        "pesticide": "Propiconazole 25 EC @ 1 mL/L water",
+        "prevention": "Remove nearby juniper/cedar hosts; plant resistant apple varieties.",
+    },
+    "Apple___healthy": {
+        "name": "Healthy",
+        "pathogen": "None",
+        "symptoms": "No disease symptoms detected.",
+        "treatment": "No treatment required.",
+        "pesticide": "None",
+        "prevention": "Maintain regular orchard sanitation and monitoring.",
+    },
+    "Blueberry___healthy": {
+        "name": "Healthy",
+        "pathogen": "None",
+        "symptoms": "No disease symptoms detected.",
+        "treatment": "No treatment required.",
+        "pesticide": "None",
+        "prevention": "Ensure acidic soil (pH 4.5–5.5) and adequate drainage.",
+    },
+    "Cherry_(including_sour)___Powdery_mildew": {
+        "name": "Cherry Powdery Mildew",
+        "pathogen": "Podosphaera clandestina (fungal)",
+        "symptoms": "White powdery coating on young leaves; leaf curling and distortion.",
+        "treatment": "Spray sulphur-based fungicide or potassium bicarbonate.",
+        "pesticide": "Wettable Sulphur 80 WP @ 2 g/L water",
+        "prevention": "Prune for airflow; avoid overhead irrigation; remove infected shoots.",
+    },
+    "Cherry_(including_sour)___healthy": {
+        "name": "Healthy",
+        "pathogen": "None",
+        "symptoms": "No disease symptoms detected.",
+        "treatment": "No treatment required.",
+        "pesticide": "None",
+        "prevention": "Maintain orchard hygiene and balanced fertilization.",
+    },
+    "Corn_(maize)___Cercospora_leaf_spot_Gray_leaf_spot": {
+        "name": "Gray Leaf Spot (Cercospora)",
+        "pathogen": "Cercospora zeae-maydis (fungal)",
+        "symptoms": "Rectangular grey-tan lesions with yellow halos parallel to leaf veins.",
+        "treatment": "Apply propiconazole or azoxystrobin fungicide.",
+        "pesticide": "Propiconazole 25 EC @ 1 mL/L water",
+        "prevention": "Crop rotation; use resistant hybrids; improve air circulation.",
+    },
+    "Corn_(maize)___Common_rust_": {
+        "name": "Common Rust",
+        "pathogen": "Puccinia sorghi (fungal)",
+        "symptoms": "Small, oval, powdery brick-red pustules on both leaf surfaces.",
+        "treatment": "Apply mancozeb or triazole fungicides at early infection.",
+        "pesticide": "Mancozeb 75 WP @ 2.5 g/L water",
+        "prevention": "Plant resistant hybrids; early sowing to avoid peak infection.",
+    },
+    "Corn_(maize)___Northern_Leaf_Blight": {
+        "name": "Northern Leaf Blight",
+        "pathogen": "Exserohilum turcicum (fungal)",
+        "symptoms": "Large, elongated grey-green to tan lesions on leaves.",
+        "treatment": "Spray mancozeb or propiconazole fungicide.",
+        "pesticide": "Mancozeb 75 WP @ 2.5 g/L water",
+        "prevention": "Crop rotation; remove infected debris; use resistant varieties.",
+    },
+    "Corn_(maize)___healthy": {
+        "name": "Healthy",
+        "pathogen": "None",
+        "symptoms": "No disease symptoms detected.",
+        "treatment": "No treatment required.",
+        "pesticide": "None",
+        "prevention": "Maintain balanced nitrogen fertilization and adequate spacing.",
+    },
+    "Grape___Black_rot": {
+        "name": "Grape Black Rot",
+        "pathogen": "Guignardia bidwellii (fungal)",
+        "symptoms": "Brown circular spots on leaves; shrivelled black mummified berries.",
+        "treatment": "Apply myclobutanil or mancozeb at early season.",
+        "pesticide": "Myclobutanil 20 WP @ 0.5 g/L water",
+        "prevention": "Remove mummified berries; prune for airflow; apply fungicide at bud break.",
+    },
+    "Grape___Esca_(Black_Measles)": {
+        "name": "Esca (Black Measles)",
+        "pathogen": "Phaeomoniella chlamydospora and Phaeoacremonium spp. (fungal)",
+        "symptoms": "Tiger-stripe leaf discoloration; dark streaks in wood; berry spotting.",
+        "treatment": "No curative treatment; remove and destroy infected vines.",
+        "pesticide": "Preventative: trunk wound protectant paste after pruning.",
+        "prevention": "Avoid large pruning wounds; use pruning wound sealant; remove infected wood.",
+    },
+    "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)": {
+        "name": "Grape Leaf Blight",
+        "pathogen": "Pseudocercospora vitis (fungal)",
+        "symptoms": "Irregular dark brown lesions with yellow margins on leaves.",
+        "treatment": "Apply copper-based fungicide or mancozeb.",
+        "pesticide": "Copper Oxychloride 50 WP @ 2.5 g/L water",
+        "prevention": "Ensure good air circulation; remove infected leaves promptly.",
+    },
+    "Grape___healthy": {
+        "name": "Healthy",
+        "pathogen": "None",
+        "symptoms": "No disease symptoms detected.",
+        "treatment": "No treatment required.",
+        "pesticide": "None",
+        "prevention": "Maintain canopy management and balanced irrigation.",
+    },
+    "Orange___Haunglongbing_(Citrus_greening)": {
+        # Note: "Haunglongbing" is the spelling used in the PlantVillage dataset;
+        # the standard scientific name is Huanglongbing.
+        "name": "Citrus Greening (Huanglongbing)",
+        "pathogen": "Candidatus Liberibacter asiaticus (bacterial, psyllid vector)",
+        "symptoms": "Asymmetric yellowing (blotchy mottle) of leaves; lopsided bitter fruit.",
+        "treatment": "No cure; remove and destroy infected trees.",
+        "pesticide": "Control Asian citrus psyllid vector: Imidacloprid 17.8 SL @ 0.5 mL/L",
+        "prevention": "Use certified disease-free nursery stock; control psyllid populations.",
+    },
+    "Peach___Bacterial_spot": {
+        "name": "Peach Bacterial Spot",
+        "pathogen": "Xanthomonas arboricola pv. pruni (bacterial)",
+        "symptoms": "Water-soaked spots on leaves turning angular and brown; fruit cracking.",
+        "treatment": "Apply copper-based bactericide at petal fall.",
+        "pesticide": "Copper Hydroxide 53.8 WDG @ 1.5 g/L water",
+        "prevention": "Plant resistant varieties; avoid wounding; improve air circulation.",
+    },
+    "Peach___healthy": {
+        "name": "Healthy",
+        "pathogen": "None",
+        "symptoms": "No disease symptoms detected.",
+        "treatment": "No treatment required.",
+        "pesticide": "None",
+        "prevention": "Regular pruning and balanced fertilization.",
+    },
+    "Pepper,_bell___Bacterial_spot": {
+        "name": "Pepper Bacterial Spot",
+        "pathogen": "Xanthomonas campestris pv. vesicatoria (bacterial)",
+        "symptoms": "Small, water-soaked spots with yellow halos on leaves; raised scabby fruit lesions.",
+        "treatment": "Apply copper-based bactericide.",
+        "pesticide": "Copper Oxychloride 50 WP @ 2.5 g/L water",
+        "prevention": "Use disease-free certified seed; avoid overhead irrigation.",
+    },
+    "Pepper,_bell___healthy": {
+        "name": "Healthy",
+        "pathogen": "None",
+        "symptoms": "No disease symptoms detected.",
+        "treatment": "No treatment required.",
+        "pesticide": "None",
+        "prevention": "Maintain crop rotation and balanced NPK fertilization.",
+    },
+    "Potato___Early_blight": {
+        "name": "Potato Early Blight",
+        "pathogen": "Alternaria solani (fungal)",
+        "symptoms": "Circular dark brown spots with concentric rings (target-board pattern) on older leaves.",
+        "treatment": "Apply mancozeb or chlorothalonil fungicide.",
+        "pesticide": "Mancozeb 75 WP @ 2.5 g/L water",
+        "prevention": "Crop rotation; remove infected plant debris; adequate plant spacing.",
+    },
+    "Potato___Late_blight": {
+        "name": "Potato Late Blight",
+        "pathogen": "Phytophthora infestans (oomycete)",
+        "symptoms": "Water-soaked dark lesions on leaves; white mold on leaf undersides; tuber rot.",
+        "treatment": "Apply metalaxyl + mancozeb at first sign.",
+        "pesticide": "Metalaxyl 8% + Mancozeb 64% WP @ 2.5 g/L water",
+        "prevention": "Plant certified seed; improve air circulation; avoid overhead irrigation.",
+    },
+    "Potato___healthy": {
+        "name": "Healthy",
+        "pathogen": "None",
+        "symptoms": "No disease symptoms detected.",
+        "treatment": "No treatment required.",
+        "pesticide": "None",
+        "prevention": "Use certified disease-free seed potatoes; practice crop rotation.",
+    },
+    "Raspberry___healthy": {
+        "name": "Healthy",
+        "pathogen": "None",
+        "symptoms": "No disease symptoms detected.",
+        "treatment": "No treatment required.",
+        "pesticide": "None",
+        "prevention": "Maintain good drainage and remove old fruiting canes after harvest.",
+    },
+    "Soybean___healthy": {
+        "name": "Healthy",
+        "pathogen": "None",
+        "symptoms": "No disease symptoms detected.",
+        "treatment": "No treatment required.",
+        "pesticide": "None",
+        "prevention": "Practice crop rotation and use certified disease-free seed.",
+    },
+    "Squash___Powdery_mildew": {
+        "name": "Squash Powdery Mildew",
+        "pathogen": "Podosphaera xanthii (fungal)",
+        "symptoms": "White powdery coating on upper and lower leaf surfaces; leaf yellowing.",
+        "treatment": "Spray potassium bicarbonate or sulphur-based fungicide.",
+        "pesticide": "Wettable Sulphur 80 WP @ 2 g/L water",
+        "prevention": "Plant resistant varieties; improve air circulation; avoid excess nitrogen.",
+    },
+    "Strawberry___Leaf_scorch": {
+        "name": "Strawberry Leaf Scorch",
+        "pathogen": "Diplocarpon earlianum (fungal)",
+        "symptoms": "Small dark purple spots on leaves that enlarge and cause leaf tip scorching.",
+        "treatment": "Apply captan or myclobutanil fungicide.",
+        "pesticide": "Captan 50 WP @ 2 g/L water",
+        "prevention": "Remove and destroy infected leaves; avoid overhead irrigation.",
+    },
+    "Strawberry___healthy": {
+        "name": "Healthy",
+        "pathogen": "None",
+        "symptoms": "No disease symptoms detected.",
+        "treatment": "No treatment required.",
+        "pesticide": "None",
+        "prevention": "Maintain adequate spacing and remove old leaves regularly.",
+    },
+    "Tomato___Bacterial_spot": {
+        "name": "Tomato Bacterial Spot",
+        "pathogen": "Xanthomonas perforans (bacterial)",
+        "symptoms": "Small, dark, water-soaked spots with yellow halos on leaves; scabby fruit spots.",
+        "treatment": "Apply copper-based bactericide at first sign.",
+        "pesticide": "Copper Hydroxide 53.8 WDG @ 1.5 g/L water",
+        "prevention": "Use disease-free seed; avoid overhead irrigation; crop rotation.",
+    },
+    "Tomato___Early_blight": {
+        "name": "Tomato Early Blight",
+        "pathogen": "Alternaria solani (fungal)",
+        "symptoms": "Circular brown spots with concentric rings on older leaves; stem lesions.",
+        "treatment": "Spray copper oxychloride or mancozeb.",
+        "pesticide": "Copper Oxychloride 50 WP @ 2.5 g/L water",
+        "prevention": "Mulching; remove infected leaves; avoid overhead irrigation.",
+    },
+    "Tomato___Late_blight": {
+        "name": "Tomato Late Blight",
+        "pathogen": "Phytophthora infestans (oomycete)",
+        "symptoms": "Greasy grey-green water-soaked lesions on leaves; white sporulation beneath.",
+        "treatment": "Apply metalaxyl + mancozeb immediately.",
+        "pesticide": "Metalaxyl 8% + Mancozeb 64% WP @ 2.5 g/L water",
+        "prevention": "Avoid overhead irrigation; remove infected plants; use resistant varieties.",
+    },
+    "Tomato___Leaf_Mold": {
+        "name": "Tomato Leaf Mold",
+        "pathogen": "Passalora fulva (fungal)",
+        "symptoms": "Pale greenish-yellow spots on upper leaf surface; olive-green mold beneath.",
+        "treatment": "Apply mancozeb or chlorothalonil fungicide.",
+        "pesticide": "Mancozeb 75 WP @ 2.5 g/L water",
+        "prevention": "Improve ventilation in greenhouse; reduce humidity; remove infected leaves.",
+    },
+    "Tomato___Septoria_leaf_spot": {
+        "name": "Septoria Leaf Spot",
+        "pathogen": "Septoria lycopersici (fungal)",
+        "symptoms": "Numerous small circular spots with grey centres and dark margins on lower leaves.",
+        "treatment": "Apply mancozeb or copper-based fungicide.",
+        "pesticide": "Mancozeb 75 WP @ 2 g/L water",
+        "prevention": "Crop rotation; remove infected leaves; avoid overhead irrigation.",
+    },
+    "Tomato___Spider_mites_Two-spotted_spider_mite": {
+        "name": "Spider Mites (Two-Spotted)",
+        "pathogen": "Tetranychus urticae (arachnid pest)",
+        "symptoms": "Fine stippling/bronzing on leaves; webbing on undersides in heavy infestations.",
+        "treatment": "Apply abamectin or spiromesifen miticide.",
+        "pesticide": "Abamectin 1.8 EC @ 0.5 mL/L water",
+        "prevention": "Maintain adequate irrigation; avoid dusty conditions; introduce predatory mites.",
+    },
+    "Tomato___Target_Spot": {
+        "name": "Target Spot",
+        "pathogen": "Corynespora cassiicola (fungal)",
+        "symptoms": "Brown circular lesions with concentric rings on leaves; dark spots on fruit.",
+        "treatment": "Apply azoxystrobin or mancozeb fungicide.",
+        "pesticide": "Azoxystrobin 23 SC @ 1 mL/L water",
+        "prevention": "Crop rotation; remove plant debris; avoid excessive moisture.",
+    },
+    "Tomato___Tomato_Yellow_Leaf_Curl_Virus": {
+        "name": "Tomato Yellow Leaf Curl Virus",
+        "pathogen": "Begomovirus (viral, whitefly vector)",
+        "symptoms": "Upward curling of leaves, yellowing, puckering, and stunted growth.",
+        "treatment": "Control whitefly vector with imidacloprid or thiamethoxam.",
+        "pesticide": "Imidacloprid 17.8 SL @ 0.5 mL/L water",
+        "prevention": "Use reflective mulch; install yellow sticky traps; use virus-resistant varieties.",
+    },
+    "Tomato___Tomato_mosaic_virus": {
+        "name": "Tomato Mosaic Virus",
+        "pathogen": "Tomato mosaic virus (ToMV, viral)",
+        "symptoms": "Mosaic pattern of light and dark green on leaves; leaf distortion; stunting.",
+        "treatment": "No chemical cure; remove and destroy infected plants.",
+        "pesticide": "Disinfect tools with 10% bleach solution between plants.",
+        "prevention": "Use virus-free certified seed; control aphid and whitefly vectors.",
+    },
+    "Tomato___healthy": {
+        "name": "Healthy",
+        "pathogen": "None",
+        "symptoms": "No disease symptoms detected.",
+        "treatment": "No treatment required.",
+        "pesticide": "None",
+        "prevention": "Maintain regular monitoring, balanced fertilization, and crop rotation.",
+    },
+}
+
+# EfficientNet-B0 model path (user must provide the weights file)
+DISEASE_MODEL_PATH = os.path.join(os.path.dirname(__file__), "plant_disease_efficientnet_b0.pth")
+_disease_model = None
+_disease_model_lock = threading.Lock()
+
+# ImageNet normalisation used during PlantVillage EfficientNet-B0 training
+if _TORCH_AVAILABLE:
+    _DISEASE_TRANSFORM = tv_transforms.Compose([
+        tv_transforms.Resize((224, 224)),
+        tv_transforms.ToTensor(),
+        tv_transforms.Normalize(
+            mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225],
+        ),
+    ])
+else:
+    _DISEASE_TRANSFORM = None
+
+
+def _get_disease_model():
+    """Load the EfficientNet-B0 PlantVillage model (singleton, thread-safe).
+
+    Returns None if PyTorch is unavailable or the weights file is missing.
+    Place ``plant_disease_efficientnet_b0.pth`` (state-dict of a 38-class
+    EfficientNet-B0) in the same directory as ``app.py`` to enable GPU-quality
+    inference.  The weights can be exported from the Kaggle kernel:
+    abdallahwagih/plant-village-disease-classification-acc-99-6
+    """
+    global _disease_model
+    if _disease_model is not None:
+        return _disease_model
+    if not _TORCH_AVAILABLE:
+        return None
+    if not os.path.exists(DISEASE_MODEL_PATH):
+        logger.info(
+            "EfficientNet-B0 weights not found at %s; using heuristic fallback.",
+            DISEASE_MODEL_PATH,
+        )
+        return None
+    with _disease_model_lock:
+        if _disease_model is not None:
+            return _disease_model
+        try:
+            model = tv_models.efficientnet_b0(weights=None)
+            num_features = model.classifier[1].in_features
+            model.classifier[1] = nn.Linear(num_features, len(PLANT_VILLAGE_CLASSES))
+            model.load_state_dict(
+                torch.load(DISEASE_MODEL_PATH, map_location="cpu", weights_only=True)
+            )
+            model.eval()
+            _disease_model = model
+            logger.info("EfficientNet-B0 disease model loaded from %s", DISEASE_MODEL_PATH)
+        except Exception as exc:
+            logger.warning("Failed to load EfficientNet-B0 model: %s; using heuristic.", exc)
+            return None
+    return _disease_model
+
 
 # Disease database: crop → list of possible diseases with metadata
 DISEASE_DB = {
@@ -677,33 +1097,87 @@ DISEASE_DB = {
 
 def detect_disease(crop: str, image_bytes: bytes) -> dict:
     """
-    Simulate CNN-based disease detection using image analysis.
-    Returns disease classification with confidence score and treatment guide.
+    Disease detection using EfficientNet-B0 trained on the PlantVillage dataset
+    (abdallahwagih/plant-village-disease-classification-acc-99-6, ~99.6% accuracy,
+    38 disease classes).
+
+    Requires ``plant_disease_efficientnet_b0.pth`` in the app directory.
+    Falls back to a colour-heuristic approach when weights are unavailable.
     """
+    # ── Load and decode the image ────────────────────────────────────────────
+    img = None
+    img_size = (0, 0)
     try:
         from PIL import Image
         img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-        img_array = np.array(img.resize((128, 128)))
-
-        # Feature extraction: colour statistics (simulate CNN feature maps)
-        r_mean = float(np.mean(img_array[:, :, 0]))
-        g_mean = float(np.mean(img_array[:, :, 1]))
-        b_mean = float(np.mean(img_array[:, :, 2]))
-
-        # Heuristic confidence based on green channel dominance (healthy vs diseased)
-        green_dominance = g_mean / (r_mean + g_mean + b_mean + 1e-6)
-
-        # Healthy plants are green-dominant; diseased show brown/yellow
-        base_confidence = 0.65 + (1 - green_dominance) * 0.25
-        base_confidence = min(0.97, max(0.55, base_confidence))
-
         img_size = img.size
     except Exception:
+        pass
+
+    # ── EfficientNet-B0 inference path ───────────────────────────────────────
+    disease_model = _get_disease_model()
+    if disease_model is not None and img is not None and _DISEASE_TRANSFORM is not None:
+        try:
+            import torch  # already verified available via _TORCH_AVAILABLE
+            tensor = _DISEASE_TRANSFORM(img).unsqueeze(0)
+            with torch.no_grad():
+                logits = disease_model(tensor)
+                probs = torch.softmax(logits, dim=1)[0]
+                confidence, pred_idx = torch.max(probs, dim=0)
+
+            pred_class = PLANT_VILLAGE_CLASSES[pred_idx.item()]
+            confidence_val = round(float(confidence.item()) * 100, 1)
+            is_healthy = "healthy" in pred_class.lower()
+
+            info = PLANT_VILLAGE_DISEASE_INFO.get(
+                pred_class,
+                {
+                    "name": pred_class.replace("___", " – ").replace("_", " "),
+                    "pathogen": "Unknown",
+                    "symptoms": "See a specialist for detailed diagnosis.",
+                    "treatment": "Consult a local agricultural extension officer.",
+                    "pesticide": "As recommended by specialist.",
+                    "prevention": "Regular monitoring and good agricultural practices.",
+                },
+            )
+
+            return {
+                "crop": crop,
+                "image_size": f"{img_size[0]}×{img_size[1]}",
+                "model": "EfficientNet-B0 (PlantVillage, 38-class)",
+                "predicted_class": pred_class,
+                "is_healthy": is_healthy,
+                "disease": {
+                    "name": info["name"],
+                    "pathogen": info.get("pathogen", "N/A"),
+                    "confidence_percent": confidence_val,
+                },
+                "symptoms": info.get("symptoms", "N/A"),
+                "treatment_guide": {
+                    "treatment": info.get("treatment", "Consult specialist."),
+                    "pesticide_recommendation": info.get("pesticide", "As recommended."),
+                    "prevention_advice": info.get("prevention", "Good agricultural practices."),
+                },
+            }
+        except Exception as exc:
+            logger.warning("EfficientNet-B0 inference failed: %s; using heuristic.", exc)
+
+    # ── Heuristic fallback (colour-statistics) ───────────────────────────────
+    try:
+        img_array = np.array(img.resize((128, 128))) if img is not None else None
+        if img_array is not None:
+            r_mean = float(np.mean(img_array[:, :, 0]))
+            g_mean = float(np.mean(img_array[:, :, 1]))
+            b_mean = float(np.mean(img_array[:, :, 2]))
+            green_dominance = g_mean / (r_mean + g_mean + b_mean + 1e-6)
+            base_confidence = 0.65 + (1 - green_dominance) * 0.25
+            base_confidence = min(0.97, max(0.55, base_confidence))
+        else:
+            base_confidence = 0.72
+    except Exception:
         base_confidence = 0.72
-        img_size = (0, 0)
 
     diseases = DISEASE_DB.get(crop, DISEASE_DB["default"])
-    # Use image hash to deterministically select disease (reproducible result)
     seed = int(sum(image_bytes[:16])) if len(image_bytes) >= 16 else 42
     rng = np.random.default_rng(seed)
     chosen = diseases[int(rng.integers(0, len(diseases)))]
@@ -714,6 +1188,7 @@ def detect_disease(crop: str, image_bytes: bytes) -> dict:
     return {
         "crop": crop,
         "image_size": f"{img_size[0]}×{img_size[1]}",
+        "model": "heuristic (EfficientNet-B0 weights not loaded)",
         "disease": {
             "name": chosen["name"],
             "pathogen": chosen["pathogen"],
