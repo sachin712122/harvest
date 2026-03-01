@@ -303,7 +303,9 @@ const I18N = {
     lblTreatment:       "Treatment",
     lblPesticide:       "Pesticide Recommendation",
     lblPrevention:      "Prevention",
-    footerText:         "AgriVision\u00a0|\u00a0AI-Powered Agricultural Decision Support\u00a0|\u00a0Weather: Open-Meteo\u00a0|\u00a0Geocoding: Nominatim / OSM",
+    lblExpectedRange:   "Expected range:",
+    lblConfidence:      "Confidence",
+    lblStatus:          "Status",
     statusFetchForecast:  "Fetching 14-day forecast…",
     statusAnalyseSoil:    "Analysing soil data…",
     statusGenMarket:      "Generating price forecast…",
@@ -496,7 +498,9 @@ const I18N = {
     lblTreatment:       "சிகிச்சை",
     lblPesticide:       "பூச்சிக்கொல்லி பரிந்துரை",
     lblPrevention:      "தடுப்பு",
-    footerText:         "AgriVision\u00a0|\u00a0செயற்கை நுண்ணறிவு வேளாண் ஆதரவு\u00a0|\u00a0வானிலை: Open-Meteo\u00a0|\u00a0புவியியல் குறியீடு: Nominatim / OSM",
+    lblExpectedRange:   "எதிர்பார்க்கப்படும் வரம்பு:",
+    lblConfidence:      "நம்பகத்தன்மை",
+    lblStatus:          "நிலை",
     statusFetchForecast:  "14 நாள் முன்னறிவிப்பு பெறுகிறது…",
     statusAnalyseSoil:    "மண் தரவை பகுப்பாய்கிறது…",
     statusGenMarket:      "விலை கணிப்பு உருவாக்குகிறது…",
@@ -876,7 +880,7 @@ async function runSoilAnalysis() {
 function renderSoilResults(data) {
   const statusColor = { optimal: "#4caf50", deficient: "#f44336", excess: "#ff9800" };
   const nutrientLabel = { optimal: t("nutrientOptimal"), deficient: t("nutrientDeficient"), excess: t("nutrientExcess") };
-  const statusWord = currentLang === "ta" ? "நிலை" : "Status";
+  const statusWord = t("lblStatus");
 
   // Nutrient status cards
   const grid = $("soil-nutrient-grid");
@@ -971,7 +975,7 @@ function renderDiseaseResults(data) {
     <div class="disease-header">
       <div class="disease-name">🦠 ${data.disease.name}</div>
       <div class="confidence-badge" style="background:${confColor}">
-        ${conf}% ${currentLang === "ta" ? "நம்பகத்தன்மை" : "Confidence"}
+        ${conf}% ${t("lblConfidence")}
       </div>
     </div>
     <div class="disease-meta">
@@ -1045,7 +1049,7 @@ function renderMarketResults(data) {
   recBox.className = `market-rec-box ${isHold ? "rec-hold" : isSell ? "rec-sell" : "rec-stable"}`;
   recBox.innerHTML = `<strong>${isHold ? t("recHoldTitle") : isSell ? t("recSellTitle") : t("recStableTitle")}</strong>
     <p>${data.recommendation}</p>
-    <p class="price-range">${currentLang === "ta" ? "எதிர்பார்க்கப்படும் வரம்பு:" : "Expected range:"} ${an.expected_price_range}</p>`;
+    <p class="price-range">${t("lblExpectedRange")} ${an.expected_price_range}</p>`;
 
   // Chart
   const labels = data.price_series.map((d) => d.date.slice(5)); // MM-DD
