@@ -8,7 +8,6 @@
 // ── State ──────────────────────────────────────────────────
 let currentYieldPerAcre = null;
 let selectedCrop = "rice";
-let marketChart = null;
 
 const CROP_LABELS = {
   rice:          "Rice",

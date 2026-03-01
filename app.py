@@ -465,7 +465,9 @@ def fetch_forecast_weather(lat: float, lon: float) -> dict:
         valid_precip = [v for v in precip if v is not None]
         valid_et0 = [v for v in et0 if v is not None]
 
-        avg_temp = (sum(valid_max) / len(valid_max) + sum(valid_min) / len(valid_min)) / 2 if valid_max and valid_min else 28
+        avg_max = sum(valid_max) / len(valid_max) if valid_max else 28
+        avg_min = sum(valid_min) / len(valid_min) if valid_min else 20
+        avg_temp = (avg_max + avg_min) / 2
         total_precip = sum(valid_precip)
         total_et0 = sum(valid_et0)
 
