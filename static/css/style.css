@@ -411,7 +411,7 @@ main {
 /* ── Info grid (location / weather / soil) ── */
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 1rem;
   margin-bottom: .5rem;
 }
@@ -742,7 +742,7 @@ footer {
 /* ── Advisory cards (recommendations) ── */
 .advisory-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -919,6 +919,10 @@ footer {
   padding: 1rem;
   margin-bottom: 1.5rem;
   overflow: hidden;
+}
+.market-chart-wrap canvas {
+  display: block;
+  max-width: 100%;
 }
 
 /* ── Market recommendation box ── */
@@ -1154,4 +1158,13 @@ footer {
   .manual-coord-row input { width: 100%; }
   .adv-inputs-grid { grid-template-columns: 1fr 1fr; }
   .panel-body { padding: 1rem; }
+  .header-badge { display: none; }
+  .info-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+}
+
+@media (max-width: 400px) {
+  .info-grid { grid-template-columns: 1fr 1fr; }
+  .adv-inputs-grid { grid-template-columns: 1fr; }
+  .soil-form, .market-form, .upload-form, .advisory-form { grid-template-columns: 1fr; }
+  .advisory-cards { grid-template-columns: 1fr; }
 }
