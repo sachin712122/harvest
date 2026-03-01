@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AgriVision</string>
+    <string name="error_no_connection">No internet connection. Please check your network settings.</string>
+    <string name="error_server_unavailable">Server unavailable. Make sure the AgriVision server is running.</string>
+</resources>

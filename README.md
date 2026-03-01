@@ -42,6 +42,7 @@ A Flask-powered web application that predicts crop yields using real-time weathe
 | Geocoding | Nominatim / OpenStreetMap |
 | Server | Gunicorn |
 | Frontend | HTML / CSS / JavaScript |
+| Android App | Kotlin, WebView, AndroidX |
 
 ---
 
@@ -84,6 +85,69 @@ The app starts on **http://localhost:5000** by default.
 ```bash
 gunicorn -w 4 -b 0.0.0.0:5000 app:app
 ```
+
+---
+
+## Android Mobile App
+
+The repository includes a native Android app (`android/`) that wraps the AgriVision web app in a
+full-screen WebView. The Android app provides:
+
+- 📍 **Native GPS** – geolocation permission prompt for farm location detection
+- 📷 **Camera integration** – file chooser / camera access for disease photo uploads
+- 🔄 **Pull-to-refresh** – swipe down to reload the page
+- 🌙 **Dark-mode support** – respects the system dark-mode setting via algorithmic darkening
+- 📶 **PWA offline cache** – core assets are cached so the UI loads instantly
+
+### Prerequisites
+
+- [Android Studio](https://developer.android.com/studio) (Hedgehog 2023.1.1 or later)
+- Android SDK 34, Build Tools 34.x
+- JDK 17
+
+### Building the Android APK
+
+1. **Start the Flask server** on your machine (or deploy it to a public URL):
+
+   ```bash
+   python app.py          # listens on http://0.0.0.0:5000
+   ```
+
+2. **Configure the server URL** in `android/app/build.gradle`:
+
+   ```groovy
+   // For an Android emulator (default – maps to host localhost):
+   buildConfigField("String", "SERVER_URL", "\"http://10.0.2.2:5000\"")
+
+   // For a physical device on the same Wi-Fi network, use your machine's IP:
+   buildConfigField("String", "SERVER_URL", "\"http://192.168.x.x:5000\"")
+
+   // For a deployed server:
+   buildConfigField("String", "SERVER_URL", "\"https://your-agrivision-server.com\"")
+   ```
+
+3. **Open the project in Android Studio**:
+
+   ```
+   File → Open → select the android/ directory
+   ```
+
+4. **Run on an emulator or physical device** via the ▶ Run button, or build a release APK:
+
+   ```bash
+   cd android
+   ./gradlew assembleRelease
+   # APK is at android/app/build/outputs/apk/release/app-release.apk
+   ```
+
+### Installing on Android Without Android Studio
+
+If the Flask server is deployed at a public URL, users can install the PWA directly from any
+Android browser (Chrome / Edge / Firefox):
+
+1. Open the AgriVision URL in Chrome on Android.
+2. Tap the browser menu → **"Add to Home screen"** (or **"Install app"**).
+3. The app icon appears on the home screen and opens in standalone (full-screen) mode.
 
 ---
 
@@ -195,6 +259,22 @@ harvest/
 │       └── crops.json   # Crop database (temp, water, soil requirements)
 └── templates/
     └── index.html       # Main web interface
+
+android/                        # Native Android app (WebView wrapper)
+├── app/
+│   ├── build.gradle            # App-level Gradle config (set SERVER_URL here)
+│   ├── proguard-rules.pro
+│   └── src/main/
+│       ├── AndroidManifest.xml
+│       ├── kotlin/com/agrivision/harvest/
+│       │   └── MainActivity.kt # WebView activity with GPS & camera support
+│       └── res/
+│           ├── layout/activity_main.xml
+│           ├── values/         # strings, colors, themes
+│           └── xml/file_paths.xml
+├── build.gradle                # Root Gradle config
+├── gradle.properties
+└── settings.gradle
 ```
 
 ---

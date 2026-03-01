@@ -14,7 +14,7 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import requests
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_from_directory
 from sklearn.ensemble import RandomForestRegressor
 
 # ---------------------------------------------------------------------------
@@ -1541,6 +1541,23 @@ def build_advisory_report(
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+@app.route("/manifest.json")
+def pwa_manifest():
+    """Serve the PWA web-app manifest at the root path."""
+    return send_from_directory(app.static_folder, "manifest.json",
+                               mimetype="application/manifest+json")
+
+
+@app.route("/sw.js")
+def service_worker():
+    """Serve the service-worker script from the root scope required by browsers."""
+    return send_from_directory(
+        os.path.join(app.static_folder, "js"), "sw.js",
+        mimetype="application/javascript"
+    )
+
 
 
 @app.route("/api/analyze", methods=["POST"])
